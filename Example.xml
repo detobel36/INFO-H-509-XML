@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bookshop>
+    <!-- Book with authors and all options -->
+    <book genre="scientific">
+        <title>Great title</title>
+        <authors>Jean</authors>
+        <authors>Pierre</authors>
+        <publisher>Yves De Boek</publisher>
+        <year>2018</year>
+        <abstract>A verry great story</abstract>
+        <edition>De Boek</edition>
+        <ISBN>978-0-12-601970-1</ISBN>
+    </book>
+    <!-- Book with editors and all options -->
+    <book genre="scientific">
+        <title>Amazing title</title>
+        <editors>McEditor</editors>
+        <publisher>Luc Van In</publisher>
+        <year>2017</year>
+        <abstract>That's a story</abstract>
+        <edition>Vann IN</edition>
+        <ISBN>979-0-11-601089-2</ISBN>
+    </book>
+    <!-- Book with authors but only required fields -->
+    <book genre="scientific">
+        <title>Funny story</title>
+        <authors>Paul</authors>
+        <authors>Patrick</authors>
+        <publisher>Microsoft Publisher</publisher>
+        <year>2010</year>
+    </book>
+    <!-- Book with editors but only required fields -->
+    <book genre="scientific">
+        <title>Scientific report</title>
+        <editors>PUB</editors>
+        <publisher>ULB</publisher>
+        <year>2016</year>
+    </book>
+
+    <!-- TODO
+    <journals genre="scientific">
+
+    </journals>
+    <book genre="leisure">
+    </book>
+    <journals genre="leisure">
+    </journals>
+    -->
+</bookshop>

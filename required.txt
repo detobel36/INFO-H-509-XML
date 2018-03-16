@@ -1,0 +1,40 @@
+
+=-=-=-=-=-=-= scientific products =-=-=-=-=-=-=
+scientific books (<book>)
+    title
+    authors/editors (list) (one of the two)
+    publisher
+    year
+    abstract (option)
+    edition (option)
+    ISBN nbr (option)
+
+
+scientific journals
+    title
+    volume
+    number
+    authors/editors (list) (one of the two)
+    year
+    publisher (option)
+    impact factor + year of the impact (option)
+
+// In addition, for each journal a table of contents listing all the articles in the journal (with the title, list of authors, and start page, end page) should be mentioned. Optionally, the (start page, end page) pair may be replaced by simply mentioning the article number.
+
+
+=-=-=-=-=-=-= leisure products =-=-=-=-=-=-=
+
+leisure books (<book>)
+    title
+    authors (list)
+    publisher
+    year
+    genre (thriller, horror, sci/fi, romance, literature) (attribute)
+    edition (option)
+    number of page (option)
+
+leisure periodicals
+    title
+    price
+    publisher
+

@@ -38,3 +38,8 @@ leisure periodicals
     price
     publisher
 
+
+
+=-=-=-=-=-=-= INFO =-=-=-=-=-=-=
+
+Use either java -jar DTDValidator.jar <xmldoc> or java -jar XSDValidator.jar <schemadoc> <xmldoc> to validate. The third jar file contais the source code, should you be interested.

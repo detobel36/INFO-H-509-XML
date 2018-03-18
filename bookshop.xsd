@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:b="bookshop.xsd">
+
+    <!-- Define type -->
+    <xs:simpleType name="yearType">
+        <xs:restriction base="xs:positiveInteger">
+            <xs:pattern value="[0-9]{4}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Define the simple elements -->
+    <xs:element name="title" type="xs:string" />
+    <xs:element name="publisher" type="xs:string" />
+    <xs:element name="abstract" type="xs:string" />
+    <xs:element name="edition" type="xs:string" />
+    <xs:element name="author" type="xs:string" />
+    <xs:element name="editor" type="xs:string" />
+    <xs:element name="year" type="yearType" />
+    <xs:element name="volume" type="xs:positiveInteger" />
+    <xs:element name="number" type="xs:positiveInteger" />
+    <xs:element name="ISBN" type="xs:positiveInteger" />
+
+    <xs:attribute name="year" type="yearType" />
+
+
+</xs:schema>

@@ -80,6 +80,16 @@
     	</xs:complexType>
     </xs:element>
 
+    <!-- define scientific part -->
+    <xs:element name="scientific">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="book" type="scientificBook" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element name="journals" type="scientificJournals" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
 
 
 

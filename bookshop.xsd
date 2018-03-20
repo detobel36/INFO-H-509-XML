@@ -23,5 +23,69 @@
 
     <xs:attribute name="year" type="yearType" />
 
+    <!-- Define Scientific books -->
+    <xs:element name="scientificBook">
+    	<xs:complexType>
+    		<xs:sequence>
+    			<xs:element name="title" type="title" minOccurs="1" maxOccurs="1" />
+    			<xs:element name="author" type="author" minOccurs="1" maxOccurs="unbounded" />
+    			<xs:element name="publisher" type="publisher" minOccurs="1" maxOccurs="1" />
+    			<xs:element name="year" type="yearType" minOccurs="1" maxOccurs="1" />
+    			<xs:element name="abstract" type="abstract" minOccurs="0" maxOccurs="1" />
+    			<xs:element name="edition" type="edition" minOccurs="0" maxOccurs="1" />
+    			<xs:element name="ISBN" type="ISBN" minOccurs="0" maxOccurs="1" />
+    		</xs:sequence>
+    		<xs:sequence>
+    			<xs:element name="title" type="title" minOccurs="1" maxOccurs="1" />
+    			<xs:element name="editor" type="editor" minOccurs="1" maxOccurs="unbounded" />
+    			<xs:element name="publisher" type="publisher" minOccurs="1" maxOccurs="1" />
+    			<xs:element name="year" type="yearType" minOccurs="1" maxOccurs="1" />
+    			<xs:element name="abstract" type="abstract" minOccurs="0" maxOccurs="1" />
+    			<xs:element name="edition" type="edition" minOccurs="0" maxOccurs="1" />
+    			<xs:element name="ISBN" type="ISBN" minOccurs="0" maxOccurs="1" />
+    		</xs:sequence>
+    	</xs:complexType>
+    </xs:element>
+
+    <!-- Define Scientific journals -->
+    <xs:element name="scientificJournals">
+    	<xs:complexType>
+    		<xs:sequence>
+    			<xs:element name="title" type="title" minOccurs="1" maxOccurs="1" />
+    			<xs:element name="volume" type="volume" minOccurs="1" maxOccurs="1" />
+    			<xs:element name="number" type="number" minOccurs="1" maxOccurs="1" />
+    			<xs:element name="author" type="author" minOccurs="1" maxOccurs="unbounded" />
+    			<xs:element name="year" type="year" minOccurs="1" maxOccurs="1" />
+    			<xs:element name="publisher" type="publisher" minOccurs="0" maxOccurs="1" />
+    			<xs:element name="impact">
+    				<xs:complexType>
+    					<xs:sequence>
+    						<xs:element name="factor" type="xs:positiveInteger" minOccurs="1" maxOccurs="1" />
+    						<xs:element name="year" type="year" minOccurs="1" maxOccurs="1" />
+    					</xs:sequence>
+    				</xs:complexType>
+    			</xs:element>
+    		</xs:sequence>
+    		<xs:sequence>
+    			<xs:element name="title" type="title" minOccurs="1" maxOccurs="1" />
+    			<xs:element name="volume" type="volume" minOccurs="1" maxOccurs="1" />
+    			<xs:element name="number" type="number" minOccurs="1" maxOccurs="1" />
+    			<xs:element name="publisher" type="publisher" minOccurs="1" maxOccurs="unbounded" />
+    			<xs:element name="year" type="year" minOccurs="1" maxOccurs="1" />
+    			<xs:element name="publisher" type="publisher" minOccurs="0" maxOccurs="1" />
+    			<xs:element name="impact">
+    				<xs:complexType>
+    					<xs:sequence>
+    						<xs:element name="factor" type="xs:positiveInteger" minOccurs="1" maxOccurs="1" />
+    						<xs:element name="year" type="year" minOccurs="1" maxOccurs="1" />
+    					</xs:sequence>
+    				</xs:complexType>
+    			</xs:element>
+    		</xs:sequence>
+    	</xs:complexType>
+    </xs:element>
+
+
+
 
 </xs:schema>

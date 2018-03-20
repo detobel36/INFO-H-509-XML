@@ -1,2 +1,2 @@
 # INFO-H-509-XML
-Project of cours INFO-H-509
+Projects for the XML course

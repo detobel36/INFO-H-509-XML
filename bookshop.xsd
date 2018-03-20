@@ -23,6 +23,15 @@
 
     <xs:attribute name="year" type="yearType" />
 
+    <xs:element name="impact">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:attribute name="year" type="yearType">
+                <xs:element name="factor" type="xs:positiveInteger" minOccurs="1" maxOccurs="1" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
     <!-- Define Scientific books -->
     <xs:element name="scientificBook">
     	<xs:complexType>
@@ -57,14 +66,7 @@
     			<xs:element name="author" type="author" minOccurs="1" maxOccurs="unbounded" />
     			<xs:element name="year" type="year" minOccurs="1" maxOccurs="1" />
     			<xs:element name="publisher" type="publisher" minOccurs="0" maxOccurs="1" />
-    			<xs:element name="impact">
-    				<xs:complexType>
-    					<xs:sequence>
-    						<xs:element name="factor" type="xs:positiveInteger" minOccurs="1" maxOccurs="1" />
-    						<xs:element name="year" type="year" minOccurs="1" maxOccurs="1" />
-    					</xs:sequence>
-    				</xs:complexType>
-    			</xs:element>
+    			<xs:element name="impact" type="impact" minOccurs="0" maxOccurs="1" />
     		</xs:sequence>
     		<xs:sequence>
     			<xs:element name="title" type="title" minOccurs="1" maxOccurs="1" />
@@ -73,14 +75,7 @@
     			<xs:element name="publisher" type="publisher" minOccurs="1" maxOccurs="unbounded" />
     			<xs:element name="year" type="year" minOccurs="1" maxOccurs="1" />
     			<xs:element name="publisher" type="publisher" minOccurs="0" maxOccurs="1" />
-    			<xs:element name="impact">
-    				<xs:complexType>
-    					<xs:sequence>
-    						<xs:element name="factor" type="xs:positiveInteger" minOccurs="1" maxOccurs="1" />
-    						<xs:element name="year" type="year" minOccurs="1" maxOccurs="1" />
-    					</xs:sequence>
-    				</xs:complexType>
-    			</xs:element>
+                <xs:element name="impact" type="impact" minOccurs="0" maxOccurs="1" />
     		</xs:sequence>
     	</xs:complexType>
     </xs:element>

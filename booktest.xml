@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:bookshop xmlns:b="./bookshop.xsd"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <Scientific>
+    	<book>
+    		<title>Great title</title>
+            <author>Jean</author>
+            <author>Pierre</author>
+            <publisher>Yves De Boek</publisher>
+            <year>2018</year>
+            <abstract>A verry great story</abstract>
+            <edition>De Boek</edition>
+        </book>
+        <book>
+            <title>Amazing title</title>
+            <editor>McEditor</editor>
+            <publisher>Luc Van In</publisher>
+            <year>2017</year>
+            <abstract>That's a story</abstract>
+            <edition>Vann IN</edition>
+        </book>
+    </Scientific>
+
+</b:bookshop>

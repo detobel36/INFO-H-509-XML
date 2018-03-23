@@ -1,3 +1,11 @@
+=-=-=-=-=-=-= Commun Book =-=-=-=-=-=-=
+bookshopElement:
+    title
+
+book:
+    publisher
+    year
+    edition
 
 =-=-=-=-=-=-= scientific products =-=-=-=-=-=-=
 scientific books (<book>)

@@ -2,75 +2,82 @@
     targetNamespace="./bookshop.xsd"
     xmlns:b="./bookshop.xsd">
 
-	<!-- Define the simple elements -->
-	<simpleType name="yearType">
+    <!-- Define the simple elements -->
+    <simpleType name="yearType">
         <restriction base="positiveInteger">
             <pattern value="[0-9]{4}"/>
         </restriction>
     </simpleType>
-	<complexType name="impactT">
+    <complexType name="impactT">
         <simpleContent>
-        	<extension base="positiveInteger">
-				<attribute name="year" type="b:yearType" />
-			</extension>
+            <extension base="positiveInteger">
+                <attribute name="year" type="b:yearType" />
+            </extension>
         </simpleContent>
     </complexType>
 
     <simpleType name="titleT">
-    	<restriction base="string" />
+        <restriction base="string" />
     </simpleType>
     <simpleType name="publisherT">
-    	<restriction base="string" />
+        <restriction base="string" />
     </simpleType>
     <simpleType name="abstractT">
-    	<restriction base="string" />
+        <restriction base="string" />
     </simpleType>
     <simpleType name="editionT">
-    	<restriction base="string" />
+        <restriction base="string" />
     </simpleType>
     <simpleType name="authorT">
-    	<restriction base="string" />
+        <restriction base="string" />
     </simpleType>
     <simpleType name="editorT">
-    	<restriction base="string" />
+        <restriction base="string" />
     </simpleType>
     <simpleType name="yearT">
-    	<restriction base="b:yearType" />
+        <restriction base="b:yearType" />
     </simpleType>
     <simpleType name="volumeT">
-    	<restriction base="positiveInteger" />
+        <restriction base="positiveInteger" />
     </simpleType>
     <simpleType name="numberT">
-    	<restriction base="positiveInteger" />
+        <restriction base="positiveInteger" />
     </simpleType>
     <simpleType name="ISBNT">
-    	<restriction base="string">
-    		<pattern value="\d{1}-\d{5}-\d{3}-\d{1}|\d{1}-\d{3}-\d{5}-\d{1}|\d{1}-\d{2}-\d{6}-\d{1}"/>
-    	</restriction>
+        <restriction base="string">
+            <pattern value="\d{1}-\d{5}-\d{3}-\d{1}|\d{1}-\d{3}-\d{5}-\d{1}|\d{1}-\d{2}-\d{6}-\d{1}"/>
+        </restriction>
     </simpleType>
+
+
+    <complexType name="bookshopElement">
+        <sequence>
+            <element name="title" type="b:titleT" minOccurs="1" maxOccurs="1" />
+        </sequence>
+    </complexType>
 
     <!-- Define Leisure part -->
     <complexType name="bookLei">
-    	<sequence>
-    		<element name="title" type="b:titleT" />
-    	</sequence>
+        <sequence>
+            <element name="title" type="b:titleT" />
+        </sequence>
     </complexType>
 
     <complexType name="periodicalLei">
-    	<sequence>
-    		<element name="title" type="b:titleT" />
-    	</sequence>
+        <sequence>
+            <element name="title" type="b:titleT" />
+        </sequence>
     </complexType>
     <!-- End Leisure part -->
 
 
     <!-- Define Scientific part -->
     <complexType name="sciBook">
-    	<sequence>
+        <sequence>
             <element name="title" type="b:titleT" minOccurs="1" maxOccurs="1" />
             <choice>
-            	<element name="author" type="b:authorT" minOccurs="1" maxOccurs="unbounded" />
-            	<element name="editor" type="b:editorT" minOccurs="1" maxOccurs="unbounded" />
+                <element name="author" type="b:authorT" minOccurs="1" maxOccurs="unbounded" />
+                <element name="editor" type="b:editorT" minOccurs="1" maxOccurs="unbounded" />
             </choice>
             <element name="publisher" type="b:publisherT" minOccurs="1" maxOccurs="1" />
             <element name="year" type="b:yearT" minOccurs="1" maxOccurs="1" />
@@ -81,41 +88,44 @@
     </complexType>
 
     <complexType name="sciJournal">
-    	<sequence>
-    		<element name="title" type="b:titleT" minOccurs="1" maxOccurs="1" />
-			<element name="volume" type="b:volumeT" minOccurs="1" maxOccurs="1" />
-			<element name="number" type="b:numberT" minOccurs="1" maxOccurs="1" />
-			<choice>
-				<element name="author" type="b:authorT" minOccurs="1" maxOccurs="unbounded" />
-				<element name="editor" type="b:editorT" minOccurs="1" maxOccurs="unbounded" />
-			</choice>
-			<element name="year" type="b:yearT" minOccurs="1" maxOccurs="1" />
-			<element name="publisher" type="b:publisherT" minOccurs="0" maxOccurs="1" />
-			<element name="impact" type="b:impactT" minOccurs="0" maxOccurs="1" />
-		</sequence>
-	</complexType>
+        <complexContent>
+            <extension base="b:bookshopElement">
+                <sequence>
+                    <element name="volume" type="b:volumeT" minOccurs="1" maxOccurs="1" />
+                    <element name="number" type="b:numberT" minOccurs="1" maxOccurs="1" />
+                    <choice>
+                        <element name="author" type="b:authorT" minOccurs="1" maxOccurs="unbounded" />
+                        <element name="editor" type="b:editorT" minOccurs="1" maxOccurs="unbounded" />
+                    </choice>
+                    <element name="year" type="b:yearT" minOccurs="1" maxOccurs="1" />
+                    <element name="publisher" type="b:publisherT" minOccurs="0" maxOccurs="1" />
+                    <element name="impact" type="b:impactT" minOccurs="0" maxOccurs="1" />
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
     <!-- End Scientific part -->
 
     <complexType name="ScientificProducts">
-		<sequence>
-			<element name="book" type="b:sciBook" minOccurs="0" maxOccurs="unbounded" />
-			<element name="journal" type="b:sciJournal" minOccurs="0" maxOccurs="unbounded" />
-		</sequence>
-	</complexType>
+        <sequence>
+            <element name="book" type="b:sciBook" minOccurs="0" maxOccurs="unbounded" />
+            <element name="journal" type="b:sciJournal" minOccurs="0" maxOccurs="unbounded" />
+        </sequence>
+    </complexType>
 
-	<complexType name="LeisureProducts">
-		<sequence>
-			<element name="book" type="b:bookLei" minOccurs="0" maxOccurs="unbounded" />
-			<element name="periodical" type="b:periodicalLei" minOccurs="0" maxOccurs="unbounded" />
-		</sequence>
-	</complexType>
+    <complexType name="LeisureProducts">
+        <sequence>
+            <element name="book" type="b:bookLei" minOccurs="0" maxOccurs="unbounded" />
+            <element name="periodical" type="b:periodicalLei" minOccurs="0" maxOccurs="unbounded" />
+        </sequence>
+    </complexType>
 
     <complexType name="bookshop">
-		<sequence>
-			<element name="scientific" type="b:ScientificProducts" minOccurs="0" maxOccurs="unbounded" />
-			<element name="leisure" type="b:LeisureProducts" minOccurs="0" maxOccurs="unbounded" />
-		</sequence>
-	</complexType>
+        <sequence>
+            <element name="scientific" type="b:ScientificProducts" minOccurs="0" maxOccurs="unbounded" />
+            <element name="leisure" type="b:LeisureProducts" minOccurs="0" maxOccurs="unbounded" />
+        </sequence>
+    </complexType>
 
     <!-- Global element declaration -->
     <element name="bookshop" type="b:bookshop" />

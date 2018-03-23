@@ -1,4 +1,4 @@
-=-=-=-=-=-=-= Commun Book =-=-=-=-=-=-=
+p=-=-=-=-=-=-= Commun Book =-=-=-=-=-=-=
 bookshopElement:
     title
 
@@ -32,7 +32,7 @@ scientific journals
 
 =-=-=-=-=-=-= leisure products =-=-=-=-=-=-=
 
-leisure books (<book>)
+tleisure books (<book>)
     title
     authors (list)
     publisher

@@ -15,6 +15,22 @@
             </extension>
         </simpleContent>
     </complexType>
+    <complexType name="pagesT">
+    	<sequence>
+    		<element name="start" type="positiveInteger" />
+    		<element name="end" type="positiveInteger" />
+    	</sequence>
+    </complexType>
+    <complexType name="articleT">
+    	<sequence>
+    		<element name="title" type="b:titleT" />
+    		<element name="author" type="b:authorT" />
+    		<choice>
+    			<element name="pages" type="b:pagesT" />
+    			<element name="number" type="positiveInteger" />
+    		</choice>
+    	</sequence>
+
 
     <simpleType name="titleT">
         <restriction base="string" />
@@ -48,6 +64,9 @@
             <pattern value="\d{1}-\d{5}-\d{3}-\d{1}|\d{1}-\d{3}-\d{5}-\d{1}|\d{1}-\d{2}-\d{6}-\d{1}"/>
         </restriction>
     </simpleType>
+    <simpleType name="priceT">
+    	<restriction base="positiveInteger" />
+    </simpleType>
 
 
     <complexType name="bookshopElement">
@@ -59,13 +78,21 @@
     <!-- Define Leisure part -->
     <complexType name="bookLei">
         <sequence>
-            <element name="title" type="b:titleT" />
+            <element name="title" type="b:titleT" minOccurs="1" maxOccurs="1" />
+            <element name="author" type="b:authorT" minOccurs="1" maxOccurs="unbounded" />
+            <element name="publisher" type="b:publisherT" minOccurs="1" maxOccurs="1" />
+            <element name="year" type="b:yearT" minOccurs="1" maxOccurs="1" />
+            <attribute name="genre" type="string" minOccurs="1" maxOccurs="1" />
+            <element name="edition" type="b:editionT" minOccurs="0" maxOccurs="1" />
+            <element name="number" type="b:numberT" minOccurs="0" maxOccurs="1" />
         </sequence>
     </complexType>
 
     <complexType name="periodicalLei">
         <sequence>
-            <element name="title" type="b:titleT" />
+        	<element name="title" type="b:titleT" minOccurs="1" maxOccurs="1" />
+        	<element name="price" type="b:priceT" minOccurs="1" maxOccurs="1" />
+        	<element name="publisher" type="b:publisherT" minOccurs="1" maxOccurs="1" />
         </sequence>
     </complexType>
     <!-- End Leisure part -->
@@ -100,6 +127,7 @@
                     <element name="year" type="b:yearT" minOccurs="1" maxOccurs="1" />
                     <element name="publisher" type="b:publisherT" minOccurs="0" maxOccurs="1" />
                     <element name="impact" type="b:impactT" minOccurs="0" maxOccurs="1" />
+                    <element name="article" type="b:articleT" minOccurs="1" maxOccurs="unbounded" />
                 </sequence>
             </extension>
         </complexContent>

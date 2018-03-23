@@ -1,6 +1,6 @@
-<schema xmlns="http://www.w3.org/2001/XMLSchema"
-	targetNamespace="./bookshop.xsd"
-	xmlns:b="./bookshop.xsd">
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+    targetNamespace="./bookshop.xsd"
+    xmlns:b="./bookshop.xsd">
 
 	<!-- Define the simple elements -->
 	<simpleType name="yearType">
@@ -48,7 +48,6 @@
     		<pattern value="\d{1}-\d{5}-\d{3}-\d{1}|\d{1}-\d{3}-\d{5}-\d{1}|\d{1}-\d{2}-\d{6}-\d{1}"/>
     	</restriction>
     </simpleType>
-    
 
     <!-- Define Leisure part -->
     <complexType name="bookLei">
@@ -113,13 +112,12 @@
 
     <complexType name="bookshop">
 		<sequence>
-			<element name="Scientific" type="b:ScientificProducts" minOccurs="0" maxOccurs="unbounded" />
-			<element name="Leisure" type="b:LeisureProducts" minOccurs="0" maxOccurs="unbounded" />
+			<element name="scientific" type="b:ScientificProducts" minOccurs="0" maxOccurs="unbounded" />
+			<element name="leisure" type="b:LeisureProducts" minOccurs="0" maxOccurs="unbounded" />
 		</sequence>
 	</complexType>
 
     <!-- Global element declaration -->
     <element name="bookshop" type="b:bookshop" />
-
 
 </schema>

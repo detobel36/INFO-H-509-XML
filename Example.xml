@@ -2,97 +2,97 @@
 <b:bookshop xmlns:b="bookshop.xsd"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="bookshop.xsd">
-    <b:scientific>
+    <scientific>
         <!-- Book with authors and all options -->
-        <b:book>
-            <b:title>Great title</b:title>
-            <b:author>Jean</b:author>
-            <b:author>Pierre</b:author>
-            <b:publisher>Yves De Boek</b:publisher>
-            <b:year>2018</b:year>
-            <b:abstract>A verry great story</b:abstract>
-            <b:edition>De Boek</b:edition>
-            <b:ISBN>978-0-12-601970-1</b:ISBN>
-        </b:book>
+        <book>
+            <title>Great title</title>
+            <author>Jean</author>
+            <author>Pierre</author>
+            <publisher>Yves De Boek</publisher>
+            <year>2018</year>
+            <abstract>A verry great story</abstract>
+            <edition>De Boek</edition>
+            <ISBN>4-74936-098-3</ISBN>
+        </book>
         <!-- Book with editors and all options -->
-        <b:book>
-            <b:title>Amazing title</b:title>
-            <b:editor>McEditor</b:editor>
-            <b:publisher>Luc Van In</b:publisher>
-            <b:year>2017</b:year>
-            <b:abstract>That's a story</b:abstract>
-            <b:edition>Vann IN</b:edition>
-            <b:ISBN>979-0-11-601089-2</b:ISBN>
-        </b:book>
+        <book>
+            <title>Amazing title</title>
+            <editor>McEditor</editor>
+            <publisher>Luc Van In</publisher>
+            <year>2017</year>
+            <abstract>That's a story</abstract>
+            <edition>Vann IN</edition>
+            <ISBN>1-84356-028-3</ISBN>
+        </book>
         <!-- Book with authors but only required fields -->
-        <b:book>
-            <b:title>Funny story</b:title>
-            <b:author>Paul</b:author>
-            <b:author>Patrick</b:author>
-            <b:publisher>Microsoft Publisher</b:publisher>
-            <b:year>2010</b:year>
-        </b:book>
+        <book>
+            <title>Funny story</title>
+            <author>Paul</author>
+            <author>Patrick</author>
+            <publisher>Microsoft Publisher</publisher>
+            <year>2010</year>
+        </book>
         <!-- Book with editors but only required fields -->
-        <b:book>
-            <b:title>Scientific report</b:title>
-            <b:editor>PUB</b:editor>
-            <b:publisher>ULB</b:publisher>
-            <b:year>2016</b:year>
-        </b:book>
+        <book>
+            <title>Scientific report</title>
+            <editor>PUB</editor>
+            <publisher>ULB</publisher>
+            <year>2016</year>
+        </book>
 
         <!-- Journal with authors and all options -->
-        <b:journals>
-            <b:title>Computer journal</b:title>
-            <b:volume>1</b:volume>
-            <b:number>123</b:number>
-            <b:author>Yves</b:author>
-            <b:author>Jack</b:author>
-            <b:year>2018</b:year>
-            <b:publisher>Compublisher</b:publisher>
-            <b:impact year="2018">1</b:impact>
-        </b:journals>
+        <journal>
+            <title>Computer journal</title>
+            <volume>1</volume>
+            <number>123</number>
+            <author>Yves</author>
+            <author>Jack</author>
+            <year>2018</year>
+            <publisher>Compublisher</publisher>
+            <impact year="2018">1</impact>
+        </journal>
 
         <!-- Journal with editors and all options -->
-        <b:journals>
-            <b:title>Daily Journal</b:title>
-            <b:volume>15</b:volume>
-            <b:number>54</b:number>
-            <b:editor>AJM</b:editor>
-            <b:editor>Reditor</b:editor>
-            <b:year>2016</b:year>
-            <b:publisher>Oxoford Academic</b:publisher>
-            <b:impact year="2017">2</b:impact>
-        </b:journals>
+        <journal>
+            <title>Daily Journal</title>
+            <volume>15</volume>
+            <number>54</number>
+            <editor>AJM</editor>
+            <editor>Reditor</editor>
+            <year>2016</year>
+            <publisher>Oxoford Academic</publisher>
+            <impact year="2017">2</impact>
+        </journal>
 
         <!-- Journal with authors but only required fields -->
-        <b:journals>
-            <b:title>Markov chains</b:title>
-            <b:volume>3</b:volume>
-            <b:number>98</b:number>
-            <b:author>Florent Dasque</b:author>
-            <b:author>Laurent Garnier</b:author>
-            <b:year>2000</b:year>
-        </b:journals>
+        <journal>
+            <title>Markov chains</title>
+            <volume>3</volume>
+            <number>98</number>
+            <author>Florent Dasque</author>
+            <author>Laurent Garnier</author>
+            <year>2000</year>
+        </journal>
 
         <!-- Journal with editors but only required fields -->
-        <b:journals>
-            <b:title>Database</b:title>
-            <b:volume>2</b:volume>
-            <b:number>42</b:number>
-            <b:editor>Groupe Editor</b:editor>
-            <b:editor>Cream</b:editor>
-            <b:year>2001</b:year>
-        </b:journals>
-    </b:scientific>
+        <journal>
+            <title>Database</title>
+            <volume>2</volume>
+            <number>42</number>
+            <editor>Groupe Editor</editor>
+            <editor>Cream</editor>
+            <year>2001</year>
+        </journal>
+    </scientific>
 
     <!-- TODO
-    <b:leisure>
-        <b:book>
-        </b:book>
+    <leisure>
+        <book>
+        </book>
 
-        <b:journals>
-        </b:journals>
-    </b:leisure>
+        <journal>
+        </journal>
+    </leisure>
     -->
 </b:bookshop>
 

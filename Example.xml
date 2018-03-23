@@ -1,13 +1,14 @@
- <?xml version="1.0" encoding="UTF-8"?>
-<b:bookshop xmlns:b="bookshop.xsd"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="bookshop.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<b:bookshop xmlns:b="./bookshop.xsd"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <scientific>
         <!-- Book with authors and all options -->
         <book>
             <title>Great title</title>
-            <author>Jean</author>
-            <author>Pierre</author>
+            <authors>
+                <author>Jean</author>
+                <author>Pierre</author>
+            </authors>
             <publisher>Yves De Boek</publisher>
             <year>2018</year>
             <abstract>A verry great story</abstract>
@@ -17,7 +18,9 @@
         <!-- Book with editors and all options -->
         <book>
             <title>Amazing title</title>
-            <editor>McEditor</editor>
+            <editors>
+                <editor>McEditor</editor>
+            </editors>
             <publisher>Luc Van In</publisher>
             <year>2017</year>
             <abstract>That's a story</abstract>
@@ -27,15 +30,19 @@
         <!-- Book with authors but only required fields -->
         <book>
             <title>Funny story</title>
-            <author>Paul</author>
-            <author>Patrick</author>
+            <authors>
+                <author>Paul</author>
+                <author>Patrick</author>
+            </authors>
             <publisher>Microsoft Publisher</publisher>
             <year>2010</year>
         </book>
         <!-- Book with editors but only required fields -->
         <book>
             <title>Scientific report</title>
-            <editor>PUB</editor>
+            <editors>
+                <editor>PUB</editor>
+            </editors>
             <publisher>ULB</publisher>
             <year>2016</year>
         </book>
@@ -45,11 +52,28 @@
             <title>Computer journal</title>
             <volume>1</volume>
             <number>123</number>
-            <author>Yves</author>
-            <author>Jack</author>
+            <authors>
+                <author>Yves</author>
+                <author>Jack</author>
+            </authors>
             <year>2018</year>
             <publisher>Compublisher</publisher>
             <impact year="2018">1</impact>
+            <articles>
+                <article>
+                    <title> Salut </title>
+                    <author> Mickael </author>
+                    <number> 1 </number>
+                </article>
+                <article>
+                    <title> Les loulous </title>
+                    <author> Randour </author>
+                    <pages>
+                        <start>12</start>
+                        <end>20</end>
+                    </pages>
+                </article>
+            </articles>
         </journal>
 
         <!-- Journal with editors and all options -->
@@ -57,11 +81,28 @@
             <title>Daily Journal</title>
             <volume>15</volume>
             <number>54</number>
-            <editor>AJM</editor>
-            <editor>Reditor</editor>
+            <editors>
+                <editor>AJM</editor>
+                <editor>Reditor</editor>
+            </editors>
             <year>2016</year>
             <publisher>Oxoford Academic</publisher>
             <impact year="2017">2</impact>
+            <articles>
+                <article>
+                    <title> Salut </title>
+                    <author> Mickael </author>
+                    <number> 1 </number>
+                </article>
+                <article>
+                    <title> Les loulous </title>
+                    <author> Randour </author>
+                    <pages>
+                        <start>12</start>
+                        <end>20</end>
+                    </pages>
+                </article>
+            </articles>
         </journal>
 
         <!-- Journal with authors but only required fields -->
@@ -69,9 +110,26 @@
             <title>Markov chains</title>
             <volume>3</volume>
             <number>98</number>
-            <author>Florent Dasque</author>
-            <author>Laurent Garnier</author>
+            <authors>
+                <author>Florent Dasque</author>
+                <author>Laurent Garnier</author>
+            </authors>
             <year>2000</year>
+            <articles>
+                <article>
+                    <title> Salut </title>
+                    <author> Mickael </author>
+                    <number> 1 </number>
+                </article>
+                <article>
+                    <title> Les loulous </title>
+                    <author> Randour </author>
+                    <pages>
+                        <start>12</start>
+                        <end>20</end>
+                    </pages>
+                </article>
+            </articles>
         </journal>
 
         <!-- Journal with editors but only required fields -->
@@ -79,25 +137,61 @@
             <title>Database</title>
             <volume>2</volume>
             <number>42</number>
-            <editor>Groupe Editor</editor>
-            <editor>Cream</editor>
+            <editors>
+                <editor>Groupe Editor</editor>
+                <editor>Cream</editor>
+            </editors>
             <year>2001</year>
+            <articles>
+                <article>
+                    <title> Salut </title>
+                    <author> Mickael </author>
+                    <number> 1 </number>
+                </article>
+                <article>
+                    <title> Les loulous </title>
+                    <author> Randour </author>
+                    <pages>
+                        <start>12</start>
+                        <end>20</end>
+                    </pages>
+                </article>
+            </articles>
         </journal>
     </scientific>
 
-    <!-- TODO
     <leisure>
+
         <book>
+            <title> Ouioui </title>
+            <authors>
+                <author> Un Premier </author>
+                <author> Un Second </author>
+            </authors>
+            <publisher>Oxoford Academic</publisher>
+            <year>2018</year>
+            <genre>thriller</genre>
         </book>
 
-        <journal>
-        </journal>
-    </leisure>
-    -->
-</b:bookshop>
+        <book>
+            <title> Ouioui </title>
+            <authors>
+                <author> Un Premier </author>
+                <author> Un Second </author>
+            </authors>
+            <publisher>Oxoford Academic</publisher>
+            <year>2018</year>
+            <genre>sci/fi</genre>
+            <edition>De Boek</edition>
+            <number>123</number>
+        </book>
 
-<!-- 
-    TODO for journals of scientific departement: 
-    
-    In addition, for each journal a table of contents listing all the articles in the journal (with the title, list of authors, and start page, end page) should be mentioned. Optionally, the (start page, end page) pair may be replaced by simply mentioning the article number.
--->
+        <periodical>
+            <title>Periodical</title>
+            <price>1234</price>
+            <publisher>Toi</publisher>
+        </periodical>
+
+    </leisure>
+
+</b:bookshop>

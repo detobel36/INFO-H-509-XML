@@ -60,12 +60,12 @@
     <complexType name="authorsT">
     	<sequence>
     		<element name="author" type="b:authorT" minOccurs="1" maxOccurs="unbounded" />
-    	</element>
-    </sequence>
+        </sequence>
+    </complexType>
 
     <complexType name="editorsT">
     	<sequence>
-    		<element name="editor" type="b:editor" minOccurs="1" maxOccurs="unbounded" />
+    		<element name="editor" type="b:editorT" minOccurs="1" maxOccurs="unbounded" />
     	</sequence>
     </complexType>
 

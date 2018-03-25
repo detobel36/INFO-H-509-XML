@@ -8,6 +8,7 @@
 \usepackage{tikz}
 \usepackage{fancyhdr}
 \usepackage{float}
+\usepackage{listings}
 \usetikzlibrary{trees}
 \author{R\'emy Detobel \& Nathan Liccardo}
 \title{Report : XML Schema Definition}
@@ -19,7 +20,7 @@
 \maketitle
 
 \section{Introduction}
-The aims of this document will be to describe and explain all the choices that we made for our project. To call back, the main goal of this assignment was to create an XSD file which contains a specific XML Schema Definition. The first part of this report will be dedicated to the structure of the schema. We will show, by means of trees, how the requested structure has been implemented. Those trees will be used to infer each specific types and links between them. The second part of this document will be focused on the hypotheses that we made during the implementation. All those choices were made arbitrarily and can be changed
+The aims of this document will be to describe and explain all the choices that we made for our project. To call back, the main goal of this assignment was to create an XSD file which contains a specific XML Schema Definition. The first part of this report will be dedicated to the structure of the schema. We will show, by means of trees, how the requested structure has been implemented. Those trees will be used to infer each specific types and links between them. The second part of this document will be focused on the hypotheses that we made during the implementation. Indeed, due to the non-formal aspect of the assignment, some parts of the structure were left to choose.
 
 \section{Structure of the schema}
 One of the solution to define an XML Schema is to use an XSD file. This file will contain all the relations between elements but also the restrictions applied to each types (simple or complex). For this project, we were assigned to write an XSD file which define a book shop. This shop is separated into two parts : scientific products and leisure products. The following tree represent this first relation : 
@@ -101,5 +102,105 @@ Previously, we defined the bookshopType as an abstract one. In fact, this type w
 \item leisureType $\rightarrow$ (book, booktype2)*, (periodical, periodicalType)*
 \end{itemize}
 For the moment, we only defined links between elements. All those are created by defining complex types with some elements inside. Each of these elements are themselves referring to other complex type excepted for final types (Book, Journal, ...). The second part of this report will be focused on explaining and illustrating all the choices that we made during the implementation. For this reason, we will also detail the structure of each final types.
+
+\section{Hypotheses and choices}
+All along the previous section, we only described the global structure of the schema. We will now focus on what we called previously "final types". There exist four different kinds of this specific element : bookType1, journalType, bookType2 and periodicalType. As said in the previous section, bookType1 and bookType2 are both identified by the $<$book$>$ tag but are not referring to the same type. This can be achieved due to the scope definition. In fact, bookType1 is defined inside the scientific scope unlike bookType2 which is defined inside the leisure scope. Regarding to the two last types, journalType is identified by the $<$journal$>$ tag (scientific scope) and periodicalType by the $<$periodical$>$ tag (leisure scope). This section will be separated into two sub-sections : the XSD's structure and the final types' structures.
+
+\subsection{XSD's structure}
+Our file has been split into five distinct parts. Each part is used to represent one level of the XML Schema. Indeed, the order of declarations is made from bottom to top level. Here is the used structure :
+\begin{enumerate}
+\item Simple types : This first section is used to define each atomic elements. This is mainly useful to reduce duplicate definitions and code. For example, we define the title element, the publisher element, etc.
+\item Scientific part : Define all complex types which belong to the scientific product tree. We can see that scientificBook and scientificJournal are defined at the end of this section. Detail about this part will be given in the next section.
+\item Leisure part : As the scientific part, leisure part is used to define all complex types which belong to the leisure tree. Once again, details about this part will be given later.
+\item Products part : Define two complex types, scientific product and leisure product. Both can be seen as root elements from the two previous parts.
+\item Bookshop part : Is used to merge both products elements. This section also define the root element of the xml file named $<$b:bookshop$>$.
+\end{enumerate}
+
+\subsection{Final types}
+This second section will be focused on the structure of each final types. As said before, there exist four different final types : bookType1, journalType, bookType2 and periodicalType.
+
+\subsubsection{BookType1}
+According to the assignment, a scientific book must be composed of : a title, a list of authors xor a list of editors, a publisher and a year of publication. Optionally, a book can have : an abstract, an edition and an ISBN. Formally, we obtain the following definition :
+\begin{itemize}
+\item bookType1 $\rightarrow$ (title, titleT), (authors, authorsT)$^+$ $|$ (editors, editorsT)$^+$, (publisher, publisherT), (year, yearT), (abstract, abstractT)?, (edition, editionT)?, (ISBN, ISBNT)?
+\end{itemize}
+All the types, excepted authorsT and editorsT, used in the previous section are defined in the simple types section. Regarding to authorsT and editorsT, their definitions are more complex. Indeed, they are themselves complex types definitions. We made the arbitrary choice that a list of authors (or editors) must be structured as follow : 
+\begin{lstlisting}[language=XML]
+    <authors>
+	<author> ... </author>
+	....
+	<author> ... </author>
+    </author>
+\end{lstlisting}
+Which implies that author and editor tags are defined by authorT and editorT. These new types are finally defined in the simple type section (as string elements).
+\subsubsection{JournalType}
+A scientific journal as also two parts : a mandatory one and an optional one. For the mandatory part, we must have : a title, a volume, a number, a list of authors xor a list of editors and a year. Concerning to the optional part, a journal type can have a publisher and an impact. In addition, a journal must also have a list of articles. Finally, we obtain this relation :
+\begin{itemize}
+\item journalType $\rightarrow$ (title, titleT), (volume, volumeT), (number, numberT), (authors, authorsT)$^+$ $|$ (editors, editorsT)$^+$, (year, yearT), (publisher, publisherT)?, (impact, impactT)?, (articles, articlesT)
+\end{itemize}
+Were we have two new complex types : impact and article. All the other one are defined in the simple type section excepted editors and authors which were defined previously. An impact is defined with two elements namely a year and an impact factor. For this reason, we decided to structure this complex type as follow :
+\begin{lstlisting}[language=XML]
+    <impact year="XXXX"> ... </impact>
+\end{lstlisting}
+Notice that another solution was to create a complex type (impact) composed by a year tag and a factor tag. Regarding to the articles type, we had to define a list of articles. To do that, we defined a complex type composed itself by a list of article tags. Here is the XML logic : 
+\begin{lstlisting}[language=XML]
+    <articles>  
+    	<article> ... </article>
+	...
+	<article> ... </article>
+    </articles>
+\end{lstlisting}
+Inside each article, we must find those elements : a title, an author, an interval of pages xor a number corresponding to the article. This can be formalised by the following relation : 
+\begin{itemize}
+\item articlesT $\rightarrow$ (article, articleT)$^+$
+\item articleT $\rightarrow$ (title, titleT), (author, authorT), (pages, pagesT) $|$ (number, numberT)
+\end{itemize}
+Note that this type contains only one author but also that we use the complex type pagesT and the simple type numberT (define in the first section). PagesT is a very simple complex type composed of two integers corresponding to the start and end page.
+\subsubsection{BookType2}
+The second book type is defined inside the leisure scope. For this reason, the composition of this new book type will differ from bookType1. Inside this new book type we must find : a title, a list of authors, a publisher, a year and a genre. Optionally, we can add  an edition and a number. Formally, we obtain the following relation :
+\begin{itemize}
+\item bookType2 $\rightarrow$ (title, titleT), (authors, authorsT), (publisher, publisherT), (genre, genreT), (edition, editionT)?, (number, numberT)?
+\end{itemize}
+We were asked to restrict the value of a genre. To do that we used a restriction tag with multiple enumerations inside. All the other types were defined previously or are defined in the simple type section.
+\subsubsection{PeriodicalType}
+This last complex type is only composed by a sequence of three simple type elements. As these elements are very simple, we will not give any more informations about them. Here is the formal definition of a periodicalType :
+\begin{itemize}
+\item periodicalType $\rightarrow$ (title, titleT), (price, priceT), (publisher, publisherT)
+\end{itemize}
+
+\subsection{Complete schema and relations}
+To complete this report, we can now show all the relations corresponding to the final tree. Note that those relations are now correctly named (as same as in the XSD file) and that we order relations from top to bottom (reverse file order). Due to their trivial aspects, we didn't add simple type (texts, numbers, ...)
+\begin{center}
+\begin{tikzpicture}[level distance=5em,
+	level 1/.style={sibling distance=22em},
+  level 2/.style={sibling distance=5.85em},
+  every node/.style = {shape=rectangle, rounded corners,
+    draw, align=center,
+    top color=white, bottom color=blue!20}]]
+  \node{Bookshop}  
+    child { node {Scientific}
+    	child { node {Book1} }
+	child { node {BookN} }
+    	child { node {Journal1} }
+	child { node {JournalM} } }  
+    child { node {Leisure}
+    	child { node {Book1} }
+    	child { node {BookX} }
+    	child { node {Periodical1} }
+    	child { node {PeriodicalY} } };
+\end{tikzpicture}
+\end{center}
+\begin{itemize}
+\item bookshopType $\rightarrow$ (scientific, scientificType),(leisure, leisureType)
+\item scientificType $\rightarrow$ (book, booktype1)*, (journal, journalType)*
+\item leisureType $\rightarrow$ (book, booktype2)*, (periodical, periodicalType)*
+\item bookType1 $\rightarrow$ (title, titleT), (authors, authorsT)$^+$ $|$ (editors, editorsT)$^+$, (publisher, publisherT), (year, yearT), (abstract, abstractT)?, (edition, editionT)?, (ISBN, ISBNT)?
+\item journalType $\rightarrow$ (title, titleT), (volume, volumeT), (number, numberT), (authors, authorsT)$^+$ $|$ (editors, editorsT)$^+$, (year, yearT), (publisher, publisherT)?, (impact, impactT)?, (articles, articlesT)
+\item articlesT $\rightarrow$ (article, articleT)$^+$
+\item articleT $\rightarrow$ (title, titleT), (author, authorT), (pages, pagesT) $|$ (number, numberT)
+\item bookType2 $\rightarrow$ (title, titleT), (authors, authorsT), (publisher, publisherT), (genre, genreT), (edition, editionT)?, (number, numberT)?
+\item periodicalType $\rightarrow$ (title, titleT), (price, priceT), (publisher, publisherT)
+\end{itemize}
+
 
 \end{document}

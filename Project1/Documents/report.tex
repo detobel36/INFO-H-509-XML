@@ -2,7 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage[margin=1in]{geometry}
-\usepackage{titlesec}
+%\usepackage{titlesec}
 \usepackage{fancyhdr}
 \usepackage[hidelinks]{hyperref}
 \usepackage{tikz}
@@ -12,6 +12,24 @@
 \usetikzlibrary{trees}
 \author{R\'emy Detobel \& Nathan Liccardo}
 \title{Report : XML Schema Definition}
+
+\usepackage{color}
+\definecolor{Maroon}{rgb}{0.5,0,0}
+
+\lstdefinelanguage{XML}
+{
+  basicstyle=\ttfamily\footnotesize,
+  morestring=[b]",
+  moredelim=[s][\bfseries\color{Maroon}]{<}{\ },
+  moredelim=[s][\bfseries\color{Maroon}]{</}{>},
+  moredelim=[l][\bfseries\color{Maroon}]{/>},
+  moredelim=[l][\bfseries\color{Maroon}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<!--}{-->},
+  commentstyle=\color{DarkOliveGreen},
+  stringstyle=\color{blue},
+  identifierstyle=\color{red}
+}
 
 \renewcommand\thesection{\arabic{section}}
 
@@ -104,7 +122,7 @@ Previously, we defined the bookshopType as an abstract one. In fact, this type w
 For the moment, we only defined links between elements. All those are created by defining complex types with some elements inside. Each of these elements are themselves referring to other complex type excepted for final types (Book, Journal, ...). The second part of this report will be focused on explaining and illustrating all the choices that we made during the implementation. For this reason, we will also detail the structure of each final types.
 
 \section{Hypotheses and choices}
-All along the previous section, we only described the global structure of the schema. We will now focus on what we called previously "final types". There exist four different kinds of this specific element : bookType1, journalType, bookType2 and periodicalType. As said in the previous section, bookType1 and bookType2 are both identified by the $<$book$>$ tag but are not referring to the same type. This can be achieved due to the scope definition. In fact, bookType1 is defined inside the scientific scope unlike bookType2 which is defined inside the leisure scope. Regarding to the two last types, journalType is identified by the $<$journal$>$ tag (scientific scope) and periodicalType by the $<$periodical$>$ tag (leisure scope). This section will be separated into two sub-sections : the XSD's structure and the final types' structures.
+All along the previous section, we only described the global structure of the schema. We will now focus on what we called previously "final types". There exist four different kinds of this specific element : bookType1, journalType, bookType2 and periodicalType. As said in the previous section, bookType1 and bookType2 are both identified by the \verb|<book>| tag but are not referring to the same type. This can be achieved due to the scope definition. In fact, bookType1 is defined inside the scientific scope unlike bookType2 which is defined inside the leisure scope. Regarding to the two last types, journalType is identified by the \verb|<journal>| tag (scientific scope) and periodicalType by the \verb|<periodical>| tag (leisure scope). This section will be separated into two sub-sections : the XSD's structure and the final types structures.
 
 \subsection{XSD's structure}
 Our file has been split into five distinct parts. Each part is used to represent one level of the XML Schema. Indeed, the order of declarations is made from bottom to top level. Here is the used structure :
@@ -113,7 +131,7 @@ Our file has been split into five distinct parts. Each part is used to represent
 \item Scientific part : Define all complex types which belong to the scientific product tree. We can see that scientificBook and scientificJournal are defined at the end of this section. Detail about this part will be given in the next section.
 \item Leisure part : As the scientific part, leisure part is used to define all complex types which belong to the leisure tree. Once again, details about this part will be given later.
 \item Products part : Define two complex types, scientific product and leisure product. Both can be seen as root elements from the two previous parts.
-\item Bookshop part : Is used to merge both products elements. This section also define the root element of the xml file named $<$b:bookshop$>$.
+\item Bookshop part : Is used to merge both products elements. This section also define the root element of the xml file named \verb|<b:bookshop>|.
 \end{enumerate}
 
 \subsection{Final types}

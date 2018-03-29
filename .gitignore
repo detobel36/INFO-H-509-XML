@@ -3,9 +3,11 @@
 DTDValidation.jar
 validation.jar
 XSDValidation.jar
+
 # Report latex
 *.aux
 *.log
 *.out
 *.synctex.gz
 *.toc
+*.tex.backup

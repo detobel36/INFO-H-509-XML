@@ -35,7 +35,7 @@
 
 \begin{document}
 
-\tikzstyle{tree}=[sibling distance=10em,every node/.style = {shape=rectangle, rounded corners,draw, align=center,top color=white, bottom color=blue!20}]]
+\tikzstyle{tree}=[sibling distance=10em,every node/.style = {shape=rectangle, rounded corners,draw, align=center,top color=white, bottom color=blue!20}]
 
 \maketitle
 
@@ -77,9 +77,9 @@
   For this project, we were assigned to write an XSD file which define a book shop. This shop is separated into two parts~: scientific products and leisure products. The following tree represent this first relation~:
   \begin{center}
     \begin{tikzpicture}[tree]
-      \node {$<bookshop>$\\bookshop}
-	child { node {$<scientific>$\\ScientificProducts} }
-	child { node {$<leisure>$\\LeisureProducts} };
+      \node {$<$bookshop$>$\\bookshop}
+	child { node {$<$scientific$>$\\ScientificProducts} }
+	child { node {$<$leisure$>$\\LeisureProducts} };
     \end{tikzpicture}
   \end{center}
   In this tree, each node contains the XML tag but also the type of the element.
@@ -89,30 +89,52 @@
     Scientific products are separated into two sub-categories. The first one define scientific books and the second one scientific journals. Those links can be represented as follow~:
     \begin{center}
       \begin{tikzpicture}[tree]
-	\node {$<scientific>$\\ScientificProducts}
-	  child { node {$<book>$\\sciBook} }
-	  child { node {$<journal>$\\sciJournal} };
+	\node {$<$scientific$>$\\ScientificProducts}
+	  child { node {$<$book$>$\\sciBook} }
+	  child { node {$<$journal$>$\\sciJournal} };
       \end{tikzpicture}
     \end{center}
     These two new type (sciBook and sciJournal) are a little more complex than what we have seen so far.
     
     \subsubsection{Scientific book}
       \begin{center}
-	\begin{tikzpicture}[tree, sibling distance=8em]
-	  \node {$<book>$\\sciBook}
-	    child[sibling distance=0em] { node {$<title>$\\titleT}}
-	    child[level distance=3cm] { node {$test$} }
-	    child[sibling distance=9em] { node {$<publisher>$\\publisherT}}
-	    child { node {$<year>$\\yearT}}
-	    child { node {$<abstract>$\\abstractT}}
-	    child { node {$<edition>$\\editionT}}
-	    child { node {$<ISBN>$\\ISBNT}};
+	\begin{tikzpicture}[tree, sibling distance=6.1em, level distance=8em]
+	  \fill[blue!20!white, draw=gray, rounded corners] (-6.4,-4.1) rectangle (-2.25,-2.25);
+	  
+	  \node {$<$book$>$\\sciBook}
+	    child { node {$<$title$>$\\titleT}}
+	    child { node {$<$authors$>$\\authorsT} }
+	    child { node {$<$editors$>$\\editorsT} }
+	    child { node {$<$publisher$>$\\publisherT}}
+	    child { node {$<$year$>$\\yearT}}
+	    child { node {$<$abstract$>$\\abstractT}}
+	    child { node {$<$edition$>$\\editionT}}
+	    child { node {$<$ISBN$>$\\ISBNT}};
+	    
+	  \node[bottom color=blue!20!white, top color=blue!20!white, draw=blue!20!white] at (-4.3,-3.7) {XOR};
 	\end{tikzpicture}
       \end{center}
-      
+      All types (except ``authorsT'' and ``editorsT'') have been defined previously (see point \ref{sec:variables}). The \verb|<authors>| and \verb|<editors>| tags still need to be defined. Both types contain lists of elements (respectively ``authorT'' and ``editorT''). These two types cannot appear at the same time.
       
     \subsubsection{Scientific journal}
-      
+      \begin{center}
+	\begin{tikzpicture}[tree, sibling distance=6.1em, level distance=8em]
+	  \fill[blue!20!white, draw=gray, rounded corners] (-3.2,-4.1) rectangle (1,-2.25);
+	  
+	  \node {$<$journal$>$\\sciJournal}
+	    child { node {$<$title$>$\\titleT}}
+	    child { node {$<$volume$>$\\volumeT}}
+	    child { node {$<$number$>$\\numberT}}
+	    child { node {$<$authors$>$\\authorsT} }
+	    child { node {$<$editors$>$\\editorsT} }
+	    child { node {$<$year$>$\\yearT}}
+	    child { node {$<$publisher$>$\\publisherT}}
+	    child { node {$<$impact$>$\\impactT}}
+	    child { node {$<$articles$>$\\articlesT}};
+	    
+	  \node[bottom color=blue!20!white, top color=blue!20!white, draw=blue!20!white] at (-1,-3.7) {XOR};
+	\end{tikzpicture}
+      \end{center}
       
     Based on this, we can define multiple relations. Those relations will be used to represent complex types in the XSD file. As shown in the previous tree, we can define three complex types named scientificType, bookType and journalType :
 \begin{itemize}

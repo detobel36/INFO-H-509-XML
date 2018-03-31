@@ -7,14 +7,13 @@
 		<xsl:variable name="root" select="." />
 
 		<xsl:for-each select="distinct-values(//author|//editor)">
- 			<xsl:result-document href="{replace(., ' ' ,'_')}.html">
+ 			<xsl:result-document href="{lower-case(substring(substring-after(., ' '), 0, 2))}/{replace(substring-before(., ' '), ' ' ,'_')}.{replace(substring-after(., ' '), ' ' ,'_')}.html">
  				<!-- Start of the html document -->
   				<html>
-
 					<head>
 						<title>Publication of <xsl:value-of select="."/></title> 
 					</head>
-
+					
 					<!-- For each page, generate a body -->
 					<body>
 						<xsl:variable name="author" select="." />

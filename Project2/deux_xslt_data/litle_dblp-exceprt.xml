@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE dblp SYSTEM "dblp.dtd">
+<dblp>
+    <book mdate="2007-06-01" key="books/infix/Makoui2007">
+        <author>Mazeyar E. Makoui</author>
+        <title>Anfrageoptimierung in objektrelationalen Datenbanken durch kostenbedingte Termersetzungen</title>
+        <volume>100</volume>
+        <isbn>978-3-89838-500-8</isbn>
+        <year>2007</year>
+        <publisher>Aka Akademische Verlagsgesellschaft Aka GmbH, Berlin</publisher>
+        <series href="db/series/disdbis/index.html">DISDBIS</series>
+    </book>
+    <incollection mdate="2008-01-03" key="books/ws/BMW07-papers/GuptaJK07">
+        <author>Ankur Gupta</author>
+        <author>Vaidyanathan K. Jayaraman</author>
+        <author>Bhaskar D. Kulkarni</author>
+        <title>Feature Selection for Cancer Classification Using Ant Colony Optimization and Support Vector Machines.</title>
+        <pages>259-280</pages>
+        <year>2007</year>
+        <crossref>books/ws/BMW07</crossref>
+        <booktitle>Analysis of Biological Data: A Soft Computing Approach</booktitle>
+        <url>db/books/collections/bmw07.html#GuptaJK07</url>
+    </incollection>
+    <inproceedings mdate="2007-07-17" key="conf/ACISicis/LinCC07">
+        <author>Wen-Shan Lin</author>
+        <author>Ming-Fong Chen</author>
+        <author>Yan-Yan Chen</author>
+        <title>Understanding Consumer Search Activity and Online Purchase Intensions for Improving the Product Recommendation Search.</title>
+        <pages>1135-1140</pages>
+        <year>2007</year>
+        <crossref>conf/ACISicis/2007</crossref>
+        <booktitle>ACIS-ICIS</booktitle>
+        <ee>http://doi.ieeecomputersociety.org/10.1109/ICIS.2007.189</ee>
+        <url>db/conf/ACISicis/ACISicis2007.html#LinCC07</url>
+    </inproceedings>
+    <article mdate="2008-01-10" key="journals/ijitm/BerthonW07">
+        <author>P. Berthon</author>
+        <author>C. B. Williams</author>
+        <title>Stages of e-democracy: towards an open-source political model.</title>
+        <pages>329-342</pages>
+        <year>2007</year>
+        <volume>6</volume>
+        <journal>IJITM</journal>
+        <number>2/3/4</number>
+        <ee>http://dx.doi.org/10.1504/IJITM.2007.014007</ee>
+        <url>db/journals/ijitm/ijitm6.html#BerthonW07</url>
+    </article>
+    <mastersthesis mdate="2007-04-24" key="ms/Klaas2007">
+        <author>Vanessa C. Klaas</author>
+        <title>Who's Who in the World Wide Web: Approaches to Name Disambiguation</title>
+        <year>2007</year>
+        <school>Diplomarbeit, LMU München, Informatik</school>
+        <url>http://www.pms.ifi.lmu.de/publikationen/diplomarbeiten/Vanessa.Klaas/thesis.pdf</url>
+    </mastersthesis>
+    <phdthesis mdate="2007-05-03" key="phd/Reuther2007">
+        <author>Patrick Reuther</author>
+        <title>Namen sind wie Schall und Rauch: Ein semantisch orientierter Ansatz zum Personal Name Matching.</title>
+        <year>2007</year>
+        <school>Univ. Trier, FB 4, Informatik</school>
+    </phdthesis>
+</dblp>

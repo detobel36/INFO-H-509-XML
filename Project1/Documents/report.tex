@@ -35,7 +35,9 @@
 
 \begin{document}
 
-\tikzstyle{tree}=[sibling distance=10em,every node/.style = {shape=rectangle, rounded corners,draw, align=center,top color=white, bottom color=blue!20}]
+\tikzstyle{tree}=[
+  sibling distance=10em,
+  every node/.style = {shape=rectangle, rounded corners,draw, align=center,top color=white, bottom color=blue!20}]
 \tikzstyle{optional}=[bottom color=blue!7!white]
 
 \maketitle
@@ -346,45 +348,5 @@ To complete this report, we can now show all the relations corresponding to the 
 \end{itemize}
 
 
-\newpage
-\appendix
-
-\section{Global Schema}
-  \begin{center}
-    \begin{tikzpicture}[tree]
-      %\fill[blue!20!white, draw=gray, rounded corners] (0.15,-4.7) rectangle (4.3,-2.95);
-    
-      \node {$<$bookshop$>$\\bookshop}
-	child { 
-	  child { 
-	    node[optional] {$<$book$>$*\\sciBook} 
-	  }
-	  child { 
-	    node[optional] {$<$journal$>$*\\sciJournal} 
-	  }
-	  node[optional] {$<$scientific$>$*\\ScientificProducts} 
-	}
-	child { 
-	  child { 
-	    node[optional] {$<$book$>$*\\leiBook} 
-	  }
-	  child { 
-	    node[optional] {$<$periodical$>$*\\leiPeriodical} 
-	  }
-	  node[optional] {$<$leisure$>$*\\LeisureProducts} 
-	};
-    
-      %\node {$<$articles$>$\\articlesT}[level distance=5em]
-	%child {
-	 % child { node {$<$title$>$\\titleT} }
-	  %child { node {$<$author$>$\\authorT} }
-	  %child { node {$<$pages$>$\\pagesT} }
-	  %child { node {$<$number$>$\\numberT} }
-	  %node {$<$article$>$*\\articleT}
-	%};
-	
-	%\node[bottom color=blue!20!white, top color=blue!20!white, draw=blue!20!white] at (2,-4.3) {XOR};
-    \end{tikzpicture}
-  \end{center}
 
 \end{document}

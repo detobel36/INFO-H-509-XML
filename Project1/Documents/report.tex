@@ -36,6 +36,8 @@
 \begin{document}
 
 \tikzstyle{tree}=[sibling distance=10em,every node/.style = {shape=rectangle, rounded corners,draw, align=center,top color=white, bottom color=blue!20}]
+\tikzstyle{optional}=[bottom color=blue!7!white]
+
 
 \maketitle
 
@@ -47,21 +49,10 @@
   
 \section{Variables}
   \label{sec:variables}
-  Many variables are strings whose formatting is quite free.  This is the case, for~:
+  Many variables are strings whose formatting is quite free.  For the other, fields are generally integers.
   \begin{itemize}
-    \item title
-    \item publisher
-    \item abstract
-    \item edition
-    \item author
-    \item editor
-  \end{itemize}
-  Most of the other fields are integers, such as
-  \begin{itemize}
-    \item volume
-    \item number
-    \item price
-    \item impact
+    \item \textit{String}~: title, publisher, abstract, edition, author, editor;
+    \item \textit{Integer}~: volume, number, price, impact.
   \end{itemize}
   
   Three types remain to be defined~: the year, the ISBN and the genre. For the first one we defined a global type (named ``yearType'' which will be reused later), as well as a classic element type ``year''.  For ISBN, many formats are possible, more information is given in the section \ref{sec:isbn}. 
@@ -78,23 +69,24 @@
   \begin{center}
     \begin{tikzpicture}[tree]
       \node {$<$bookshop$>$\\bookshop}
-	child { node {$<$scientific$>$\\ScientificProducts} }
-	child { node {$<$leisure$>$\\LeisureProducts} };
+	child { node[optional] {$<$scientific$>$*\\ScientificProducts} }
+	child { node[optional] {$<$leisure$>$*\\LeisureProducts} };
     \end{tikzpicture}
   \end{center}
   In this tree, each node contains the XML tag but also the type of the element.
   So here we can see that the ``bookshop'' type does have two children~: \verb|scientific| and \verb|leisure|. These two types will be detailed in the following points.
+  Note that they are not mandatory (hence their whiter color).  The \verb|bookshop| tag may be empty or contain only one of the two types.  Note also that there can be several times the tag \verb|scientific| or \verb|leisure| (hence the star (*) next to the tag).
   
   \subsection{Scientific products}
     Scientific products are separated into two sub-categories. The first one define scientific books and the second one scientific journals. Those links can be represented as follow~:
     \begin{center}
       \begin{tikzpicture}[tree]
 	\node {$<$scientific$>$\\ScientificProducts}
-	  child { node {$<$book$>$\\sciBook} }
-	  child { node {$<$journal$>$\\sciJournal} };
+	  child { node[optional] {$<$book$>$*\\sciBook} }
+	  child { node[optional] {$<$journal$>$*\\sciJournal} };
       \end{tikzpicture}
     \end{center}
-    These two new type (sciBook and sciJournal) are a little more complex than what we have seen so far.
+    These two new type (sciBook and sciJournal) are a little more complex than what we have seen so far.  As \verb|bookshop|, \verb|scientific| can be empty or contain only one of the two types and here too there may be several \verb|books| or \verb|journals|.
     
     \subsubsection{Scientific book}
       \begin{center}
@@ -107,14 +99,14 @@
 	    child { node {$<$editors$>$\\editorsT} }
 	    child { node {$<$publisher$>$\\publisherT}}
 	    child { node {$<$year$>$\\yearT}}
-	    child { node {$<$abstract$>$\\abstractT}}
-	    child { node {$<$edition$>$\\editionT}}
-	    child { node {$<$ISBN$>$\\ISBNT}};
+	    child { node[optional] {$<$abstract$>$\\abstractT}}
+	    child { node[optional] {$<$edition$>$\\editionT}}
+	    child { node[optional] {$<$ISBN$>$\\ISBNT}};
 	    
 	  \node[bottom color=blue!20!white, top color=blue!20!white, draw=blue!20!white] at (-4.3,-3.7) {XOR};
 	\end{tikzpicture}
       \end{center}
-      All types (except ``authorsT'' and ``editorsT'') have been defined previously (see point \ref{sec:variables}). The \verb|<authors>| and \verb|<editors>| tags still need to be defined. Both types contain lists of elements (respectively ``authorT'' and ``editorT''). These two types cannot appear at the same time.
+      All types (except ``authorsT'' and ``editorsT'') have been defined previously (see point \ref{sec:variables}). The \verb|<authors>| and \verb|<editors>| tags still need to be defined. Both types contain lists of elements (respectively ``authorT'' and ``editorT''). These two types cannot appear at the same time.  Note that the last three elements are optional.
       
     \subsubsection{Scientific journal}
       \begin{center}
@@ -128,23 +120,70 @@
 	    child { node {$<$authors$>$\\authorsT} }
 	    child { node {$<$editors$>$\\editorsT} }
 	    child { node {$<$year$>$\\yearT}}
-	    child { node {$<$publisher$>$\\publisherT}}
-	    child { node {$<$impact$>$\\impactT}}
+	    child { node[optional] {$<$publisher$>$\\publisherT}}
+	    child { node[optional] {$<$impact$>$\\impactT}}
 	    child { node {$<$articles$>$\\articlesT}};
 	    
 	  \node[bottom color=blue!20!white, top color=blue!20!white, draw=blue!20!white] at (-1,-3.7) {XOR};
 	\end{tikzpicture}
       \end{center}
+      The structure is exactly the same as the previous point.  All types (except ``articlesT'') have already been defined previously.  Also as in the previous point, ``authorsT'' and ``editorsT'' cannot appear at the same time.
       
-    Based on this, we can define multiple relations. Those relations will be used to represent complex types in the XSD file. As shown in the previous tree, we can define three complex types named scientificType, bookType and journalType :
-\begin{itemize}
-\item bookshopType $\rightarrow$ (scientific, scientificType)
-\item scientificType $\rightarrow$ (book, booktype1), (journal, journalType)
-\end{itemize}
-For the moment, we are not going to define the bookshopType. In fact, we do not have enough informations to define it correctly now. We are so assuming that it is an abstract type. Regarding the two final complex types, called bookType and journalType, a complete explanation of these will be given in the second part dedicated to hypotheses and choices.
+      \subsubsection{Articles}
+	A scientific journal must have a list of the articles it contains.  The tag \verb|articles| therefore contains at least one tag \verb|article| which itself contains attributes.  All this can be represented by the following tree:
+	\begin{center}
+	  \begin{tikzpicture}[tree, sibling distance=6.1em, level distance=8em]
+	    \node {$<$articles$>$\\articlesT}[level distance=5em]
+	      child {
+		child { node {$<$title$>$\\titleT} }
+		child { node {$<$author$>$\\authorT} }
+		child { node {$<$pages$>$\\pagesT} }
+		child { node {$<$number$>$\\numberT} }
+		node {$<$article$>$*\\articleT}
+	      };
+	  \end{tikzpicture}
+	\end{center}
+	
+      \subsubsection{Impact}
+	% TODO
 
-\subsection{Leisure products}
-The second section of a book shop is dedicated to leisure products. As for scientific one, products are separated into two sub-categories. The first one is used to define leisure books and the second one leisure periodicals. Once again , those links can be illustrated by means of a tree : 
+  \subsection{Leisure products}
+    The second section of a book shop is dedicated to leisure products. As for scientific one, products are separated into two sub-categories. The first one is used to define leisure books and the second one leisure periodicals. Once again, those links can be illustrated by means of a tree~:
+    \begin{center}
+      \begin{tikzpicture}[tree]
+	\node {$<$leisure$>$\\LeisureProducts}
+	  child { node[optional] {$<$book$>$*\\leiBook} }
+	  child { node[optional] {$<$periodical$>$*\\leiPeriodical} };
+      \end{tikzpicture}
+    \end{center}
+    
+    \subsubsection{Leisure Book}
+      \begin{center}
+	\begin{tikzpicture}[tree, sibling distance=6.5em, level distance=8em]
+	  \node {$<$book$>$\\leiBook}
+	    child { node {$<$title$>$\\titleT} }
+	    child { node {$<$authors$>$\\authorsT} }
+	    child { node {$<$publisher$>$\\publisherT} }
+	    child { node {$<$year$>$\\yearT} }
+	    child { node {$<$genre$>$\\genreT} }
+	    child { node[optional] {$<$edition$>$\\editionT} }
+	    child { node[optional] {$<$number$>$\\numberT} };
+	\end{tikzpicture}
+      \end{center}
+      All the types presented in the tree above have already been defined.
+    
+    \subsubsection{Periodical Leisure}
+      \begin{center}
+	\begin{tikzpicture}[tree]
+	  \node {$<$periodical$>$\\leiPeriodical}
+	    child { node {$<$title$>$\\titleT} }
+	    child { node {$<$price$>$\\priceT} }
+	    child { node {$<$publisher$>$\\publisherT} };
+	\end{tikzpicture}
+      \end{center}
+      Here too, everything has already been defined previously.
+    
+\section{Old part}
 \begin{center}
 \begin{tikzpicture}[sibling distance=10em,
   every node/.style = {shape=rectangle, rounded corners,

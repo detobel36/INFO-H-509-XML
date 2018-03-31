@@ -158,8 +158,8 @@
     <!-- Define bookshop -->
     <complexType name="bookshop">
         <sequence>
-            <element name="scientific" type="b:ScientificProducts" minOccurs="0" maxOccurs="unbounded" />
-            <element name="leisure" type="b:LeisureProducts" minOccurs="0" maxOccurs="unbounded" />
+            <element name="scientific" type="b:ScientificProducts" minOccurs="0" maxOccurs="1" />
+            <element name="leisure" type="b:LeisureProducts" minOccurs="0" maxOccurs="1" />
         </sequence>
     </complexType>
 

@@ -38,26 +38,22 @@
 \tikzstyle{tree}=[sibling distance=10em,every node/.style = {shape=rectangle, rounded corners,draw, align=center,top color=white, bottom color=blue!20}]
 \tikzstyle{optional}=[bottom color=blue!7!white]
 
-
 \maketitle
 
 \section{Introduction}
-  The aims of this document will be to describe and explain all the choices that we made for our project. To call back, the main goal of this assignment was to create an XSD file which contains a specific XML Schema Definition. The first part of this report will be dedicated to the variables that we defined. In a second step we will show, by means of trees, how the requested structure has been implemented.
+This document aims at describing and explaining all the choices that we make for this project. As a reminder, the main goal has been to create an XSD file containing a specific XML Schema Definition. This report is structured into two parts : variables and schema definitions and hypothesis. As during course lectures, we decided to use trees to represent our XSD structure.
   
   %The first part of this report will be dedicated to the structure of the schema. We will show, by means of trees, how the requested structure has been implemented. Those trees will be used to infer each specific types and links between them. The second part of this document will be focused on the hypotheses that we made during the implementation. Indeed, due to the non-formal aspect of the assignment, some parts of the structure were left to choose.
   
   
 \section{Variables}
   \label{sec:variables}
-  Many variables are strings whose formatting is quite free.  For the other, fields are generally integers.
+This project use many different kinds of variables. Some of them are complex (see below) but most of them are simple. Simple types are : 
   \begin{itemize}
     \item \textit{String}~: title, publisher, abstract, edition, author, editor;
     \item \textit{Integer}~: volume, number, price, impact.
   \end{itemize}
-  
-  Three types remain to be defined~: the year, the ISBN and the genre. For the first one we defined a global type (named ``yearType'' which will be reused later), as well as a classic element type ``year''.  For ISBN, many formats are possible, more information is given in the section \ref{sec:isbn}. 
-  For genre, we have limited the possible entries to the following list~: thriller, horror, sci/fi, romance, literature.\\
-  The genre and the ISBN are based on the string type that we have restrict, for the first via a list listing all the possibilities and for the second with a pattern (as described in the point \ref{sec:isbn}).
+Concerning the complex types, they are used for defining the year, the genre and the ISBN. As we need to declare a year using a tag or an attribute, we defined it into two parts. Firstly, we declared the format (using a simple type) and then, secondly, we defined an attribute and an element (using the year format). Genre and ISBN types are based on a restriction of the simple string type. For the first one, we have been restricted possible input (thriller, horror, sci/fi, romance, literature) using an enumeration. Finally, ISBN uses many formats (see below) that we defined using a set of patterns.
   
   \subsection{ISBN}
     \label{sec:isbn}

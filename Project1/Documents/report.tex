@@ -42,10 +42,7 @@
 
 \section{Introduction}
 This document aims at describing and explaining all the choices that we make for this project. As a reminder, the main goal has been to create an XSD file containing a specific XML Schema Definition. This report is structured into two parts : variables and schema definitions and hypothesis. As during course lectures, we decided to use trees to represent our XSD structure.
-  
-  %The first part of this report will be dedicated to the structure of the schema. We will show, by means of trees, how the requested structure has been implemented. Those trees will be used to infer each specific types and links between them. The second part of this document will be focused on the hypotheses that we made during the implementation. Indeed, due to the non-formal aspect of the assignment, some parts of the structure were left to choose.
-  
-  
+ 
 \section{Variables}
   \label{sec:variables}
 This project use many different kinds of variables. Some of them are complex (see below) but most of them are simple. Simple types are : 
@@ -57,7 +54,12 @@ Concerning the complex types, they are used for defining the year, the genre and
   
   \subsection{ISBN}
     \label{sec:isbn}
-    % TODO
+    ISO define two ISBN formats : ISBN-10 and ISBN-13 (10 or 13 characters). We decided to use ISBN-10 for this project. In this standard, the code is split into four parts : country (1 digit), editor (2, 3 or 5 digits), book number (6, 5 or 3 digits) and a verification code (1 digit). To check this property, we have used a pattern inside a restriction. Pattern allows us to define regular expressions :
+    \begin{itemize}
+    \item $\backslash$d$\left\{ 1\right\}$-$\backslash$d$\left\{ 5 \right\}$-$\backslash$d$\left\{ 3 \right\}$-$\backslash$d$\left\{ 1 \right\}$
+    \item $\backslash$d$\left\{ 1 \right\}$-$\backslash$d$\left\{ 3 \right\}$-$\backslash$d$\left\{ 5 \right\}$-$\backslash$d$\left\{ 1 \right\}$
+    \item $\backslash$d$\left\{ 1 \right\}$-$\backslash$d$\left\{ 2 \right\}$-$\backslash$d$\left\{ 6 \right\}$-$\backslash$d$\left\{ 1 \right\}$
+    \end{itemize}
   
   
 \section{Structure of the schema}

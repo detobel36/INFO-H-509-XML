@@ -89,8 +89,8 @@
         <sequence>
             <element name="title" type="b:titleT" minOccurs="1" maxOccurs="1" />
             <choice>
-                <element name="authors" type="b:authorsT" minOccurs="1" maxOccurs="unbounded" />
-                <element name="editors" type="b:editorsT" minOccurs="1" maxOccurs="unbounded" />
+                <element name="authors" type="b:authorsT" minOccurs="1" maxOccurs="1" />
+                <element name="editors" type="b:editorsT" minOccurs="1" maxOccurs="1" />
             </choice>
             <element name="publisher" type="b:publisherT" minOccurs="1" maxOccurs="1" />
             <element name="year" type="b:yearT" minOccurs="1" maxOccurs="1" />
@@ -118,7 +118,7 @@
     <!-- End Scientific part -->
     
     <!-- Define Leisure part -->
-    <complexType name="bookLei">
+    <complexType name="leiBook">
         <sequence>
             <element name="title" type="b:titleT" minOccurs="1" maxOccurs="1" />
             <element name="authors" type="b:authorsT" minOccurs="1" maxOccurs="1" />
@@ -130,7 +130,7 @@
         </sequence>
     </complexType>
 
-    <complexType name="periodicalLei">
+    <complexType name="leiPeriodical">
         <sequence>
         	<element name="title" type="b:titleT" minOccurs="1" maxOccurs="1" />
         	<element name="price" type="b:priceT" minOccurs="1" maxOccurs="1" />
@@ -149,8 +149,8 @@
 
     <complexType name="LeisureProducts">
         <sequence>
-            <element name="book" type="b:bookLei" minOccurs="0" maxOccurs="unbounded" />
-            <element name="periodical" type="b:periodicalLei" minOccurs="0" maxOccurs="unbounded" />
+            <element name="book" type="b:leiBook" minOccurs="0" maxOccurs="unbounded" />
+            <element name="periodical" type="b:leiPeriodical" minOccurs="0" maxOccurs="unbounded" />
         </sequence>
     </complexType>
     <!-- End products -->

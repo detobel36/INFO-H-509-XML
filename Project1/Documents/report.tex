@@ -153,7 +153,12 @@ Concerning the complex types, they are used for defining the year, the genre and
 	\end{center}
 	
       \subsubsection{Impact}
-	% TODO
+	As indicated in section \ref{sec:variables}, the ``impact'' type is an integer calculated according to the number of citations, received in that year, of articles published in that journal during the two preceding years, divided by the total number of articles published in that journal during the two preceding years.\\
+	We can therefore see that the impact is different each year and that these two data are inseparable. The impact is characterized by an ``year'' attribute (which is ``yearType'').\\
+	Concretely in XML we can read this:
+	\begin{lstlisting}[language=XML]
+<impact year="XXXX"> ... </impact>
+	\end{lstlisting}
 
   \subsection{Leisure products}
     The second section of a book shop is dedicated to leisure products. As for scientific one, products are separated into two sub-categories. The first one is used to define leisure books and the second one leisure periodicals. Once again, those links can be illustrated by means of a tree~:
@@ -338,5 +343,46 @@ To complete this report, we can now show all the relations corresponding to the 
 \item periodicalType $\rightarrow$ (title, titleT), (price, priceT), (publisher, publisherT)
 \end{itemize}
 
+
+\newpage
+\appendix
+
+\section{Global Schema}
+  \begin{center}
+    \begin{tikzpicture}[tree]
+      %\fill[blue!20!white, draw=gray, rounded corners] (0.15,-4.7) rectangle (4.3,-2.95);
+    
+      \node {$<$bookshop$>$\\bookshop}
+	child { 
+	  child { 
+	    node[optional] {$<$book$>$*\\sciBook} 
+	  }
+	  child { 
+	    node[optional] {$<$journal$>$*\\sciJournal} 
+	  }
+	  node[optional] {$<$scientific$>$*\\ScientificProducts} 
+	}
+	child { 
+	  child { 
+	    node[optional] {$<$book$>$*\\leiBook} 
+	  }
+	  child { 
+	    node[optional] {$<$periodical$>$*\\leiPeriodical} 
+	  }
+	  node[optional] {$<$leisure$>$*\\LeisureProducts} 
+	};
+    
+      %\node {$<$articles$>$\\articlesT}[level distance=5em]
+	%child {
+	 % child { node {$<$title$>$\\titleT} }
+	  %child { node {$<$author$>$\\authorT} }
+	  %child { node {$<$pages$>$\\pagesT} }
+	  %child { node {$<$number$>$\\numberT} }
+	  %node {$<$article$>$*\\articleT}
+	%};
+	
+	%\node[bottom color=blue!20!white, top color=blue!20!white, draw=blue!20!white] at (2,-4.3) {XOR};
+    \end{tikzpicture}
+  \end{center}
 
 \end{document}

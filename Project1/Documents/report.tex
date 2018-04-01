@@ -43,29 +43,29 @@
 \maketitle
 
 \section{Introduction}
-This document aims at describing and explaining all the choices that we make for this project. As a reminder, the main goal has been to create an XSD file containing a specific XML Schema Definition. This report is structured into two parts : variables and schema definitions and hypothesis. As during course lectures, we decided to use trees to represent our XSD structure.
- 
+This document aims at describing and explaining all the choices that we make for this project. As a reminder, the main purpose has been to create an XSD file containing a specific XML Schema Definition. This report will be divided into two parts : variable definitions and the XML-Schema structure. 
 \section{Variables}
   \label{sec:variables}
-This project use many different kinds of variables. Some of them are complex (see below) but most of them are simple. Simple types are : 
+This project use two kinds of variables : complex and simple. Most of the time, complex types are sequences of simple types. Firstly, let's define simple variables :  
   \begin{itemize}
     \item \textit{String}~: title, publisher, abstract, edition, author, editor;
     \item \textit{Integer}~: volume, number, price, impact.
   \end{itemize}
-Concerning the complex types, they are used for defining the year, the genre and the ISBN. As we need to declare a year using a tag or an attribute, we defined it into two parts. Firstly, we declared the format (using a simple type) and then, secondly, we defined an attribute and an element (using the year format). Genre and ISBN types are based on a restriction of the simple string type. For the first one, we have been restricted possible input (thriller, horror, sci/fi, romance, literature) using an enumeration. Finally, ISBN uses many formats (see below) that we defined using a set of patterns.
+Regarding the complex types, they are used for defining year, genre and ISBN variables. As we must be able to declare a year using a tag or an attribute, we defined it into two parts. Firstly, we declared the format using simple types. Then, secondly, we defined an attribute and an element which are using this format. Genre and ISBN variables are both based on string restrictions. For the first variable, we restricted possible input strings (thriller, horror, sci/fi, romance, literature) using enumerations. For the second variable, we used patterns to restrict the input string format.
   
   \subsection{ISBN}
     \label{sec:isbn}
-    ISO define two ISBN formats~: ISBN-10 and ISBN-13 (10 or 13 characters). We decided to use ISBN-10 for this project. In this standard, the code is split into four parts~: country (1 digit), editor (2, 3 or 5 digits), book number (6, 5 or 3 digits) and a verification code (1 digit). To check this property, we have used a pattern inside a restriction. Pattern allows us to define regular expressions~:
+    ISO define two ISBN formats~: ISBN-10 and ISBN-13 (10 or 13 characters). In this project, we have arbitrarily choose to use ISBN-10. This standard split the code into four parts~: a country (1 digit), an editor (2, 3 or 5 digits), a book number (6, 5 or 3 digits) and a verification code (1 digit). Has said before, we have been used patterns to check ISBN formats. Those patterns are defined as follows : 
     \begin{itemize}
     \item $\backslash$d$\left\{ 1\right\}$-$\backslash$d$\left\{ 5 \right\}$-$\backslash$d$\left\{ 3 \right\}$-$\backslash$d$\left\{ 1 \right\}$
     \item $\backslash$d$\left\{ 1 \right\}$-$\backslash$d$\left\{ 3 \right\}$-$\backslash$d$\left\{ 5 \right\}$-$\backslash$d$\left\{ 1 \right\}$
     \item $\backslash$d$\left\{ 1 \right\}$-$\backslash$d$\left\{ 2 \right\}$-$\backslash$d$\left\{ 6 \right\}$-$\backslash$d$\left\{ 1 \right\}$
     \end{itemize}
+    Which means that we can only use digits, in a structured forms and separated by dashes.
   
   
 \section{Structure of the schema}
-  For this project, we were assigned to write an XSD file which define a book shop. This shop is separated into two parts~: scientific products and leisure products. The following tree represent this first relation~:
+We were asked to write an XSD file defining a book shop. This shop had to be composed by scientific leisure products. This first relation is represented by the tree below. Lighter-coloured leafs represent non-mandatory elements.
   \begin{center}
     \begin{tikzpicture}[tree]
       \node {$<$bookshop$>$\\bookshop}
@@ -73,24 +73,21 @@ Concerning the complex types, they are used for defining the year, the genre and
 	child { node[optional] {$<$leisure$>$\\LeisureProducts} };
     \end{tikzpicture}
   \end{center}
-  In this tree, each node contains the XML tag but also the type of the element.
-  So here we can see that the ``bookshop'' type does have two children~: \verb|scientific| and \verb|leisure|. These two types will be detailed in the following points.
-  Note that they are not mandatory (hence their whiter color).  The \verb|bookshop| tag may be empty or contain only one of the two types.\\
-  Concretely in XML this gives the following structure~:
+  Each nodes contains a tag (XML) and a type name. Firstly, we can observe that \verb|bookshop| have two children~: \verb|scientific| and \verb|leisure| (see below). \verb|Bookshop| may be empty, composed by one of the two element or by both. Finally, we obtain the below XML structure~:
   \begin{lstlisting}[language=XML]
-<bookshop>
-    <scientific>
-	...
-    </scientific>
-    <leisure>
-	...
-    </leisure>
-</bookshop>
+    <bookshop>
+        <scientific>
+	    ...
+        </scientific>
+        <leisure>
+	    ...
+        </leisure>
+    </bookshop>
   \end{lstlisting}
 
   
   \subsection{Scientific products}
-    Scientific products are separated into two sub-categories. The first one define scientific books and the second one scientific journals. Those links can be represented as follow~:
+    Scientific products are separated into two sub-categories : scientific books and scientific journals. For both of them, we can have zero or more occurrences. This property is represented using the asterisk in the following tree : 
     \begin{center}
       \begin{tikzpicture}[tree]
 	\node {$<$scientific$>$\\ScientificProducts}
@@ -98,27 +95,27 @@ Concerning the complex types, they are used for defining the year, the genre and
 	  child { node[optional] {$<$journal$>$*\\sciJournal} };
       \end{tikzpicture}
     \end{center}
-    These two new type (sciBook and sciJournal) are a little more complex than what we have seen so far.  As \verb|bookshop|, \verb|scientific| can be empty or contain only one of the two types. Note also that there can be several times the tag \verb|books| or \verb|journals| (hence the star (*) next to the tag).\\
-    Concretely in XML this gives the following structure~:
-    \begin{lstlisting}[language=XML]
-<bookshop>
-    <scientific>
-	<book>
+    These two new type (sciBook and sciJournal) are a little more complex than what we have seen so far.  As \verb|bookshop|, \verb|scientific| can be empty or contain only one of the two types. Now we obtain the below XML structure : 
+        \begin{lstlisting}[language=XML]
+    <bookshop>
+        <scientific>
+	    <book>
+	        ...
+	    </book>
+	    <book>
+	        ...
+	    </book>
+	    <journal>
+	        ...
+	    </journal>
 	    ...
-	</book>
-	<book>
-	    ...
-	</book>
-	<journal>
-	    ...
-	</journal>
-	...
-    </scientific>
-    ...
-</bookshop>
+        </scientific>
+        ...
+    </bookshop>
   \end{lstlisting}
     
     \subsubsection{Scientific book}
+    Scientific books are defined using simple types (previously defined) and two new complex types :  \verb|<authors>| and \verb|<editors>|. Both contains list of elements (respectively ``authorT'' and ``editorT'') and cannot appears at the same time. Please note also that the three last elements are optional.
       \begin{center}
 	\begin{tikzpicture}[tree, sibling distance=6.1em, level distance=8em]
 	  \fill[blue!20!white, draw=gray, rounded corners] (-6.4,-4.1) rectangle (-2.25,-2.25);
@@ -136,9 +133,9 @@ Concerning the complex types, they are used for defining the year, the genre and
 	  \node[bottom color=blue!20!white, top color=blue!20!white, draw=blue!20!white] at (-4.3,-3.7) {XOR};
 	\end{tikzpicture}
       \end{center}
-      All types (except ``authorsT'' and ``editorsT'') have been defined previously (see point \ref{sec:variables}). The \verb|<authors>| and \verb|<editors>| tags still need to be defined. Both types contain lists of elements (respectively ``authorT'' and ``editorT''). These two types cannot appear at the same time.  Note that the last three elements are optional.
       
     \subsubsection{Scientific journal}
+    Scientific journals are structured as same as for scientific books. The difference lay in the used types (all are already defined excepted \verb|articles|). Regarding to \verb|author| and \verb|editor| types, they are defined as for scientific books.
       \begin{center}
 	\begin{tikzpicture}[tree, sibling distance=6.1em, level distance=8em]
 	  \fill[blue!20!white, draw=gray, rounded corners] (-3.2,-4.1) rectangle (1,-2.25);
@@ -157,10 +154,9 @@ Concerning the complex types, they are used for defining the year, the genre and
 	  \node[bottom color=blue!20!white, top color=blue!20!white, draw=blue!20!white] at (-1,-3.7) {XOR};
 	\end{tikzpicture}
       \end{center}
-      The structure is exactly the same as the previous point.  All types (except ``articlesT'') have already been defined previously.  Also as in the previous point, ``authorsT'' and ``editorsT'' cannot appear at the same time.
       
-      \subsubsection{Articles}
-	A scientific journal must have a list of the articles it contains.  The tag \verb|articles| therefore contains at least one tag \verb|article| which itself contains attributes.  All this can be represented by the following tree:
+      \paragraph{Articles}
+	A scientific journal must have a list of articles. Therefore, the \verb|articles| tag contains at least one \verb|article| tag which itself contains attributes. This can be represented as below~:
 	\begin{center}
 	  \begin{tikzpicture}[tree, sibling distance=6.1em, level distance=8em]
 	    \fill[blue!20!white, draw=gray, rounded corners] (0.15,-4.7) rectangle (4.3,-2.95);
@@ -177,7 +173,7 @@ Concerning the complex types, they are used for defining the year, the genre and
 	      \node[bottom color=blue!20!white, top color=blue!20!white, draw=blue!20!white] at (2,-4.3) {XOR};
 	  \end{tikzpicture}
 	\end{center}
-	Like \verb|authors| and \verb|editors|, \verb|pages| and \verb|number| could not appear at the same time.  The types ``titleT'', ``authorT'' and ``numberT'' have already be defined.  For ``pagesT'' it's a bit different, we must to have a start page and an end page.  Thus we have the following tree:
+	Like \verb|authors| and \verb|editors|, \verb|pages| and \verb|number| could not appear at the same time. A \verb|pages| element must have a start and end page (represented using \textit{Integer} types). This relation is represented as follows~:
 	\begin{center}
 	  \begin{tikzpicture}[tree]
 	    \node {$<$pages$>$\\pagesT}
@@ -186,16 +182,14 @@ Concerning the complex types, they are used for defining the year, the genre and
 	  \end{tikzpicture}
 	\end{center}
 	
-      \subsubsection{Impact}
-	As indicated in section \ref{sec:variables}, the ``impact'' type is an integer calculated according to the number of citations, received in that year, of articles published in that journal during the two preceding years, divided by the total number of articles published in that journal during the two preceding years.\\
-	We can therefore see that the impact is different each year and that these two data are inseparable. The impact is characterized by an ``year'' attribute (which is ``yearType'').\\
-	Concretely in XML we can read this:
+      \paragraph{Impact}
+	As indicated previously (see section \ref{sec:variables}), the ``impact'' type is an integer. This integer is calculated according two factors : the number of citations (in one year) of articles published in that journal (within the two last years) and the total of articles published in that journal during the same two years. Finally, to obtain the ``impact'' value, we must divide the first factor by the second one. Therefore, impact value will be different each year. This implies that the impact is characterised by a ``year'' attribute. Below is the final XML structure~:
 	\begin{lstlisting}[language=XML]
-<impact year="XXXX"> ... </impact>
+    <impact year="XXXX"> ... </impact>
 	\end{lstlisting}
 
   \subsection{Leisure products}
-    The second section of a book shop is dedicated to leisure products. As for scientific one, products are separated into two sub-categories. The first one is used to define leisure books and the second one leisure periodicals. Once again, those links can be illustrated by means of a tree~:
+  Leisure products are separated into two parts : leisure books and leisure periodicals. The following relation has the same structure as for scientific products~:
     \begin{center}
       \begin{tikzpicture}[tree]
 	\node {$<$leisure$>$\\LeisureProducts}
@@ -203,26 +197,27 @@ Concerning the complex types, they are used for defining the year, the genre and
 	  child { node[optional] {$<$periodical$>$*\\leiPeriodical} };
       \end{tikzpicture}
     \end{center}
-    Concretely in XML this gives the following structure~:
+    Once again, we can construct the XML code~:
     \begin{lstlisting}[language=XML]
-<bookshop>
-    ...
-    <leisure>
-	<book>
+    <bookshop>
+        ...
+        <leisure>
+	    <book>
+	        ...
+	    </book>
+	    <periodical>
+	        ...
+	    </periodical>
+	    <periodical>
+	        ...
+	    </periodical>
 	    ...
-	</book>
-	<periodical>
-	    ...
-	</periodical>
-	<periodical>
-	    ...
-	</periodical>
-	...
-    </leisure>
-</bookshop>
+        </leisure>
+    </bookshop>
   \end{lstlisting}
     
     \subsubsection{Leisure Book}
+    Leisure books uses exactly the same structure as previous elements. In addition, all the used types have already been defined.
       \begin{center}
 	\begin{tikzpicture}[tree, sibling distance=6.5em, level distance=8em]
 	  \node {$<$book$>$\\leiBook}
@@ -235,9 +230,9 @@ Concerning the complex types, they are used for defining the year, the genre and
 	    child { node[optional] {$<$number$>$\\numberT} };
 	\end{tikzpicture}
       \end{center}
-      All the types presented in the tree above have already been defined.
     
-    \subsubsection{Periodical Leisure}
+    \subsubsection{Leisure Periodicals}
+    Leisure periodicals uses exactly the same structure as previous elements. Once again, every used types have already been defined.
       \begin{center}
 	\begin{tikzpicture}[tree]
 	  \node {$<$periodical$>$\\leiPeriodical}
@@ -245,9 +240,7 @@ Concerning the complex types, they are used for defining the year, the genre and
 	    child { node {$<$price$>$\\priceT} }
 	    child { node {$<$publisher$>$\\publisherT} };
 	\end{tikzpicture}
-      \end{center}
-      Here too, everything has already been defined previously.
-    
+      \end{center}    
     
 \newpage
 \appendix

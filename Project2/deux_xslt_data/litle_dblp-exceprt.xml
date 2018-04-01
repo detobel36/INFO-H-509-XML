@@ -36,6 +36,7 @@
     <article mdate="2008-01-10" key="journals/ijitm/BerthonW07">
         <author>P. Berthon</author>
         <author>C. B. Williams</author>
+        <author>J. Cruz-Victoria</author>
         <title>Stages of e-democracy: towards an open-source political model.</title>
         <pages>329-342</pages>
         <year>2007</year>
@@ -44,6 +45,20 @@
         <number>2/3/4</number>
         <ee>http://dx.doi.org/10.1504/IJITM.2007.014007</ee>
         <url>db/journals/ijitm/ijitm6.html#BerthonW07</url>
+    </article>
+    <article mdate="2008-01-15" key="journals/imamci/Martinez-GuerraGLC07">
+        <author>R. Martínez-Guerra</author>
+        <author>R. González-Galan</author>
+        <author>Alberto Luviano-Juárez</author>
+        <author>J. Cruz-Victoria</author>
+        <title>Diagnosis for a class of non-differentially flat and Liouvillian systems.</title>
+        <pages>177-195</pages>
+        <year>2007</year>
+        <volume>24</volume>
+        <journal>IMA J. Math. Control &amp; Information</journal>
+        <number>2</number>
+        <ee>http://dx.doi.org/10.1093/imamci/dnl014</ee>
+        <url>db/journals/imamci/imamci24.html#Martinez-GuerraGLC07</url>
     </article>
     <mastersthesis mdate="2007-04-24" key="ms/Klaas2007">
         <author>Vanessa C. Klaas</author>

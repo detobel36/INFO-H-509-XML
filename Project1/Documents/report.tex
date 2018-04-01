@@ -95,7 +95,7 @@ We were asked to write an XSD file defining a book shop. This shop had to be com
 	  child { node[optional] {$<$journal$>$*\\sciJournal} };
       \end{tikzpicture}
     \end{center}
-    These two new type (sciBook and sciJournal) are a little more complex than what we have seen so far.  As \verb|bookshop|, \verb|scientific| can be empty or contain only one of the two types. Now we obtain the below XML structure : 
+   Which is represented using the below XML structure~: 
         \begin{lstlisting}[language=XML]
     <bookshop>
         <scientific>

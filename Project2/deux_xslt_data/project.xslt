@@ -34,7 +34,7 @@
 
     <xsl:function name="func:removeSpecialChar" as="xs:string">
         <xsl:param name="input" as="xs:string"/>
-        <xsl:value-of select="replace($input, '[^a-zA-Z_]' ,'=')"/>
+        <xsl:value-of select="replace($input, '[^0-9a-zA-Z_]' ,'=')"/>
     </xsl:function>
 
 
@@ -117,6 +117,8 @@
                         <p>
                             <table border="1"> 
                                 <xsl:for-each select="$root//*[./author=$author]/author[not(.=$author)]">
+                                <xsl:sort select="func:lastName(.)"/>
+                                
                                     <xsl:variable name="coAuthor" select="." />
                                     <tr>
                                         <td align="right">

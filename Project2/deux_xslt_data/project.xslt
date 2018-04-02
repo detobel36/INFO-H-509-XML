@@ -5,32 +5,40 @@
     xmlns:func="http://example.com"
     xmlns="http://www.w3.org/1999/xhtml">
 
+    <!-- Functions -->
     <xsl:function name="func:nameToPath" as="xs:string">
         <xsl:param name="input" as="xs:string"/>
         <xsl:value-of separator="">
             <xsl:value-of select="func:firstLetter($input)"/>
             <xsl:value-of select="'/'"/>
-            <xsl:value-of select="func:firstName($input)"/>
-            <xsl:value-of select="':'"/>
             <xsl:value-of select="func:lastName($input)"/>
+            <xsl:value-of select="':'"/>
+            <xsl:value-of select="func:firstName($input)"/>
         </xsl:value-of>
     </xsl:function>
 
     <xsl:function name="func:firstLetter" as="xs:string">
         <xsl:param name="input" as="xs:string"/>
-        <xsl:value-of select="lower-case(substring(substring-after($input, ' '), 0, 2))"/>
+        <xsl:value-of select="func:removeSpecialChar(lower-case(substring(substring-after($input, ' '), 0, 2)))"/>
     </xsl:function>
 
     <xsl:function name="func:firstName" as="xs:string">
         <xsl:param name="input" as="xs:string"/>
-        <xsl:value-of select="replace(substring-before($input, ' '), ' ' ,'_')"/>
+        <xsl:value-of select="func:removeSpecialChar(replace(substring-before($input, ' '), ' ' ,'_'))"/>
     </xsl:function>
 
     <xsl:function name="func:lastName" as="xs:string">
         <xsl:param name="input" as="xs:string"/>
-        <xsl:value-of select="replace(substring-after($input, ' '), ' ' ,'_')"/>
+        <xsl:value-of select="func:removeSpecialChar(replace(substring-after($input, ' '), ' ' ,'_'))"/>
     </xsl:function>
 
+    <xsl:function name="func:removeSpecialChar" as="xs:string">
+        <xsl:param name="input" as="xs:string"/>
+        <xsl:value-of select="replace($input, '[^a-zA-Z_]' ,'=')"/>
+    </xsl:function>
+
+
+    <!-- Main template -->
     <xsl:template match="/">
         <xsl:variable name="root" select="." />
 

@@ -43,19 +43,23 @@
 \maketitle
 
 \section{Introduction}
-This document aims at describing and explaining all the choices that we make for this project. As a reminder, the main purpose has been to create an XSD file containing a specific XML Schema Definition. This report will be divided into two parts : variable definitions and the XML-Schema structure. 
-\section{Variables}
+This document aims at describing and explaining all the choices that we made for this project. As a reminder, the main purpose has been to create an XSD file containing a specific XML Schema Definition. This report is divided into two parts : variable definitions and the XML Schema structure. 
+
+\section{Variables definitions}
   \label{sec:variables}
-This project use two kinds of variables : complex and simple. Most of the time, complex types are sequences of simple types. Firstly, let's define simple variables :  
+  Our implementation use two kinds of variables : simple and complex. Most of the time, complex variables are sequences of simple types. This section will be useful to describe variables that we will reuse in the XML schema structure section.
+\subsection{Simple variables}
+Simple variables are based on simple types (defined in the W3C standards). The project uses only two simple types to define every simple variables :
   \begin{itemize}
     \item \textit{String}~: title, publisher, abstract, edition, author, editor;
     \item \textit{Integer}~: volume, number, price, impact.
   \end{itemize}
-Regarding the complex types, they are used for defining year, genre and ISBN variables. As we must be able to declare a year using a tag or an attribute, we defined it into two parts. Firstly, we declared the format using simple types. Then, secondly, we defined an attribute and an element which are using this format. Genre and ISBN variables are both based on string restrictions. For the first variable, we restricted possible input strings (thriller, horror, sci/fi, romance, literature) using enumerations. For the second variable, we used patterns to restrict the input string format.
+\subsection{Complex variables}
+They are used for defining year, genre and ISBN variables. As we must be able to declare a year using a tag or an attribute, we defined it into two parts. Firstly, we declared the format using simple types. Then, secondly, we defined an attribute and an element which are using this format. Genre and ISBN variables are both based on string restrictions. For the first variable, we restricted possible input strings (thriller, horror, sci/fi, romance, literature) using enumerations. For the second variable, we used patterns to restrict the input string format.
   
-  \subsection{ISBN}
+  \subsubsection{ISBN}
     \label{sec:isbn}
-    ISO define two ISBN formats~: ISBN-10 and ISBN-13 (10 or 13 characters). In this project, we have arbitrarily choose to use ISBN-10. This standard split the code into four parts~: a country (1 digit), an editor (2, 3 or 5 digits), a book number (6, 5 or 3 digits) and a verification code (1 digit). Has said before, we have been used patterns to check ISBN formats. Those patterns are defined as follows : 
+    ISO define two ISBN formats~: ISBN-10 and ISBN-13 (10 or 13 characters). In this project, we have arbitrarily choosen to use ISBN-10. This standard split the code into four parts~: a country (1 digit), an editor (2, 3 or 5 digits), a book number (6, 5 or 3 digits) and a verification code (1 digit). Has said before, we have been used patterns to check ISBN formats. Those patterns are defined as follows : 
     \begin{itemize}
     \item $\backslash$d$\left\{ 1\right\}$-$\backslash$d$\left\{ 5 \right\}$-$\backslash$d$\left\{ 3 \right\}$-$\backslash$d$\left\{ 1 \right\}$
     \item $\backslash$d$\left\{ 1 \right\}$-$\backslash$d$\left\{ 3 \right\}$-$\backslash$d$\left\{ 5 \right\}$-$\backslash$d$\left\{ 1 \right\}$
@@ -64,7 +68,7 @@ Regarding the complex types, they are used for defining year, genre and ISBN var
     Which means that we can only use digits, in a structured forms and separated by dashes.
   
   
-\section{Structure of the schema}
+\section{XML Schema structure}
 We were asked to write an XSD file defining a book shop. This shop had to be composed by scientific leisure products. This first relation is represented by the tree below. Lighter-coloured leafs represent non-mandatory elements.
   \begin{center}
     \begin{tikzpicture}[tree]
@@ -135,7 +139,7 @@ We were asked to write an XSD file defining a book shop. This shop had to be com
       \end{center}
       
     \subsubsection{Scientific journal}
-    Scientific journals are structured as same as for scientific books. The difference lay in the used types (all are already defined excepted \verb|articles|). Regarding to \verb|author| and \verb|editor| types, they are defined as for scientific books.
+    Scientific journals are structured as same as for scientific books. The difference lays in the used types (all are already defined excepted \verb|articles|). Regarding to \verb|author| and \verb|editor| types, they are defined as for scientific books.
       \begin{center}
 	\begin{tikzpicture}[tree, sibling distance=6.1em, level distance=8em]
 	  \fill[blue!20!white, draw=gray, rounded corners] (-3.2,-4.1) rectangle (1,-2.25);

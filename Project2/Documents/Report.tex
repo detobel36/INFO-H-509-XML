@@ -1,0 +1,38 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{tikz}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{listings}
+\usetikzlibrary{trees}
+\author{R\'emy Detobel \& Nathan Liccardo}
+\title{Report Project 1~:\\XML Schema Definition}
+
+\usepackage{color}
+\definecolor{Maroon}{rgb}{0.5,0,0}
+
+\lstdefinelanguage{XML}
+{
+  basicstyle=\ttfamily\footnotesize,
+  morestring=[b]",
+  moredelim=[s][\bfseries\color{Maroon}]{<}{\ },
+  moredelim=[s][\bfseries\color{Maroon}]{</}{>},
+  moredelim=[l][\bfseries\color{Maroon}]{/>},
+  moredelim=[l][\bfseries\color{Maroon}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<!--}{-->},
+  commentstyle=\color{DarkOliveGreen},
+  stringstyle=\color{blue},
+  identifierstyle=\color{red}
+}
+
+\renewcommand\thesection{\arabic{section}}
+
+\begin{document}
+
+\end{document}

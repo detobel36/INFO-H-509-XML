@@ -73,4 +73,23 @@
         <year>2007</year>
         <school>Univ. Trier, FB 4, Informatik</school>
     </phdthesis>
+    <proceedings mdate="2007-07-17" key="conf/ACISicis/2007">
+        <title>6th Annual IEEE/ACIS International Conference on Computer and Information Science (ICIS 2007), 11-13 July 2007, Melbourne, Australia</title>
+        <booktitle>ACIS-ICIS</booktitle>
+        <publisher>IEEE Computer Society</publisher>
+        <year>2007</year>
+        <url>db/conf/ACISicis/ACISicis2007.html</url>
+    </proceedings>
+    <inproceedings mdate="2007-07-17" key="conf/ACISicis/LinCC07">
+        <author>Wen-Shan Lin</author>
+        <author>Ming-Fong Chen</author>
+        <author>Yan-Yan Chen</author>
+        <title>Understanding Consumer Search Activity and Online Purchase Intensions for Improving the Product Recommendation Search.</title>
+        <pages>1135-1140</pages>
+        <year>2007</year>
+        <crossref>conf/ACISicis/2007</crossref>
+        <booktitle>ACIS-ICIS</booktitle>
+        <ee>http://doi.ieeecomputersociety.org/10.1109/ICIS.2007.189</ee>
+        <url>db/conf/ACISicis/ACISicis2007.html#LinCC07</url>
+    </inproceedings>
 </dblp>

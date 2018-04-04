@@ -6,21 +6,6 @@
     xmlns="http://www.w3.org/1999/xhtml">
 
     <!-- Functions -->
-    <!-- <xsl:function name="functx:substring-before-last" as="xs:string"
-                  xmlns:functx="http://www.functx.com">
-        <xsl:param name="arg" as="xs:string?"/>
-        <xsl:param name="delim" as="xs:string"/>
-
-        <xsl:sequence select="
-            if (matches($arg, functx:escape-for-regex($delim)))
-            then replace($arg,
-                concat('^(.*)', functx:escape-for-regex($delim),'.*'),
-                '$1')
-            else ''
-        "/>
-
-    </xsl:function> -->
-
     <xsl:function name="func:nameToPath" as="xs:string">
         <xsl:param name="input" as="xs:string"/>
         <xsl:value-of separator="">

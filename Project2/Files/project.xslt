@@ -6,6 +6,21 @@
     xmlns="http://www.w3.org/1999/xhtml">
 
     <!-- Functions -->
+    <!-- <xsl:function name="functx:substring-before-last" as="xs:string"
+                  xmlns:functx="http://www.functx.com">
+        <xsl:param name="arg" as="xs:string?"/>
+        <xsl:param name="delim" as="xs:string"/>
+
+        <xsl:sequence select="
+            if (matches($arg, functx:escape-for-regex($delim)))
+            then replace($arg,
+                concat('^(.*)', functx:escape-for-regex($delim),'.*'),
+                '$1')
+            else ''
+        "/>
+
+    </xsl:function> -->
+
     <xsl:function name="func:nameToPath" as="xs:string">
         <xsl:param name="input" as="xs:string"/>
         <xsl:value-of separator="">
@@ -19,17 +34,17 @@
 
     <xsl:function name="func:firstLetter" as="xs:string">
         <xsl:param name="input" as="xs:string"/>
-        <xsl:value-of select="func:removeSpecialChar(lower-case(substring(substring-after($input, ' '), 0, 2)))"/>
+        <xsl:value-of select="func:removeSpecialChar(lower-case(substring(tokenize($input,' ')[last()], 0, 2)))"/>
     </xsl:function>
 
     <xsl:function name="func:firstName" as="xs:string">
         <xsl:param name="input" as="xs:string"/>
-        <xsl:value-of select="func:removeSpecialChar(replace(substring-before($input, ' '), ' ' ,'_'))"/>
+        <xsl:value-of select="func:removeSpecialChar(replace(substring-before($input, tokenize($input,' ')[last()]), ' ' ,'_'))"/>
     </xsl:function>
 
     <xsl:function name="func:lastName" as="xs:string">
         <xsl:param name="input" as="xs:string"/>
-        <xsl:value-of select="func:removeSpecialChar(replace(substring-after($input, ' '), ' ' ,'_'))"/>
+        <xsl:value-of select="func:removeSpecialChar(replace(tokenize($input,' ')[last()], ' ' ,'_'))"/>
     </xsl:function>
 
     <xsl:function name="func:removeSpecialChar" as="xs:string">

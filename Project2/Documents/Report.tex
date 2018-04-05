@@ -11,7 +11,7 @@
 \usepackage{listings}
 \usetikzlibrary{trees}
 \author{R\'emy Detobel \& Nathan Liccardo}
-\title{Report Project 1~:\\XML Schema Definition}
+\title{Report Project 2~:\\XML Schema Definition}
 
 \usepackage{color}
 \definecolor{Maroon}{rgb}{0.5,0,0}
@@ -34,5 +34,32 @@
 \renewcommand\thesection{\arabic{section}}
 
 \begin{document}
+\maketitle
+
+\section{Introduction}
+This document aims to detail all the choices that we made during our implementation. As a reminder, the main goal of this project was to create an xslt file. This file had to be able to transform a part of the dblp database into html files. Our xslt file has been separated into two parts : functions and template. This report will follow the same structure.
+
+\section{Functions}
+There exist five complex operations which have necessitated to create functions. This first section will be focused on describing those functions (\verb|removeSpecialChar|, \verb|lastName|, \verb|firstName|, \verb|firstLetter| and \verb|nameToPath|).
+
+\paragraph{Remove Special Char} Is used to replace all the non-alphanumeric characters. It takes (as input) a person name (like "C. B. Williams") and replace each characters which matches with the following regex : \verb|[^0-9a-zA-Z_]|. Matching characters are replaced by the equal character (=). Substitute a specific characters can be realised thanks to the \verb|replace(input, regex, char)| function. This function is defined in xslt 2.0.
+
+\paragraph{Last Name} Can extract the string corresponding to the last name. To be able to extract and format this element from the given input, we used two functions : 
+\begin{enumerate}
+\item \verb|tokenize| : Split the input into an array (using white spaces). Last name is corresponding to the last element. This function is defined in xslt 2.0.
+\item \verb|removeSpecialChar| : Replace (eventual) special characters from the last name. The exact definition has been given previously.
+\end{enumerate}
+
+\paragraph{First Name} Can extract the first name from the given input string. Formally, first name is corresponding to all the input string minus the last name (defined before). To extract and format this element as requested, we used four functions :
+\begin{enumerate}
+\item \verb|tokenize| : Split the input string (using white spaces) and get the last name (last element).
+\item \verb|substring-before| : Get all the string before the last name.
+\item \verb|replace| : Replace each white spaces by equal characters in the sub-string result.
+\item \verb|removeSpecialChar| : Used as defined before on the replace result.
+\end{enumerate}
+
+\paragraph{First Letter} Is used to extract first letter of the last name. This function use \verb|substring| to select the first letter (as with substring-before), \verb|tokenize| to split the input string) and \verb|removeSpecialChar| to replace the character (if it is non-alphanumeric). In addition, we use the \verb|lower-case| function defined in xslt 2.0. 
+
+\paragraph{Name To Path}
 
 \end{document}

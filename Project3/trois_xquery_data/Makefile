@@ -1,4 +1,4 @@
-all: query1 query2
+all: query1 query2 query3
 
 query1:
 	java -cp "saxon9he.jar" net.sf.saxon.Query -s:dblp-excerpt.xml -q:request1.xquery -o:output1.xml

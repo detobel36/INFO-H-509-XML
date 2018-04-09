@@ -1,6 +1,7 @@
 \documentclass{article}
 
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage[english]{babel}
 \usepackage[margin=1in]{geometry}
 \usepackage{fancyhdr}
@@ -37,83 +38,176 @@
 \maketitle
 
 \section{Introduction}
-This document aims to detail all the choices that we made during our implementation. As a reminder, the main goal of this project was to create an xslt file. This file had to be able to transform a part of the dblp database into html files. Our xslt file has been separated into two parts : functions and template. This report will follow the same structure.
+This document aims to detail all the choices that we made during our implementation. The main goal of this project was to create an xslt file which is able to transform a part of the dblp database into HTML files. Our xslt file has been separated into two parts (functions and template) which are described in this document.
 
 \section{Functions}
-There exist five complex operations which have necessitated to create functions. This first section will be focused on describing those functions (\verb|removeSpecialChar|, \verb|lastName|, \verb|firstName|, \verb|firstLetter| and \verb|nameToPath|).
+Our project use five different functions to implement complex operations (\verb|removeSpecialChar|, \verb|lastName|, \verb|firstName|, \verb|firstLetter| and \verb|nameToPath|). Each function and their complex operations would be described in this section.
 
-\paragraph{Remove Special Char} Is used to replace all the non-alphanumeric characters. It takes (as input) a person name (like "C. B. Williams") and replace each characters which matches with the following regex~: \verb|[^0-9a-zA-Z_]|. Matching characters are replaced by the equal character (=). Substitute a specific characters can be realised thanks to the \verb|replace(input, regex, char)| function. This function is defined in xslt 2.0.
-
-\paragraph{Last Name} Can extract the string corresponding to the last name. To be able to extract and format this element from the given input, we used two functions : 
-\begin{enumerate}
-\item \verb|tokenize| : Split the input into an array (using white spaces). Last name is corresponding to the last element. This function is defined in xslt 2.0.
-\item \verb|removeSpecialChar| : Replace (eventual) special characters from the last name. The exact definition has been given previously.
-\end{enumerate}
-
-\paragraph{First Name} Can extract the first name from the given input string. Formally, first name is corresponding to all the input string minus the last name (defined before). To extract and format this element as requested, we used four functions :
-\begin{enumerate}
-\item \verb|tokenize| : Split the input string (using white spaces) and get the last name (last element).
-\item \verb|substring-before| : Get all the string before the last name.
-\item \verb|replace| : Replace each white spaces by equal characters in the sub-string result.
-\item \verb|removeSpecialChar| : Used as defined before on the replace result.
-\end{enumerate}
-
-\paragraph{First Letter} Is used to extract first letter of the last name. The function use \verb|substring| to select the first letter (as with substring-before), \verb|tokenize| to split the input string) and \verb|removeSpecialChar| to replace the character (if it is non-alphanumeric). In addition, we use the \verb|lower-case| function defined in xslt 2.0. 
-
-\paragraph{Name To Path} Is used to properly format each html file name. Thanks to each previous functions, we are now able to get the first letter of the last name, the first name and the last name. Each of those strings will be concatenated as follow : 
-\begin{verbatim}
-    "firstLetter"/"lastName":"firstName"
-\end{verbatim}
-Where "firstLetter", "lastName" and "firstName" are the output strings given by each previous functions.
-
-\section{Template}
-Templates are used to define set of rules. Our project only use one template. This element will, in fact, contain each rules corresponding to the transformation from XML to HTML files. This sections will focus on two main elements : Xpath and HTML file structure. Xpath is used to describe path in XML. To correctly understand the structure of the template, we will describe each elements in sequence.
-
-\subsection{Creation of HTML pages} 
-Each author or editor must have an HTML page. This means that we must iterate on the dblp database and get each different authors or editors. To do this, we used the \verb|for-each| tag. This tag use an Xpath which is defined as follow : 
-\begin{verbatim}
-    select="distinct-values(//author|//editor)"
-\end{verbatim}
-For each element (author or editor) contained in this set we create an HTML file. Those file are created using the \verb|result-document| tag as follow :
-\begin{verbatim}
-    <xsl:result-document href="{func:nameToPath(.)}.html">
-\end{verbatim}
-We can see that we use the \verb|nameToPath| function previously defined. The string given as parameter is corresponding to the current element in the set of authors and editors. For each pages, we generate different body that we will describe in the next section.
-
-\subsection{Title and articles table}
-For each page, we must have the author name as title followed by a table which contain each articles of the author. Regarding to the title, this is realised as below : 
-\begin{verbatim}
-    <h1> <xsl:value-of select="."/> </h1>
-\end{verbatim}
-We must now create a table which contain each article corresponding to the current author. This means that we must~:
+\subsection{Remove Special Char} 
+This first function is used to replace non-alphanumeric characters in a given input string. It takes, as input, a person name and replace each characters which matches with the following regex :
 \begin{itemize}
-\item Obtain each publications. This is realised using a variable declared after the body tag. This variable contains each articles which contains the current author.
-\item Order each publications in the descending order. This is realised using the \verb|sort| tag with the \verb|descending| parameter. Both are defined in xslt 2.0.
-\item Create a subsection for each year. This is realised by using a \verb|test| tag and the following condition~: \verb|not(preceding-sibling::*[1]/year=./year) or position()=1|. Indeed, this condition checks if the previous item as the same value for the node \verb|year|.
-\item Add the publication number. As we must count publications in the reverse order, we use a variable (\verb|indexPub|, declared after the \verb|sort|). Index value is obtained by : \verb|last()-position()+1|.
-\item Add, each authors or editors of the current publication and link all of them to their personal web page. This is also realised using the \verb|nameToPath| function.
+\item \verb|[^0-9a-zA-Z_]|
+\end{itemize} 
+If we have a match, then we substitue the character with the equal character (=). Finally, we obtain the below instruction, where we also use the \verb|replace| function defined by xslt 2.0 : 
+\begin{itemize}
+\item \verb|<xsl:value-of select="replace($input, '[^0-9a-zA-Z_]' ,'=')"/>|
 \end{itemize}
 
-\subsection{Co-author index}
-Finally, for each HTML page, we must have a table which contain all other persons with whom P has jointly published. To realise this, we use two iterations :
+\subsection{Last Name} 
+This second function is used to extract the last name from a given author or editor string. We extract and format last names using the below functions :
+\begin{enumerate}
+\item \verb|tokenize($input,' ')[last()]| : we split the input (using white spaces) and get the last element.
+\item \verb|removeSpecialChar(tokenize($input,' ')[last()])| : use the previous function to replace special characters in last names.
+\end{enumerate}
+Finally, we obtain the following instruction : 
 \begin{itemize}
-\item On each authors which have jointly published with the current author. This is realised using an \verb|for-each| tag and the following request :
-\begin{verbatim}
-    select="$root//*[./author=$author]/author[not(.=$author)]"
+\item \verb|<xsl:value-of select="func:removeSpecialChar(tokenize($input,' ')[last()])"/>|.
+\end{itemize}
+
+\subsection{First Name} 
+This third function is used to extract first name from a given input string. Formally, first name is corresponding to all the input string minus the last name (see previous section). This element can be composed by multiple words (separated by withe spaces) and having special characters. Extracting first name was more complicated and has been implemented as below.
+\begin{enumerate}
+\item \verb|substring-before($input, tokenize($input,' ')[last()])| : get last name.
+\item \verb|replace(..., ' ','_')| : remove white spaces\footnote{ ... : reference to the previous point.}.
+\item \verb|removeSpecialChar(...)| : replace special characters.
+\end{enumerate}
+Finally, we obtain the following instruction :
+\begin{itemize}
+\item \begin{verbatim} 
+<xsl:value-of select="func:removeSpecialChar(
+    replace(substring-before($input, tokenize($input,' ')[last()]), ' ' ,'_'))"/>
 \end{verbatim}
-\item If we call the author of this new iteration A2 and the initial author A1, we iterate on all the publication of A1 and check if A2 is also an author. If it is the case, then we can add the publication~:
-\begin{verbatim}
-    <xsl:for-each select="$publications">
-        <xsl:if test="$coAuthor=./author" >
-            <xsl:variable name="linkPublication" select="last()-position()+1" />
-             [<a href="#p{$linkPublication}">
-              <xsl:value-of select="$linkPublication" />
-              </a>]
-        </xsl:if>
-    </xsl:for-each>
+\end{itemize}
+
+\subsection{First Letter}
+This fourth function is used to extract the first letter of the last name. We use same technics as before to extract the last name from the given input string. First letter is extracted using : 
+\begin{enumerate}
+\item \verb|substring(tokenize($input,' ')[last()], 0, 2)| : get the first letter.
+\item \verb|lower-case(...)| : transform upper-case to lower-case.
+\item \verb|removeSpecialChar(...)| : use the previously defined function.
+\end{enumerate}
+Finally, we obtain the following instruction~:
+\begin{itemize}
+\item \begin{verbatim}
+<xsl:value-of select="func:removeSpecialChar(
+    lower-case(substring(tokenize($input,' ')[last()], 0, 2)))"/>
+\end{verbatim}
+\end{itemize}
+
+\subsection{Name To Path} 
+This last function is used to properly format each html files name. Thanks to previous functions, we are now able to :  return first letter (last name), return first name and return last name. Those three strings will be concatenated as follow~: 
+\begin{itemize}
+\item \verb|"firstLetter"/"lastName":"firstName"|
+\end{itemize}
+Where each strings are given by corresponding functions. Formally, our code is structured as below : 
+\begin{itemize}
+\item \begin{verbatim}
+<xsl:value-of separator="">
+    <xsl:value-of select="func:firstLetter($input)"/>
+    <xsl:value-of select="'/'"/>
+    <xsl:value-of select="func:lastName($input)"/>
+    <xsl:value-of select="':'"/>
+    <xsl:value-of select="func:firstName($input)"/>
+</xsl:value-of>
+\end{verbatim}
+\end{itemize}
+
+\section{Template}
+Templates are used to define set of rules. One project can use multiple templates to define different transformations rules. Our project contain only one template which is used to describe how to parse the XML database into HTML files. To realise this, our template use at the same time Xpath and HTML code. Xpath is used to find specific nodes inside the XML structure. Those nodes are then converted into HTML code using XSLT. This section describe how we use those elements to implement our project.
+
+\subsection{Creation of HTML pages} 
+Each author or editor must have an HTML page. This means that we must iterate each different editor or author nodes in the dblp database. To realise this, we use the \verb|for-each| tag with the following path : 
+\begin{itemize}
+\item \begin{verbatim}
+<xsl:for-each select="distinct-values(//author|//editor)">
+\end{verbatim}
+\end{itemize}
+Then, for each element we create an HTML file. This is created using the \verb|result-document| tag as below~:
+\begin{itemize}
+\item \begin{verbatim}<xsl:result-document href="{func:nameToPath(.)}.html">\end{verbatim}
+\end{itemize}
+We use the \verb|nameToPath| function previously defined to format the HTML file name.
+
+\subsection{Title}
+Each pages start by the person name within \verb|<h1>| tags. This title can be given using the operator "\verb|.|". This is due to the fact that we are currently looping on a list of authors/editors. Below is the final instruction used to print the person name : 
+\begin{itemize}
+\item \begin{verbatim}
+<h1> <xsl:value-of select="."/> </h1>
+\end{verbatim}
+\end{itemize}
+
+\subsection{Publications table}
+For each person, we must have a table which contain each publications of this person. For each publication we must realised multiple operations. Those operations are going to be detailed below. Remark also that we have created a global variable called \verb|author| which is used to retain the current author name.
+
+\subsubsection{Obtaining publications}
+For each person, we must retrieve all of its publications. This is realised using a global variable called \verb|publications|. To initialise this variable, we must retrieve each publications where one of the author is the same as the one contained in the \verb|author| variable. The is realised as follow :
+\begin{itemize}
+\item \begin{verbatim}
+<xsl:variable name="publications" select="$root//*[./author=$author]" />
+\end{verbatim}
+\end{itemize}
+Where the path contained in the \verb|select| argument is used to compare \verb|author| variable with authors of the current publication.
+\subsubsection{Ordering publications}
+We must ordering all publications of the current person in the descending order. This means that we will start with the oldest publication and finish with the newest one. This is realised using the \verb|sort| xslt command coupled with the \verb|descending| argument. This argument is referring to the \verb|year| tag (inside each publication).
+\begin{itemize}
+\item \verb|<xsl:sort select="year" order="descending"/>|
+\end{itemize}
+Each row (corresponding to a publication) in the table must have an index. As we are printing publications in the reverse order, we must also obtain indexes in the reverse order. Once again, this is realised using a variable defined as follow :
+\begin{itemize}
+\item \verb|<xsl:variable name="indexPub" select="last()-position()+1" />|
+\end{itemize}
+Where we compare the current and last position. Finally, below in the code, we simply add the value of (using \verb|value-of| operator) the \verb|indexPub| variable. 
+\subsubsection{Year subsection}
+As publications are ordered by year of publication, we must add (inside the table) specific rows used to separate publications of different years. To realise this, we have decided to compare year of the current node with year of the previous node (due to the ordered aspect). Condition is implemented using the \verb|if| tag with the following path :
+\begin{itemize}
+\item \verb|<xsl:if test="not(preceding-sibling::*[1]/year=./year) or position()=1">|
+\end{itemize}
+Remark that we also test if the current node is the first one. If it is, we do not need to apply the comparison and we can directly add the specific row (year).
+\subsubsection{Personal redirection}
+For each author/editor of the current publication, we should link his name with his personal page. The tricky part is that the we do not need to link the current person to his personal page (which is the current page). This is realised using following instructions~:
+\begin{itemize}
+\item \begin{verbatim}
+<xsl:if test="not(.=$author)" >
+    <a href="../{func:nameToPath(.)}.html">
+        <xsl:value-of select="." />
+    </a>
+</xsl:if>
+<xsl:if test=".=$author" >
+    <xsl:value-of select="." />
+</xsl:if>
+\end{verbatim}
+\end{itemize}
+
+\subsection{Co-author table}
+For each page, we must have a table which contain all persons with whom P has jointly published. This new table is realised using two nested loops.
+
+\subsubsection{People loop}
+First loop iterate on authors/editors which are present on same publications than the current person. This first iteration is realised as follow :
+\begin{itemize}
+\item \begin{verbatim}
+<xsl:for-each select="$root//*[./author=$author]/author[not(.=$author)]">
+\end{verbatim}
+\end{itemize}
+This table is order by last names. This is done by using the \verb|sort| tag with the \verb|lastName| function.
+\begin{itemize}
+\item \verb|<xsl:sort select="func:lastName(.)"/>|
+\end{itemize}
+\subsubsection{Publications loop}
+For each co-author, we must retrieve each publications where the co-author and the author are present. The nested loop use the \verb|publications| variable defined before and check if the current co-author is present as follow : 
+\begin{itemize}
+\item \verb|<xsl:if test="$coAuthor=./author" >|
+\end{itemize}
+Then if it is the case, we can add the publication which is linked to the corresponding item in the previous table :
+\begin{itemize}
+\item \begin{verbatim}
+<xsl:variable name="linkPublication" select="last()-position()+1" />
+[<a href="#p{$linkPublication}">
+<xsl:value-of select="$linkPublication" />
+</a>]
 \end{verbatim}
 \end{itemize}
 \end{document}
 
 
 
+ 

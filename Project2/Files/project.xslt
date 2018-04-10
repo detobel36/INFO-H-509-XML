@@ -29,7 +29,7 @@
 
     <xsl:function name="func:lastName" as="xs:string">
         <xsl:param name="input" as="xs:string"/>
-        <xsl:value-of select="func:removeSpecialChar(replace(tokenize($input,' ')[last()], ' ' ,'_'))"/>
+        <xsl:value-of select="func:removeSpecialChar(tokenize($input,' ')[last()])"/>
     </xsl:function>
 
     <xsl:function name="func:removeSpecialChar" as="xs:string">

@@ -3,26 +3,40 @@
     xmlns:b="./bookshop.xsd">
 
     <!-- Define simple types -->
+    <simpleType name="ISBNT">
+        <restriction base="string">
+            <pattern value="\d{1}-\d{5}-\d{3}-\d{1}|\d{1}-\d{3}-\d{5}-\d{1}|\d{1}-\d{2}-\d{6}-\d{1}"/>
+        </restriction>
+    </simpleType>
+
     <simpleType name="yearType">
         <restriction base="positiveInteger">
             <pattern value="[0-9]{4}"/>
         </restriction>
     </simpleType>
+    
+    <simpleType name="genreT">
+        <restriction base="string">
+            <enumeration value="thriller" />
+            <enumeration value="horror" />
+            <enumeration value="sci/fi" />
+            <enumeration value="romance" />
+            <enumeration value="literature" />
+        </restriction>
+    </simpleType>
+
+    <simpleType name="yearT"><restriction base="b:yearType" /></simpleType>
+
     <simpleType name="titleT"><restriction base="string" /></simpleType>
     <simpleType name="publisherT"><restriction base="string" /></simpleType>
     <simpleType name="abstractT"><restriction base="string" /></simpleType>
     <simpleType name="editionT"><restriction base="string" /></simpleType>
     <simpleType name="authorT"><restriction base="string" /></simpleType>
     <simpleType name="editorT"><restriction base="string" /></simpleType>
-    <simpleType name="yearT"><restriction base="b:yearType" /></simpleType>
+
     <simpleType name="volumeT"><restriction base="positiveInteger" /></simpleType>
     <simpleType name="numberT"><restriction base="positiveInteger" /></simpleType>
     <simpleType name="priceT"><restriction base="positiveInteger" /></simpleType>
-    <simpleType name="ISBNT">
-        <restriction base="string">
-            <pattern value="\d{1}-\d{5}-\d{3}-\d{1}|\d{1}-\d{3}-\d{5}-\d{1}|\d{1}-\d{2}-\d{6}-\d{1}"/>
-        </restriction>
-    </simpleType>
     <!-- End simple types -->
 
     <!-- Define Scientific part -->
@@ -39,7 +53,7 @@
     		<element name="author" type="b:authorT" />
     		<choice>
     			<element name="pages" type="b:pagesT" />
-    			<element name="number" type="positiveInteger" />
+                <element name="number" type="b:numberT" />
     		</choice>
     	</sequence>
     </complexType>
@@ -75,8 +89,8 @@
         <sequence>
             <element name="title" type="b:titleT" minOccurs="1" maxOccurs="1" />
             <choice>
-                <element name="authors" type="b:authorsT" minOccurs="1" maxOccurs="unbounded" />
-                <element name="editors" type="b:editorsT" minOccurs="1" maxOccurs="unbounded" />
+                <element name="authors" type="b:authorsT" minOccurs="1" maxOccurs="1" />
+                <element name="editors" type="b:editorsT" minOccurs="1" maxOccurs="1" />
             </choice>
             <element name="publisher" type="b:publisherT" minOccurs="1" maxOccurs="1" />
             <element name="year" type="b:yearT" minOccurs="1" maxOccurs="1" />
@@ -104,29 +118,19 @@
     <!-- End Scientific part -->
     
     <!-- Define Leisure part -->
-    <complexType name="bookLei">
+    <complexType name="leiBook">
         <sequence>
             <element name="title" type="b:titleT" minOccurs="1" maxOccurs="1" />
             <element name="authors" type="b:authorsT" minOccurs="1" maxOccurs="1" />
             <element name="publisher" type="b:publisherT" minOccurs="1" maxOccurs="1" />
             <element name="year" type="b:yearT" minOccurs="1" maxOccurs="1" />
-            <element name="genre" minOccurs="1" maxOccurs="1">
-            	<simpleType>
-            		<restriction base="string">
-            			<enumeration value="thriller"/>
-            			<enumeration value="horror" />
-            			<enumeration value="sci/fi" />
-            			<enumeration value="romance" />
-            			<enumeration value="literature" />
-            		</restriction>
-            	</simpleType>
-            </element>
+            <element name="genre" type="b:genreT" minOccurs="1" maxOccurs="1" />
             <element name="edition" type="b:editionT" minOccurs="0" maxOccurs="1" />
             <element name="number" type="b:numberT" minOccurs="0" maxOccurs="1" />
         </sequence>
     </complexType>
 
-    <complexType name="periodicalLei">
+    <complexType name="leiPeriodical">
         <sequence>
         	<element name="title" type="b:titleT" minOccurs="1" maxOccurs="1" />
         	<element name="price" type="b:priceT" minOccurs="1" maxOccurs="1" />
@@ -145,8 +149,8 @@
 
     <complexType name="LeisureProducts">
         <sequence>
-            <element name="book" type="b:bookLei" minOccurs="0" maxOccurs="unbounded" />
-            <element name="periodical" type="b:periodicalLei" minOccurs="0" maxOccurs="unbounded" />
+            <element name="book" type="b:leiBook" minOccurs="0" maxOccurs="unbounded" />
+            <element name="periodical" type="b:leiPeriodical" minOccurs="0" maxOccurs="unbounded" />
         </sequence>
     </complexType>
     <!-- End products -->
@@ -154,8 +158,8 @@
     <!-- Define bookshop -->
     <complexType name="bookshop">
         <sequence>
-            <element name="scientific" type="b:ScientificProducts" minOccurs="0" maxOccurs="unbounded" />
-            <element name="leisure" type="b:LeisureProducts" minOccurs="0" maxOccurs="unbounded" />
+            <element name="scientific" type="b:ScientificProducts" minOccurs="0" maxOccurs="1" />
+            <element name="leisure" type="b:LeisureProducts" minOccurs="0" maxOccurs="1" />
         </sequence>
     </complexType>
 

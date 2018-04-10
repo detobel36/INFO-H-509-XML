@@ -10,6 +10,7 @@ XSDValidation.jar
 *.out
 *.synctex.gz
 *.toc
+*.tex.backup
 
 # HTML files
 *.html

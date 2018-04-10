@@ -19,7 +19,7 @@
 
     <xsl:function name="func:firstLetter" as="xs:string">
         <xsl:param name="input" as="xs:string"/>
-        <xsl:value-of select="lower-case(substring(func:lastName($input), 0, 2))"/>
+        <xsl:value-of select="lower-case(substring(func:lastName($input), 0, 2))" />
     </xsl:function>
 
     <xsl:function name="func:firstName" as="xs:string">

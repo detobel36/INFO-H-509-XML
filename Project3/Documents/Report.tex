@@ -12,7 +12,7 @@
 \usepackage{listings}
 \usetikzlibrary{trees}
 \author{R\'emy Detobel \& Nathan Liccardo}
-\title{Report Project 2~: XQuery}
+\title{Report Project 3~: XQuery}
 
 \usepackage{color}
 \definecolor{Maroon}{rgb}{0.5,0,0}
@@ -39,47 +39,72 @@
 \maketitle
 
 \section{Introduction}
-This document aims to detail each choices and hypothesis we made during our implementation. As a reminder, we were assigned to implement three different XQuery programs. Each of those query use a part of the BDLP database (DBLP-excerpt). The structure of this report will be divided into three parts (one per program).
+  This document aims to detail each choices and hypothesis we made during our implementation. As a reminder, we were assigned to implement three different XQuery programs. Each of those query use a part of the BDLP database (DBLP-excerpt). The structure of this report will be divided into three parts (one per program).
 
 \section{First XQuery program}
-For this first program, we were assigned (for each author) to return the number of co-authors and the number of joint publications with each of them. To realise this, we start by iterate on each author as below~: 
-\begin{itemize}
-\item \begin{verbatim}
+  For this first program, we were assigned (for each author) to return the number of co-authors and the number of joint publications with each of them. To realise this, we start by iterate on each author as below~: 
+  \begin{itemize}
+    \item \begin{verbatim}
 for $author in //author
     return <author>
         ....
-    </author>    
-\end{verbatim}
-\end{itemize}
-Which will create an \verb|<author> ... </author>| bloc for each author. Inside each of these blocs, we will find following informations (in sequence).
-\subsection{Author name and Co-authors informations}
-The author name and the number of co-authors are respectively obtained using \verb|data| and \verb|count| functions (defined by XQuery). Below instructions are formal definitions of \verb|name| and \verb|coauthors| tags :
-\begin{itemize}
-\item \verb|<name>{data($author)}</name>|
-\item \verb|<coauthors number="{count(//*[author=$author]/author)-1}"> ... </coauthors>|
-\end{itemize}
-\subsubsection{Co-authors informations}
-For each co-author, we must obtain his name and the number of joint publications. Both informations will be contained inside \verb|<coauthor> ... </coauthor>| tags (itself contained in the \verb|coauthors| bloc). Each of the \verb|coauthor| blocs are created by iterating on co-authors as below~:
-\begin{itemize}
-\item \begin{verbatim}
+    </author>\end{verbatim}
+  \end{itemize}
+  Which will create an \verb|<author> ... </author>| bloc for each author. Inside each of these blocs, we will find following informations (in sequence).
+  
+  \subsection{Author name and Co-authors informations}
+    The author name and the number of co-authors are respectively obtained using \verb|data| and \verb|count| functions (defined by XQuery). Below instructions are formal definitions of \verb|name| and \verb|coauthors| tags~:
+    \begin{itemize}
+      \item \verb|<name>{data($author)}</name>|
+      \item \verb|<coauthors number="{count(//*[author=$author]/author)-1}"> ... </coauthors>|
+    \end{itemize}
+    
+    \subsubsection{Co-authors informations}
+      For each co-author, we must obtain his name and the number of joint publications. Both informations will be contained inside \verb|<coauthor> ... </coauthor>| tags (itself contained in the \verb|coauthors| bloc). Each of the \verb|coauthor| blocs are created by iterating on co-authors as below~:
+      \begin{itemize}
+	\item \begin{verbatim}
 for $coauthor in //*[author=$author]/author[not(.=$author)]
     return <coauthor>
     ....
-    </coauthor>
-\end{verbatim}
-\end{itemize}
-\paragraph{Co-author name}
-As for the author name, co-author name is reached using the \verb|data| function on the \verb|coauthor| variable. This is realised as follow~:
-\begin{itemize}
-\item \verb|<name>{data($coauthor)}</name>|
-\end{itemize}
-\paragraph{Joint publications}
-For each co-author, we must retrieve the number of joint publications. Once again, this is achieved using the \verb|count| function available in XQuery. Here is the final instruction~:
-\begin{itemize}
-\item \verb|<nb_joint_pubs>{count(//*[author=$author]/author[.=$coauthor])}</nb_joint_pubs>|
-\end{itemize}
+    </coauthor>\end{verbatim}
+      \end{itemize}
+      
+      \paragraph{Co-author name}
+	As for the author name, co-author name is reached using the \verb|data| function on the \verb|coauthor| variable. This is realised as follow~:
+	\begin{itemize}
+	  \item \verb|<name>{data($coauthor)}</name>|
+	\end{itemize}
+	
+      \paragraph{Joint publications}
+	For each co-author, we must retrieve the number of joint publications. Once again, this is achieved using the \verb|count| function available in XQuery. Here is the final instruction~:
+	\begin{itemize}
+	  \item \verb|<nb_joint_pubs>{count(//*[author=$author]/author[.=$coauthor])}</nb_joint_pubs>|
+	\end{itemize}
+
 
 \section{Second XQuery program}
+  % Pour cette seconde requête, nous devons lié chaque ``proceeding'' a ses ``inproceeding''. Pour cela, on utilise l'attribut ``key'' définit dans la balise \verb|<proceedings>| et la valeur définie par les balises \verb|<crossref>|.
+  For this second request, we must link each \textit{proceeding} to its \textit{inproceeding}. To do this, we use the ``key'' attribute defined in the tag \verb|<proceedings>| and the value defined by the tags \verb|<crossref>|.
+  
+  % Tout d'abord, on extrait le titre de chaque proceeding~:
+  First, the title of each proceeding is extracted~:
+  \begin{itemize}
+    \item \begin{verbatim}
+for $proceeding in //proceedings
+    return <proceedings>
+                <proc_title>{data($proceeding/title)}</proc_title>
+                ...
+            </proceedings>\end{verbatim}
+  \end{itemize}
+  
+  % On parcourt ensuite chaque inproceeding où la valeur se trouvant entre les balises \verb|crossref| correspond à la valeur définie dans l'attribut ``key'' de la proceeding actuelle.
+  Each inproceedinging is then browsed where the value between the \verb|crossref| tags corresponds to the value defined in the ``key'' attribute of the current procedure~:
+  \begin{itemize}
+    \item \begin{verbatim}
+for $inproceeding in //inproceedings[crossref=data($proceeding/@key)]
+  return <title>{data($inproceeding/title)}</title>\end{verbatim}
+  \end{itemize}
+  
 
 \section{Third XQuery program}
 

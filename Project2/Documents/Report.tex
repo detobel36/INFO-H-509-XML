@@ -94,19 +94,21 @@
     \end{itemize}
 
   \subsection{Name To Path} 
-    This last function is used to properly format each html files name. Thanks to previous functions, we are now able to~: return first letter (last name), return first name and return last name. Those three strings will be concatenated as follow~: 
+    This last function is used to properly format each HTML files name. Thanks to previous functions, we are now able to~: return first letter (last name), return first name and return last name. Those three strings will be concatenated as follow~: 
     \begin{itemize}
-      \item \verb|"firstLetter"/"lastName":"firstName"|
+      \item \verb|"firstLetter"/"lastName"."firstName"|
     \end{itemize}
-    Where each strings are given by corresponding functions. Formally, our code is structured as below : 
+    Where each strings are given by corresponding functions. Note that in the dblp database, some values in author tag does not have any space. Thus we could not split the string to have first and last name. We have therefore arbitrarily decided to consider this as the last name and ignore the first name. To do that, we just added a condition.  Formally, our code is structured as below : 
     \begin{itemize}
     \item \begin{lstlisting}[language=XML]
 <xsl:value-of separator="">
     <xsl:value-of select="func:firstLetter($input)"/>
     <xsl:value-of select="'/'"/>
     <xsl:value-of select="func:lastName($input)"/>
-    <xsl:value-of select="':'"/>
-    <xsl:value-of select="func:firstName($input)"/>
+    <xsl:if test="count(tokenize($input,' ')) > 1">
+	<xsl:value-of select="'.'"/>
+	<xsl:value-of select="func:firstName($input)"/>
+    </xsl:if>
 </xsl:value-of>\end{lstlisting}
     \end{itemize}
 

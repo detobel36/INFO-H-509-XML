@@ -60,6 +60,19 @@
         <ee>http://dx.doi.org/10.1093/imamci/dnl014</ee>
         <url>db/journals/imamci/imamci24.html#Martinez-GuerraGLC07</url>
     </article>
+    <article mdate="2008-02-03" key="journals/ijsysc/MukherjeeSM07">
+        <author>S. Mukherjee</author>
+        <author>Satakshi</author>
+        <author>R. C. Mittal</author>
+        <title>Linear time invariant system order reduction using multipoint step response matching.</title>
+        <pages>211-217</pages>
+        <year>2007</year>
+        <volume>38</volume>
+        <journal>Int. J. Systems Science</journal>
+        <number>3</number>
+        <ee>http://dx.doi.org/10.1080/00207720601114071</ee>
+        <url>db/journals/ijsysc/ijsysc38.html#MukherjeeSM07</url>
+    </article>
     <mastersthesis mdate="2007-04-24" key="ms/Klaas2007">
         <author>Vanessa C. Klaas</author>
         <title>Who's Who in the World Wide Web: Approaches to Name Disambiguation</title>

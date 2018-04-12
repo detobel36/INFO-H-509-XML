@@ -12,8 +12,10 @@
             <xsl:value-of select="func:firstLetter($input)"/>
             <xsl:value-of select="'/'"/>
             <xsl:value-of select="func:lastName($input)"/>
-            <xsl:value-of select="':'"/>
-            <xsl:value-of select="func:firstName($input)"/>
+            <xsl:if test="count(tokenize($input,' ')) > 1">
+                <xsl:value-of select="'.'"/>
+                <xsl:value-of select="func:firstName($input)"/>
+            </xsl:if>
         </xsl:value-of>
     </xsl:function>
 

@@ -1,0 +1,90 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{tikz}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{listings}
+\usetikzlibrary{trees}
+\author{R\'emy Detobel \& Nathan Liccardo}
+\title{Report Project 2~: XQuery}
+
+\usepackage{color}
+\definecolor{Maroon}{rgb}{0.5,0,0}
+
+\lstdefinelanguage{XML}
+{
+  basicstyle=\ttfamily\footnotesize,
+  morestring=[b]",
+  moredelim=[s][\bfseries\color{Maroon}]{<}{\ },
+  moredelim=[s][\bfseries\color{Maroon}]{</}{>},
+  moredelim=[l][\bfseries\color{Maroon}]{/>},
+  moredelim=[l][\bfseries\color{Maroon}]{>},
+  morecomment=[s]{<?}{?>},
+  morecomment=[s]{<!--}{-->},
+  commentstyle=\color{DarkOliveGreen},
+  stringstyle=\color{blue},
+  identifierstyle=\color{red},
+  showstringspaces=false
+}
+
+\renewcommand\thesection{\arabic{section}}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+This document aims to detail each choices and hypothesis we made during our implementation. As a reminder, we were assigned to implement three different XQuery programs. Each of those query use a part of the BDLP database (DBLP-excerpt). The structure of this report will be divided into three parts (one per program).
+
+\section{First XQuery program}
+For this first program, we were assigned (for each author) to return the number of co-authors and the number of joint publications with each of them. To realise this, we start by iterate on each author as below~: 
+\begin{itemize}
+\item \begin{verbatim}
+for $author in //author
+    return <author>
+        ....
+    </author>    
+\end{verbatim}
+\end{itemize}
+Which will create an \verb|<author> ... </author>| bloc for each author. Inside each of these blocs, we will find following informations (in sequence).
+\subsection{Author name and Co-authors informations}
+The author name and the number of co-authors are respectively obtained using \verb|data| and \verb|count| functions (defined by XQuery). Below instructions are formal definitions of \verb|name| and \verb|coauthors| tags :
+\begin{itemize}
+\item \verb|<name>{data($author)}</name>|
+\item \verb|<coauthors number="{count(//*[author=$author]/author)-1}"> ... </coauthors>|
+\end{itemize}
+\subsubsection{Co-authors informations}
+For each co-author, we must obtain his name and the number of joint publications. Both informations will be contained inside \verb|<coauthor> ... </coauthor>| tags (itself contained in the \verb|coauthors| bloc). Each of the \verb|coauthor| blocs are created by iterating on co-authors as below~:
+\begin{itemize}
+\item \begin{verbatim}
+for $coauthor in //*[author=$author]/author[not(.=$author)]
+    return <coauthor>
+    ....
+    </coauthor>
+\end{verbatim}
+\end{itemize}
+\paragraph{Co-author name}
+As for the author name, co-author name is reached using the \verb|data| function on the \verb|coauthor| variable. This is realised as follow~:
+\begin{itemize}
+\item \verb|<name>{data($coauthor)}</name>|
+\end{itemize}
+\paragraph{Joint publications}
+For each co-author, we must retrieve the number of joint publications. Once again, this is achieved using the \verb|count| function available in XQuery. Here is the final instruction~:
+\begin{itemize}
+\item \verb|<nb_joint_pubs>{count(//*[author=$author]/author[.=$coauthor])}</nb_joint_pubs>|
+\end{itemize}
+
+\section{Second XQuery program}
+
+\section{Third XQuery program}
+
+
+
+
+\end{document}
+

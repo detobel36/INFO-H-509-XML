@@ -42,7 +42,7 @@
   This document aims to detail each choices and hypothesis we made during our implementation. As a reminder, we were assigned to implement three different XQuery programs. Each of those query use a part of the BDLP database (DBLP-excerpt). The structure of this report will be divided into three parts (one per program).
 
 \section{First XQuery program}
-  For this first program, we were assigned (for each author) to return the number of co-authors and the number of joint publications with each of them. To realise this, we start by iterate on each author as below~: 
+  For the first program, we were assigned (for each author) to return the number of co-authors and the number of joint publications with each of them. To realise this, we start by iterate on each author as below~: 
   \begin{itemize}
     \item \begin{verbatim}
 for $author in //author
@@ -83,31 +83,29 @@ for $coauthor in //*[author=$author]/author[not(.=$author)]
 
 
 \section{Second XQuery program}
-  % Pour cette seconde requête, nous devons lié chaque ``proceeding'' a ses ``inproceeding''. Pour cela, on utilise l'attribut ``key'' définit dans la balise \verb|<proceedings>| et la valeur définie par les balises \verb|<crossref>|.
-  For this second request, we must link each \textit{proceeding} to its \textit{inproceeding}. To do this, we use the ``key'' attribute defined in the tag \verb|<proceedings>| and the value defined by the tags \verb|<crossref>|.
-  
-  % Tout d'abord, on extrait le titre de chaque proceeding~:
-  First, the title of each proceeding is extracted~:
+For the second request, we were assigned to give (for each proceedings) its title and titles of articles appearing in it. Each \verb|proceeding| blocs are created by the use of an iteration~:
   \begin{itemize}
-    \item \begin{verbatim}
+  \item \begin{verbatim}
 for $proceeding in //proceedings
     return <proceedings>
-                <proc_title>{data($proceeding/title)}</proc_title>
-                ...
-            </proceedings>\end{verbatim}
+    ....
+    </proceedings>
+  \end{verbatim}
   \end{itemize}
-  
-  % On parcourt ensuite chaque inproceeding où la valeur se trouvant entre les balises \verb|crossref| correspond à la valeur définie dans l'attribut ``key'' de la proceeding actuelle.
-  Each inproceedinging is then browsed where the value between the \verb|crossref| tags corresponds to the value defined in the ``key'' attribute of the current procedure~:
+For each of these blocs, we must retrieve the title (\verb|proc_title|) and a list of articles (\verb|title|). This is achieved using the value of the \verb|key| attribute (inside \verb|proceedings| tags) and the value contained inside \verb|crossref| tags. Regarding to the title, we obtain the below instruction~:
+  \begin{itemize}
+    \item \verb|<proc_title>{data($proceeding/title)}</proc_title>|
+  \end{itemize}
+Finally, we can create the list of titles using the \verb|key| value~:  
   \begin{itemize}
     \item \begin{verbatim}
 for $inproceeding in //inproceedings[crossref=data($proceeding/@key)]
-  return <title>{data($inproceeding/title)}</title>\end{verbatim}
+return <title>{data($inproceeding/title)}</title>\end{verbatim}
   \end{itemize}
   
 
 \section{Third XQuery program}
-
+For the last program, we were assigned to compute for each pair of authors $x$ and $y$ ($x \neq y$) the distance between $x$ and $y$. As we decided to use functions to simply the request, we will firstly describe those functions before final instructions.
 
 
 

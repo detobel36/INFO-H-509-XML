@@ -39,7 +39,7 @@
 \maketitle
 
 \section{Introduction}
-  This document aims to detail all the choices that we made during our implementation. The main goal of this project was to create an xslt file which is able to transform a part of the dblp database into HTML files. Our xslt file has been separated into two parts (functions and template) which are described in this document.
+  This document aims to detail all the choices that we made during our implementation. The main goal of this project was to create an xslt file which is able to transform a part of the dblp database into HTML files. Our xslt file has been separated into two parts (functions and template) described in this document.
 
 \section{Functions}
   Our project use five different functions to implement complex operations (\verb|removeSpecialChar|, \verb|lastName|, \verb|firstName|, \verb|firstLetter| and \verb|nameToPath|). Each function and their complex operations would be described in this section.
@@ -52,11 +52,11 @@
     If we have a match, then we substitue the character with the equal character (=). Finally, we obtain the below instruction, where we also use the \verb|replace| function defined by xslt 2.0~:
     \begin{itemize}
       \item \begin{lstlisting}[language=XML]
-<xsl:value-of select="replace($input, '[^0-9a-zA-Z_]' ,'=')"/>\end{lstlisting}.
+<xsl:value-of select="replace($input, '[^0-9a-zA-Z_]' ,'=')"/>\end{lstlisting}
     \end{itemize}
 
   \subsection{Last Name} 
-    This second function is used to extract the last name from a given author or editor string. We extract and format last names using the below functions~:
+    This second function is used to extract the last name from a given author or editor string. We extract and format last names using below functions~:
     \begin{enumerate}
       \item \verb|tokenize($input,' ')[last()]| : we split the input (using white spaces) and get the last element.
       \item \verb|removeSpecialChar(tokenize($input,' ')[last()])| : use the previous function to replace special characters in last names.
@@ -64,15 +64,15 @@
     Finally, we obtain the following instruction~:
     \begin{itemize}
       \item \begin{lstlisting}[language=XML]
-<xsl:value-of select="func:removeSpecialChar(tokenize($input,' ')[last()])"/>\end{lstlisting}.
+<xsl:value-of select="func:removeSpecialChar(tokenize($input,' ')[last()])"/>\end{lstlisting}
     \end{itemize}
 
   \subsection{First Name} 
     This third function is used to extract first name from a given input string. Formally, first name is corresponding to all the input string minus the last name (see previous section). This element can be composed by multiple words (separated by withe spaces) and having special characters. Extracting first name was more complicated and has been implemented as below.
     \begin{enumerate}
       \item \verb|substring-before($input, tokenize($input,' ')[last()])| : get last name.
-      \item \verb|replace(..., ' ','_')| : remove white spaces\footnote{ ... : reference to the previous point.}.
-      \item \verb|removeSpecialChar(...)| : replace special characters.
+      \item \verb|replace(..., ' ','_')| : replace white spaces by underscore characters\footnote{ ... : reference to the previous point.}.
+      \item \verb|removeSpecialChar(...)| : remove special characters.
     \end{enumerate}
     Finally, we obtain the following instruction~:
     \begin{itemize}
@@ -82,9 +82,9 @@
     \end{itemize}
 
   \subsection{First Letter}
-    This fourth function is used to extract the first letter of the last name. We call the previous function and exactract the first letter~:
+    This fourth function is used to extract the first letter of the last name. To reach this first character, we use below functions~:
     \begin{enumerate}
-      \item \verb|substring(func:lastName($input), 0, 2)| : get the first letter of the last name.
+      \item \verb|substring(func:lastName($input), 0, 2)| : get first letter of the last name.
       \item \verb|lower-case(...)| : transform upper-case to lower-case.
     \end{enumerate}
     Finally, we obtain the following instruction~:
@@ -94,12 +94,12 @@
     \end{itemize}
 
   \subsection{Name To Path} 
-    This last function is used to properly format each HTML files name. Thanks to previous functions, we are now able to~: return first letter (last name), return first name and return last name. Those three strings will be concatenated as follow~: 
+    This last function is used to properly format each HTML files name. Thanks to previous functions, we are now able to return first letter (last name), return first name and return last name. Finally, we concatenate these three texts as below~:
     \begin{itemize}
       \item \verb|"firstLetter"/"lastName"."firstName"|
     \end{itemize}
-    Where each strings are given by corresponding functions. Note that in the dblp database, some values in author tag does not have any space. Thus we could not split the string to have first and last name. We have therefore arbitrarily decided to consider this as the last name and ignore the first name. To do that, we just added a condition.  Formally, our code is structured as below : 
-    \begin{itemize}
+    Where each string is given by the corresponding function. Remark that some author values does not have any space. Therefore, first name and last name could not be separated using withe spaces. To solve this problem, we have decided to consider the given string as a last name. This is formally expressed by the following expression~:
+   \begin{itemize}
     \item \begin{lstlisting}[language=XML]
 <xsl:value-of separator="">
     <xsl:value-of select="func:firstLetter($input)"/>
@@ -113,62 +113,59 @@
     \end{itemize}
 
 \section{Template}
-  Templates are used to define set of rules. One project can use multiple templates to define different transformations rules. Our project contain only one template which is used to describe how to parse the XML database into HTML files. To realise this, our template use at the same time Xpath and HTML code. Xpath is used to find specific nodes inside the XML structure. Those nodes are then converted into HTML code using XSLT. This section describe how we use those elements to implement our project.
+  Templates are used to define sets of rules. One project can be used to define multiple templates and then multiple sets of rules. Our project only contains one template which describe a set of rules to parse the XML database into HTML files. To realise this, we use both Xpath (used to find specific nodes) and HTML (used to format output files). This section would be focused on the use of those elements in the context of this project.
 
   \subsection{Creation of HTML pages} 
-    Each author or editor must have an HTML page. This means that we must iterate each different editor or author nodes in the dblp database. To realise this, we use the \verb|for-each| tag with the following path~:
-    \begin{itemize}
+  An HTML page must be created for each author or editor. This is realised by iterate on each different author/editor using the \verb|for-each| tag with a specific path (using XPath)~:
+ \begin{itemize}
       \item \begin{lstlisting}[language=XML]
 <xsl:for-each select="distinct-values(//author|//editor)">\end{lstlisting}
     \end{itemize}
-    Then, for each element we create an HTML file. This is created using the \verb|result-document| tag as below~:
-    \begin{itemize}
+    Then, when we have a set with each different authors/editors, we can create each corresponding files. This is realised using the \verb|result-doucment| tag (defined in xslt)~:
+\begin{itemize}
       \item \begin{lstlisting}[language=XML]
 <xsl:result-document href="{func:nameToPath(.)}.html">\end{lstlisting}
     \end{itemize}
-    We use the \verb|nameToPath| function previously defined to format the HTML file name.
 
   \subsection{Title}
-    Each pages start by the person name within \verb|<h1>| tags. This title can be given using the operator "\verb|.|". This is due to the fact that we are currently looping on a list of authors/editors. Below is the final instruction used to print the person name~:
+    Each page start by the person name within \verb|<h1> ... </h1>| tags. We can reach author/editor name using the path "\verb|.|" due to the fact that we are on an editor/author node. Finally, we obtain the below instruction~:
     \begin{itemize}
       \item \begin{lstlisting}[language=XML]
 <h1> <xsl:value-of select="."/> </h1>\end{lstlisting}
     \end{itemize}
 
   \subsection{Publications table}
-    For each person, we must have a table which contain each publications of this person. For each publication we must realised multiple operations. Those operations are going to be detailed below. Remark also that we have created a global variable called \verb|author| which is used to retain the current author name.
-
+  Each page must contains two tables : publication table and co-authors table (next section). The publication table contains multiple informations described by following sub-sections. Due to the fact that we will probably iterate on different elements, we have decided to save the current author value in a specific \verb|author| variable.
     \subsubsection{Obtaining publications}
-      For each person, we must retrieve all of its publications. This is realised using a global variable called \verb|publications|. To initialise this variable, we must retrieve each publications where one of the author is the same as the one contained in the \verb|author| variable. The is realised as follow :
-      \begin{itemize}
+      For each person, we must retrieve all of its publications. This is realised using the \verb|publications| variable which contains all of the articles associated to the current \verb|author| variable~:      
+ \begin{itemize}
 	\item \begin{lstlisting}[language=XML]
 <xsl:variable name="publications" select="$root//*[./author=$author]" />\end{lstlisting}
       \end{itemize}
-      Where the path contained in the \verb|select| argument is used to compare \verb|author| variable with authors of the current publication.
       
-    \subsubsection{Ordering publications}
-      We must ordering all publications of the current person in the descending order. This means that we will start with the oldest publication and finish with the newest one. This is realised using the \verb|sort| xslt command coupled with the \verb|descending| argument. This argument is referring to the \verb|year| tag (inside each publication).
+    \subsubsection{Sort of publications}
+      All the publications must be sorted in the descending order. This means that we will start with the oldest publication and finish with the newest one. This is realised using the \verb|sort| xslt command coupled with the \verb|descending| argument using the \verb|year| tag of the current publication~:
       \begin{itemize}
 	\item \begin{lstlisting}[language=XML]
 <xsl:sort select="year" order="descending"/>\end{lstlisting}
       \end{itemize}
-      Each row (corresponding to a publication) in the table must have an index. As we are printing publications in the reverse order, we must also obtain indexes in the reverse order. Once again, this is realised using a variable defined as follow~:
+      Each row (which corresponds to a publication) in the table must have an index. As we are printing all the publications in the reverse sequence, we must also obtain indexes in the reverse sequence. Once again, this is realised using a variable~:
       \begin{itemize}
 	\item \begin{lstlisting}[language=XML]
 <xsl:variable name="indexPub" select="last()-position()+1" />\end{lstlisting}
       \end{itemize}
-      Where we compare the current and last position. Finally, below in the code, we simply add the value of (using \verb|value-of| operator) the \verb|indexPub| variable. 
+      Where we compare the current and last position. Finally, below in the code, we simply add the value of the \verb|indexPub| variable using the \verb|value-of| operator. 
       
     \subsubsection{Year subsection}
-      As publications are ordered by year of publication, we must add (inside the table) specific rows used to separate publications of different years. To realise this, we have decided to compare year of the current node with year of the previous node (due to the ordered aspect). Condition is implemented using the \verb|if| tag with the following path~:
+      As publications are sorted by year, we must add specific rows to separate publications of different years. To realise this, we have decided to compare the year of the current node with the year of the previous node (due to the sorted aspect)~:
       \begin{itemize}
 	\item \begin{lstlisting}[language=XML]
 <xsl:if test="not(preceding-sibling::*[1]/year=./year) or position()=1">\end{lstlisting}
       \end{itemize}
-      Remark that we also test if the current node is the first one. If it is, we do not need to apply the comparison and we can directly add the specific row (year).
+      Second part of the \verb|or| condition is used to test if the current node is the first item. In that case, we do not need to apply the comparison and can directly add the specific row.
       
     \subsubsection{Personal redirection}
-      For each author/editor of the current publication, we should link his name with his personal page. The tricky part is that the we do not need to link the current person to his personal page (which is the current page). This is realised using following instructions~:
+    We must transform, for each author/editor, the name of the person into a link. This link is used to redirect to the personal author/editor page. The main difficulty is to avoid the transformation of the current author name. This is realised using below instructions~:
       \begin{itemize}
 	\item \begin{lstlisting}[language=XML]
 <xsl:if test="not(.=$author)" >
@@ -182,27 +179,27 @@
       \end{itemize}
 
   \subsection{Co-author table}
-    For each page, we must have a table which contain all persons with whom P has jointly published. This new table is realised using two nested loops.
-
-    \subsubsection{People loop}
-      First loop iterate on authors/editors which are present on same publications than the current person. This first iteration is realised as follow :
+  As indicated in the previous section, each page must contain two tables : publications table (previous section) and co-authors table. The co-authors table must contain all persons with whom P has jointly published. For this table, we have decided to use nested iterations. This is due to the fact that we must retrieve each co-author and then reach each article jointly published for each of the co-authors.
+  
+    \subsubsection{Co-authors iteration}
+      The First iteration is used to find each person present on one of the current person publication. This is realised as below :
       \begin{itemize}
 	\item \begin{lstlisting}[language=XML]
 <xsl:for-each select="$root//*[./author=$author]/author[not(.=$author)]">\end{lstlisting}
       \end{itemize}
-      This table is order by last names. This is done by using the \verb|sort| tag with the \verb|lastName| function.
+      As the co-authors table is sorted by last names, we use (as following) the \verb|sort| tag with the \verb|lastName| function :
       \begin{itemize}
 	\item \begin{lstlisting}[language=XML]
 <xsl:sort select="func:lastName(.)"/>\end{lstlisting}
       \end{itemize}
       
     \subsubsection{Publications loop}
-      For each co-author, we must retrieve each publications where the co-author and the author are present. The nested loop use the \verb|publications| variable defined before and check if the current co-author is present as follow : 
+    This second iteration (nested iteration) is used to reach each publications which are jointly published. Firstly, we use the \verb|publications| variable to check if the current co-author is present as in the current publication~: 
       \begin{itemize}
 	\item \begin{lstlisting}[language=XML]
 <xsl:if test="$coAuthor=./author" >\end{lstlisting}
       \end{itemize}
-      Then if it is the case, we can add the publication which is linked to the corresponding item in the previous table :
+      If he is present, we can add the publication (linked to the previous table) :
       \begin{itemize}
 	\item \begin{lstlisting}[language=XML]
 <xsl:variable name="linkPublication" select="last()-position()+1" />

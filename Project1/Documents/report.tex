@@ -264,14 +264,28 @@ We were asked to write an XSD file defining a book shop. This shop had to be com
     \item leiPeriodical $\rightarrow$ (title, titleT), (price, priceT), (publisher, publisherT)
   \end{itemize}
 
-\section{Type specialization}
-  % Il est possible de définir un type général que l'on va par la suite pouvoir spécialiser et préciser. Chacun des schémas suivants décrivent une structure pouvant être utilisé pour réaliser ce projet.  Nous avons préféré ne pas les appliquer et avoir 4 grands types (``leisure book'', ``scientific book'', ``scientific journal'' and ``leisure periodicals'') afin de facilité la compréhension et d'éviter les erreurs.
-  It is possible to define a general type that we could then specialize and specified. Each of the following diagrams describes a structure that can be used to carry out this project. We preferred not to apply them and to have 4 main types (``scientific book'', ``scientific journal'', ``leisure book'' and ``leisure periodicals'') in order to facilitate understanding and avoid errors.\\
-  % Certains types peuvent être définit comme abstrait grâce à un attribut.  Concrètement, cela signifie qu'en rajoutant \verb|abstract="true"| dans la balise de définition du type, on pourra empêcher son instanciation dans un document et obliger ce type à être spécialisé pour être utilisé.
-  Some types can be defined as abstract through an attribute.  In concrete terms, this means that by adding \verb|abstract="true"| in the type definition tag, we can prevent its instantiation in a document and force this type to be specialized to be used.
-  % Dans les schémas suivant, les types en italique sont des types abstraits.
-  In the following diagrams, the types in italics are abstract types.
+\section{Type specialisation}
+As in other programming languages, XML schema definition allows to define general and abstract types. Those types must then be specialised and specified before being used. For simplicity, we did not use those types inside our project. Nevertheless, we did note that some of these abstract types could be used. For this reason, we have been decided to add additional schemas and diagrams as appendix of this report. These diagrams describes different possible scenarios to implement - in an other way - our project. As an illustration, abstract property can be specified using a specific attribute as follow~: \verb|abstract="true"|. Italic texts are used to represent abstract types.
   
+   \subsection{Book element}
+    \begin{center}
+      \begin{tikzpicture}[tree, 
+	level distance=8em,
+	every node/.style = {shape=rectangle, rounded corners,draw, align=left,top color=white, bottom color=white},
+	level 1/.style={sibling distance=4.5cm},
+	level 2/.style={sibling distance=6cm}]
+	
+	\node {\textit{\textbf{Element}}\\- Title}
+	  child { 
+	    child { node {\textbf{Scientific Book}\\- ISBN\\- Abstract} }
+	    child { node {\textbf{Leisure Book}\\- NbrPage\\- Genre\\- Authors} }
+	    node {\textit{\textbf{Book}}\\- Publisher\\- Year\\- Edition}
+	  }
+	  child { node {\textbf{Scientific Journal}\\- Volume\\- Year\\- Number\\- Publisher\\- Impact\\- Authors/Editors\\- Articles} }
+	  child { node {\textbf{Leisure Periodicals}\\- Price\\- Publisher} };
+      \end{tikzpicture}
+    \end{center}
+    
   \subsection{Date element}
     \begin{center}
       \begin{tikzpicture}[tree, 
@@ -290,25 +304,6 @@ We were asked to write an XSD file defining a book shop. This shop had to be com
 	    }
 	    node {\textit{\textbf{DateElement}}\\- Year}
 	  }
-	  child { node {\textbf{Leisure Periodicals}\\- Price\\- Publisher} };
-      \end{tikzpicture}
-    \end{center}
-  
-  \subsection{Book element}
-    \begin{center}
-      \begin{tikzpicture}[tree, 
-	level distance=8em,
-	every node/.style = {shape=rectangle, rounded corners,draw, align=left,top color=white, bottom color=white},
-	level 1/.style={sibling distance=4.5cm},
-	level 2/.style={sibling distance=6cm}]
-	
-	\node {\textit{\textbf{Element}}\\- Title}
-	  child { 
-	    child { node {\textbf{Scientific Book}\\- ISBN\\- Abstract} }
-	    child { node {\textbf{Leisure Book}\\- NbrPage\\- Genre\\- Authors} }
-	    node {\textit{\textbf{Book}}\\- Publisher\\- Year\\- Edition}
-	  }
-	  child { node {\textbf{Scientific Journal}\\- Volume\\- Year\\- Number\\- Publisher\\- Impact\\- Authors/Editors\\- Articles} }
 	  child { node {\textbf{Leisure Periodicals}\\- Price\\- Publisher} };
       \end{tikzpicture}
     \end{center}

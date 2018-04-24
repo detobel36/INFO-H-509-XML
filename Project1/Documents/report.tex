@@ -160,7 +160,7 @@ We were asked to write an XSD file defining a book shop. This shop had to be com
 	  \node[bottom color=blue!20!white, top color=blue!20!white, draw=blue!20!white] at (-1,-3.7) {XOR};
 	\end{tikzpicture}
       \end{center}
-      
+        
       \paragraph{Articles}
 	A scientific journal must have a list of articles. Therefore, the \verb|articles| tag contains at least one \verb|article| tag which itself contains attributes. This can be represented as below~:
 	\begin{center}
@@ -263,6 +263,72 @@ We were asked to write an XSD file defining a book shop. This shop had to be com
     \item leiBook $\rightarrow$ (title, titleT), (authors, authorsT), (publisher, publisherT), (genre, genreT), (edition, editionT)?, (number, numberT)?
     \item leiPeriodical $\rightarrow$ (title, titleT), (price, priceT), (publisher, publisherT)
   \end{itemize}
+
+\section{Type specialisation}
+As in other programming languages, XML schema definition allows to define general and abstract types. Those types must then be specialised and specified before being used. For simplicity, we did not use those types inside our project. Nevertheless, we did note that some of these abstract types could be used. For this reason, we have been decided to add additional schemas and diagrams as appendix of this report. These diagrams describes different possible scenarios to implement - in an other way - our project. As an illustration, abstract property can be specified using a specific attribute as follow~: \verb|abstract="true"|. Italic texts are used to represent abstract types.
+  
+   \subsection{Book element}
+    \begin{center}
+      \begin{tikzpicture}[tree, 
+	level distance=8em,
+	every node/.style = {shape=rectangle, rounded corners,draw, align=left,top color=white, bottom color=white},
+	level 1/.style={sibling distance=4.5cm},
+	level 2/.style={sibling distance=6cm}]
+	
+	\node {\textit{\textbf{Element}}\\- Title}
+	  child { 
+	    child { node {\textbf{Scientific Book}\\- ISBN\\- Abstract} }
+	    child { node {\textbf{Leisure Book}\\- NbrPage\\- Genre\\- Authors} }
+	    node {\textit{\textbf{Book}}\\- Publisher\\- Year\\- Edition}
+	  }
+	  child { node {\textbf{Scientific Journal}\\- Volume\\- Year\\- Number\\- Publisher\\- Impact\\- Authors/Editors\\- Articles} }
+	  child { node {\textbf{Leisure Periodicals}\\- Price\\- Publisher} };
+      \end{tikzpicture}
+    \end{center}
+    
+  \subsection{Date element}
+    \begin{center}
+      \begin{tikzpicture}[tree, 
+	level distance=8em,
+	every node/.style = {shape=rectangle, rounded corners,draw, align=left,top color=white, bottom color=white},
+	level 1/.style={sibling distance=3.5cm},
+	level 2/.style={sibling distance=6cm}]
+	
+	\node {\textit{\textbf{Element}}\\- Title}
+	  child { 
+	    child { node {\textbf{Leisure Book}\\- NbrPage\\- Genre\\- Authors\\- Edition\\- Publisher} }
+	    child {
+	      child { node {\textbf{Scientific Book}\\- ISBN\\- Abstract\\- Publisher} }
+	      child { node {\textbf{Scientific Journal}\\- Volume\\- Number\\- Publisher\\- Impact\\- Articles} }
+	      node {\textit{\textbf{ScientificElement}}\\- Authors/Editors}
+	    }
+	    node {\textit{\textbf{DateElement}}\\- Year}
+	  }
+	  child { node {\textbf{Leisure Periodicals}\\- Price\\- Publisher} };
+      \end{tikzpicture}
+    \end{center}
+    
+  \subsection{Published element}
+    \begin{center}
+      \begin{tikzpicture}[tree, 
+	level distance=8em,
+	every node/.style = {shape=rectangle, rounded corners,draw, align=left,top color=white, bottom color=white},
+	level 1/.style={sibling distance=4.5cm},
+	level 2/.style={sibling distance=6cm}]
+	
+	\node {\textit{\textbf{Element}}\\- Title}
+	  child { 
+	    child {
+	      child { node {\textbf{Scientific Book}\\- ISBN\\- Abstract\\- Authors/Editors} }
+	      child { node {\textbf{Leisure Book}\\- NbrPage\\- Genre\\- Authors} }
+	      node {\textit{\textbf{Book}}\\- Year\\- Edition} 
+	    }
+	    child { node {\textbf{Leisure Periodicals}\\- Price} }
+	    node {\textit{\textbf{Published}}\\- Publisher}
+	  }
+	  child { node {\textbf{Scientific Journal}\\- Volume\\- Year\\- Number\\- Publisher\\- Impact\\- Authors/Editors\\- Articles} };
+      \end{tikzpicture}
+    \end{center}
   
 
 \end{document}

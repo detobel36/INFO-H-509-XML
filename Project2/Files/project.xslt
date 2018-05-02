@@ -103,8 +103,35 @@
                                             <xsl:otherwise>, </xsl:otherwise>
                                         </xsl:choose>
                                     </xsl:for-each>
-                                    <xsl:value-of select="title" /> :
-                                    <xsl:value-of select="pages" />
+                                    <xsl:value-of select="title" />&#160;
+                                    <xsl:if test="booktitle" >
+                                        <xsl:value-of select="booktitle" />&#160;
+                                    </xsl:if>
+                                    <xsl:if test="journal" >
+                                        <xsl:value-of select="journal" />&#160;
+                                        <xsl:if test="volume" >
+                                            <xsl:value-of select="volume" />
+                                        </xsl:if>
+                                        <xsl:if test="number" >
+                                            (<xsl:value-of select="number" />)
+                                        </xsl:if>
+                                    </xsl:if>
+                                    <xsl:if test="series" >
+                                        <xsl:value-of select="series" />&#160;
+                                        <xsl:if test="volume" >
+                                            <xsl:value-of select="volume" />,
+                                        </xsl:if>
+                                    </xsl:if>
+                                    
+                                    <xsl:if test="publisher" >
+                                        <xsl:value-of select="publisher" />&#160;
+                                    </xsl:if>
+                                    <xsl:if test="year" >
+                                        <xsl:value-of select="year" />&#160;
+                                    </xsl:if>
+                                    <xsl:if test="pages" >
+                                        : <xsl:value-of select="pages" />
+                                    </xsl:if>
                                 </td>
 
                             </tr>
@@ -125,7 +152,7 @@
                                     <tr>
                                         <td align="right">
                                             <!-- link to co-author page if present-->
-                                            <a href="../{func:nameToPath(.)}.html"><xsl:value-of select="." /></a>,
+                                            <a href="../{func:nameToPath(.)}.html"><xsl:value-of select="." /></a>
                                         </td>
                                         <!-- link to a co-authored publications in this page -->
                                         <td align="left"> 

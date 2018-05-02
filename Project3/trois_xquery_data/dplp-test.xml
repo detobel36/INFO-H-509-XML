@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dblp SYSTEM "dblp.dtd">
+<dblp>
+    <book mdate="2007-06-01" key="books/infix/Makoui2007">
+        <author>A</author>
+        <author>B</author>
+        <author>E</author>
+        <title>Anfrageoptimierung in objektrelationalen Datenbanken durch kostenbedingte Termersetzungen</title>
+        <volume>100</volume>
+        <isbn>978-3-89838-500-8</isbn>
+        <year>2007</year>
+        <publisher>Aka Akademische Verlagsgesellschaft Aka GmbH, Berlin</publisher>
+        <series href="db/series/disdbis/index.html">DISDBIS</series>
+    </book>
+    <book mdate="2008-01-29" key="books/mitp/SaakeSH2008">
+        <author>B</author>
+        <author>Z</author>
+        <title>Datenbanken: Konzepte und Sprachen, 3. Auflage</title>
+        <publisher>mitp-Verlag, Redline GmbH</publisher>
+        <year>2008</year>
+        <isbn>978-3-8266-1664-8</isbn>
+        <url>http://www.biberbuch.de</url>
+    </book>
+    <book mdate="2008-01-30" key="books/sp/Helmert2008">
+        <author>E</author>
+        <author>F</author>
+        <title>Understanding Planning Tasks: Domain Complexity and Heuristic Decomposition.</title>
+        <series href="db/journals/lncs.html">Lecture Notes in Computer Science</series>
+        <volume>4929</volume>
+        <publisher>Springer</publisher>
+        <year>2008</year>
+        <isbn>978-3-540-77722-9</isbn>
+        <url>http://dx.doi.org/10.1007/978-3-540-77723-6</url>
+    </book>
+    <book mdate="2008-01-30" key="books/sp/Helmert2008">
+        <author>F</author>
+        <author>Z</author>
+        <title>Understanding Planning Tasks: Domain Complexity and Heuristic Decomposition.</title>
+        <series href="db/journals/lncs.html">Lecture Notes in Computer Science</series>
+        <volume>4929</volume>
+        <publisher>Springer</publisher>
+        <year>2008</year>
+        <isbn>978-3-540-77722-9</isbn>
+        <url>http://dx.doi.org/10.1007/978-3-540-77723-6</url>
+    </book>
+</dblp>

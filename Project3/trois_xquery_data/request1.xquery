@@ -1,6 +1,6 @@
 <authors_coauthors>
 {
-    for $author in //author
+    for $author in distinct-values(//author)
     return <author>
                 <name>{data($author)}</name>
                 <coauthors number="{count(//*[author=$author]/author)-1}">

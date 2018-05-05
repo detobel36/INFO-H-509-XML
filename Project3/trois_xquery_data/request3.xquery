@@ -19,14 +19,15 @@ declare function custom:authorInASpecificDistance($author as xs:string, $allCont
     let $currentCheck := distinct-values(custom:getListAuthorDistance($allContext, $distance, $author))
     for $coAuteur in $currentCheck[not(.=$previousCheck)]
     where not($coAuteur = $author)
-        return <distance author1="{$author}" author2="{$coAuteur}" distance="{$distance}" />
+        return (<distance author1="{$author}" author2="{$coAuteur}" distance="{$distance}" />, '&#xa;')
 };
 
 
 declare function custom:loopDistance($author as xs:string, $allContext, $distance as xs:integer)
 {
     if(not(empty(custom:authorInASpecificDistance($author, $allContext, $distance)))) then (
-        custom:authorInASpecificDistance($author, $allContext, ($distance + 1))
+        (custom:loopDistance($author, $allContext, ($distance + 1)),
+        custom:authorInASpecificDistance($author, $allContext, $distance))
     ) else()
 };
 

@@ -23,16 +23,15 @@ declare function custom:authorInASpecificDistance($author as xs:string, $allCont
 };
 
 
-declare function custom:loopDistance($author as xs:string, $allContext, $distance as xs:integer)
+declare function custom:loopDistance($author as xs:string, $allContext)
 {
-    if(not(empty(custom:authorInASpecificDistance($author, $allContext, $distance)))) then (
-        custom:authorInASpecificDistance($author, $allContext, ($distance + 1))
-    ) else()
+    for $i at $index in distinct-values($allContext//author)
+    return custom:authorInASpecificDistance($author, $allContext, $index)
 };
 
 <distances>
 {
     for $author in distinct-values(//author)
-        return custom:loopDistance($author, //*, 1)
+        return custom:loopDistance($author, //*)
 }
 </distances>

@@ -83,20 +83,19 @@ for $coauthor in //*[author=$author]/author[not(.=$author)]
 
 
 \section{Second XQuery program}
-For the second request, we were assigned to give (for each proceedings) its title and titles of articles appearing in it. Each \verb|proceeding| blocs are created by the use of an iteration~:
+  For the second request, we were assigned to give (for each proceedings) its title and titles of articles appearing in it. Each \verb|proceeding| blocs are created by the use of an iteration~:
   \begin{itemize}
-  \item \begin{verbatim}
+    \item \begin{verbatim}
 for $proceeding in //proceedings
     return <proceedings>
     ....
-    </proceedings>
-  \end{verbatim}
+    </proceedings>\end{verbatim}
   \end{itemize}
-For each of these blocs, we must retrieve the title (\verb|proc_title|) and a list of articles (\verb|title|). This is achieved using the value of the \verb|key| attribute (inside \verb|proceedings| tags) and the value contained inside \verb|crossref| tags. Regarding to the title, we obtain the below instruction~:
+  For each of these blocs, we must retrieve the title (\verb|proc_title|) and a list of articles (\verb|title|). This is achieved using the value of the \verb|key| attribute (inside \verb|proceedings| tags) and the value contained inside \verb|crossref| tags. Regarding to the title, we obtain the below instruction~:
   \begin{itemize}
     \item \verb|<proc_title>{data($proceeding/title)}</proc_title>|
   \end{itemize}
-Finally, we can create the list of titles using the \verb|key| value~:  
+  Finally, we can create the list of titles using the \verb|key| value~:  
   \begin{itemize}
     \item \begin{verbatim}
 for $inproceeding in //inproceedings[crossref=data($proceeding/@key)]
@@ -105,46 +104,32 @@ return <title>{data($inproceeding/title)}</title>\end{verbatim}
   
 
 \section{Third XQuery program}
-For the last program, we were assigned to compute (for each pair of authors $x$ and $y$, $x \neq y$) the distance between $x$ and $y$. Before explaining the final request, we will describe how we use functions to implement complex operations. As there exist two complex operations, we have decided to implement two different functions : \verb|generateTag| and \verb|getTree|.
-
-\subsection{First function : \texttt{generateTag}}
-This first function is simply used to reach a well formatted XML tag. This means that the function takes an \verb|$author|, a \verb|$coauthor| and a \verb|$distance| as input and return the below XML tag~:
-\begin{itemize}
-\item \verb|<distance author1="{$coAuthor}" author2="{$author}" distance="{$distance}" />|
-\end{itemize}
-\subsection{Second function : \texttt{getTree}}
-Previous function only treat about output format. This means that we must, at this point, compute the distance value between two authors. This computation is realised by the \verb|getTree| function which takes as input an \verb|$author|, an \verb|intervalAuthor|, a \verb|distance| and an \verb|allContext| (context variable). We have been decided to implement this function using recursive calls~:
-\begin{itemize}
-\item The definition of the current distance (incremental value) :
-\begin{itemize}
-\item \verb|let $newDistance := $distance + 1|
-\end{itemize}
-\item An iteration on all co-authors. \verb|allContext| is a constant variable defined in the final request which is used to keep (in memory) whole author nodes~:
-\begin{itemize}
-\item \verb|for $coAuthor in distinct-values($allContext[author=$intervalAuthor]/author)|
-\end{itemize}
-\item On the previous iteration, we only want \verb|coauthor| values which are, at the same time, different from  \verb|author| and \verb|intervalAuthor| values. This is checked using the below instruction~:
-\begin{itemize}
-\item \verb|where $coAuthor != $author and $coAuthor != $intervalAuthor|
-\end{itemize}
-\item Finally, inside this iteration we call two functions. The first one is the recursive call to \verb|getTree| and the second one is the inclusion of the current result into the final set using \verb|generateTree|~: 
-\begin{itemize}
-\item \begin{verbatim}
-return (custom:getTree($author, $coAuthor, $newDistance, $allContext except 
-                        $allContext[author=$intervalAuthor]),
-        custom:generateTag($author, $coAuthor, $newDistance))
-\end{verbatim}
-\end{itemize}
-\end{itemize}
-\subsection{Final instruction}
-Finally, we must create the \verb|<distance> .... </distance>| bloc which contain each of the \verb|<distance>| tags. Those tags are created using the first function and added to the final set using the second one. First call to of the recursive function is realised for each different authors in the dblp database. This means that we use the following code inside the \verb|<distance> .... </distance>| bloc~:
-\begin{itemize}
-\item \begin{verbatim}
+  For the last program, we were assigned to compute (for each pair of authors $x$ and $y$, $x \neq y$) the distance between $x$ and $y$. Before explaining the final request, we will describe how we use functions to implement complex operations. We have implement a function which return all co-author within a defined distance (named \verb|getListAuthorDistance|). Then, all authors at a distance $d$ are iteratively recovered, excluding all authors at a distance $d-1$. We stop the iteration when all authors accessible at a distance $d$, are also accessible at a distance $d-1$, i.e. when no new author is accessible.
+  
+  \subsection{First function : \texttt{getListAuthorDistance}}
+    This recursive function begin to check if the distance is strictly greeter than zero.  If it is the case, for all author who have an interaction with the intermediare author (passed as parameter (the first intermediate and the author himself)) we re-call the function (and return the current intermediare author).\\
+    If distance is equals to zero, we just return the intermediare author (passed as parameter).
+  
+    Concretely in XML the iteration loop is written as follows~:
+    \begin{itemize}
+      \item \begin{verbatim}
+for $newCoAuteur in distinct-values($allContext[author=$intermediateAuteur]/author)
+where not($intermediateAuteur = $newCoAuteur)
+  return ($newCoAuteur, 
+      custom:getListAuthorDistance($allContext, ($distance - 1), $newCoAuteur))\end{verbatim}
+    \end{itemize}
+    
+  \subsection{Other functions}
+    
+  
+  \subsection{Final instruction}
+    Finally, we must create the \verb|<distance> .... </distance>| bloc which contain each of the \verb|<distance>| tags. Those tags are created using the first function and added to the final set using the second one. First call to of the recursive function is realised for each different authors in the dblp database. This means that we use the following code inside the \verb|<distance> .... </distance>| bloc~:
+    \begin{itemize}
+      \item \begin{verbatim}
 for $author in distinct-values(//author)
-    return custom:getTree($author, $author, 0, //*)
-\end{verbatim}
-\end{itemize}
-Which is used to initialise each of the \verb|getTree| parameters. Remarks also that distance is set to 0 due to the fact that we start by using the same author and co-author (not added to the final set).
+    return custom:loopDistance($author, $author, 0, //*)\end{verbatim}
+    \end{itemize}
+    Which is used to initialise each of the \verb|getTree| parameters. Remarks also that distance is set to 0 due to the fact that we start by using the same author and co-author (not added to the final set).
 
 \end{document}
 

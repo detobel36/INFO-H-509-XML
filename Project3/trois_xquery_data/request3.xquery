@@ -1,5 +1,5 @@
 declare namespace custom = "http://example.com";
-
+declare option saxon:output "indent=yes";
 
 declare function custom:getListAuthorDistance($allContext, $distance as xs:integer, $intermediateAuteur as xs:string)
 {
@@ -19,7 +19,7 @@ declare function custom:authorInASpecificDistance($author as xs:string, $allCont
     let $currentCheck := distinct-values(custom:getListAuthorDistance($allContext, $distance, $author))
     for $coAuteur in $currentCheck[not(.=$previousCheck)]
     where not($coAuteur = $author)
-        return (<distance author1="{$author}" author2="{$coAuteur}" distance="{$distance}" />, '&#xa;')
+        return <distance author1="{$author}" author2="{$coAuteur}" distance="{$distance}" />
 };
 
 

@@ -1,3 +1,5 @@
+declare option saxon:output "indent=yes";
+
 for $proceeding in //proceedings
     return <proceedings>
                 <proc_title>{data($proceeding/title)}</proc_title>
@@ -7,4 +9,3 @@ for $proceeding in //proceedings
                 }
             </proceedings>
             
-

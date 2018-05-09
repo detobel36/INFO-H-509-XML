@@ -104,13 +104,10 @@ return <title>{data($inproceeding/title)}</title>\end{verbatim}
   
 
 \section{Third XQuery program}
-  For the last program, we were assigned to compute (for each pair of authors $x$ and $y$, $x \neq y$) the distance between $x$ and $y$. Before explaining the final request, we will describe how we use functions to implement complex operations. We have implement a function which return all co-author within a defined distance (named \verb|getListAuthorDistance|). Then, all authors at a distance $d$ are iteratively recovered, excluding all authors at a distance $d-1$. We stop the iteration when all authors accessible at a distance $d$, are also accessible at a distance $d-1$, i.e. when no new author is accessible.
+  For the last program, we were assigned to compute (for each pair of authors $x$ and $y$, $x \neq y$) the distance between $x$ and $y$. First, we will explain how functions has been used to implement complex operations. After that, we will describes how we have built the final \verb|<distance>| bloc. 
   
   \subsection{First function : \texttt{getListAuthorDistance}}
-    This recursive function begin to check if the distance is strictly greeter than zero.  If it is the case, for all author who have an interaction with the intermediare author (passed as parameter (the first intermediate and the author himself)) we re-call the function (and return the current intermediare author).\\
-    If distance is equals to zero, we just return the intermediare author (passed as parameter).
-  
-    Concretely in XML the iteration loop is written as follows~:
+  The most important function that we have implemented is \verb|getListAuthorDistance|. It allows to return a list of co-authors that are at a distance comprises in $[1,d]$ from the current author. The function starts by checking if the distance given in parameter is greater then zero. If it is the case, then the function will be called iteratively to get co-authors at a distance 1, 2, ..., $d$. In the other case, the function return the author without any other values. Formally, the function has been written as below~:
     \begin{itemize}
       \item \begin{verbatim}
 for $newCoAuteur in distinct-values($allContext[author=$intermediateAuteur]/author)
@@ -120,16 +117,19 @@ where not($intermediateAuteur = $newCoAuteur)
     \end{itemize}
     
   \subsection{Other functions}
-    
+    To be able to get every distances for every authors, we had to implement two other functions. First, we have implemented \verb|authorInASpecificDistance|. It allows to get every authors that are at a specific distance from the current author. This function will return a set that contains authors that are only accessible with a distance $d$.  Finally, \verb|loopDistance| has been implemented to check if the result set of \verb|authorInASpecificDistance| is empty or not. If this set is empty, it means that every distances has been reached and that we can stop the iteration.
   
   \subsection{Final instruction}
-    Finally, we must create the \verb|<distance> .... </distance>| bloc which contain each of the \verb|<distance>| tags. Those tags are created using the first function and added to the final set using the second one. First call to of the recursive function is realised for each different authors in the dblp database. This means that we use the following code inside the \verb|<distance> .... </distance>| bloc~:
+  The last operation was to create the \verb|<distances> ... </distances>| bloc. This bloc will contains a set of \verb|<distance>| tags that are created using the \verb|authorInASpecificDistance| function. After that, these tags are added to the final set using the \verb|loopDistance| function. Finally, let's remark that for each author of the dblp database, we will have a call to the recursive function. The final bloc is obtained as below~:
     \begin{itemize}
       \item \begin{verbatim}
-for $author in distinct-values(//author)
-    return custom:loopDistance($author, $author, 0, //*)\end{verbatim}
+<distances>
+{
+    for $author in distinct-values(//author)
+        return custom:loopDistance($author, //*, 1)
+}
+</distances>\end{verbatim}
     \end{itemize}
-    Which is used to initialise each of the \verb|getTree| parameters. Remarks also that distance is set to 0 due to the fact that we start by using the same author and co-author (not added to the final set).
-
 \end{document}
 
+given 

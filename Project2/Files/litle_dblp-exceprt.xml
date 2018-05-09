@@ -86,4 +86,17 @@
         <year>2007</year>
         <school>Univ. Trier, FB 4, Informatik</school>
     </phdthesis>
+    <proceedings mdate="2007-06-25" key="conf/ACMace/2007">
+        <editor>Masa Inakage</editor>
+        <editor>Newton Lee</editor>
+        <editor>Manfred Tscheligi</editor>
+        <editor>Regina Bernhaupt</editor>
+        <editor>Stéphane Natkin</editor>
+        <title>Proceedings of the International Conference on Advances in Computer Entertainment Technology, ACE 2007, Salzburg, Austria, June 13-15, 2007</title>
+        <isbn>978-1-59593-640-0</isbn>
+        <booktitle>Advances in Computer Entertainment Technology</booktitle>
+        <publisher>ACM</publisher>
+        <year>2007</year>
+        <url>db/conf/ACMace/ace2007.html</url>
+    </proceedings>
 </dblp>

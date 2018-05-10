@@ -70,7 +70,7 @@
   \subsection{First Name} 
     This third function is used to extract first name from a given input string. Formally, first name is corresponding to all the input string minus the last name (see previous section). This element can be composed by multiple words (separated by withe spaces) and having special characters. Extracting first name was more complicated and has been implemented as below.
     \begin{enumerate}
-      \item \verb|substring-before($input, tokenize($input,' ')[last()])| : get last name.
+      \item \verb|substring-before($input, tokenize($input,' ')[last()])| : get first name.
       \item \verb|replace(..., ' ','_')| : replace white spaces by underscore characters\footnote{ ... : reference to the previous point.}.
       \item \verb|removeSpecialChar(...)| : remove special characters.
     \end{enumerate}
@@ -137,7 +137,7 @@
   \subsection{Publications table}
   Each page must contains two tables : publication table and co-authors table (next section). The publication table contains multiple informations described by following sub-sections. Due to the fact that we will probably iterate on different elements, we have decided to save the current author value in a specific \verb|author| variable.
     \subsubsection{Obtaining publications}
-      For each person, we must retrieve all of its publications. This is realised using the \verb|publications| variable which contains all of the articles associated to the current \verb|author| variable~:      
+      For each person, we must retrieve all of its publications. This is realised using the \verb|publications| variable which contains all of the articles associated to the current \verb|author| variable~:
  \begin{itemize}
 	\item \begin{lstlisting}[language=XML]
 <xsl:variable name="publications" select="$root//*[./author=$author]" />\end{lstlisting}

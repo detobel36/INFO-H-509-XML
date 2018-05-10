@@ -49,7 +49,7 @@
     \begin{itemize}
       \item \verb|[^0-9a-zA-Z_]|
     \end{itemize} 
-    If we have a match, then we substitue the character with the equal character (=). Finally, we obtain the below instruction, where we also use the \verb|replace| function defined by xslt 2.0~:
+    If we have a match, then we substitue the character with the equal character (=). Finally, we obtain the below instruction, where we use the \verb|replace| function defined by xslt 2.0~:
     \begin{itemize}
       \item \begin{lstlisting}[language=XML]
 <xsl:value-of select="replace($input, '[^0-9a-zA-Z_]' ,'=')"/>\end{lstlisting}

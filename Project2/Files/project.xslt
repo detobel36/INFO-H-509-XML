@@ -111,7 +111,7 @@
                                         </xsl:choose>
                                     </xsl:for-each>
                                     <xsl:value-of select="title" />&#160;
-                                    <xsl:if test="booktitle" >
+                                    <xsl:if test="booktitle and name()=('incollection', 'inproceedings')" >
                                         <xsl:value-of select="booktitle" />&#160;
                                     </xsl:if>
                                     <xsl:if test="journal" >
@@ -132,6 +132,9 @@
                                     
                                     <xsl:if test="publisher" >
                                         <xsl:value-of select="publisher" />&#160;
+                                    </xsl:if>
+                                    <xsl:if test="school" >
+                                        <xsl:value-of select="school" />&#160;
                                     </xsl:if>
                                     <xsl:if test="year" >
                                         <xsl:value-of select="year" />

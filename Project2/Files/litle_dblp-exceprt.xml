@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE dblp SYSTEM "dblp.dtd">
 <dblp>
-    <book mdate="2007-06-01" key="books/infix/Makoui2007">
-        <author>Mazeyar E. Makoui</author>
-        <title>Anfrageoptimierung in objektrelationalen Datenbanken durch kostenbedingte Termersetzungen</title>
-        <volume>100</volume>
-        <isbn>978-3-89838-500-8</isbn>
+    <book mdate="2007-08-24" key="books/sp/ProdanF2007">
+        <author>Radu Prodan</author>
+        <author>Thomas Fahringer</author>
+        <title>Grid Computing, Experiment Management, Tool Integration, and Scientific Workflows</title>
+        <booktitle>Grid Computing</booktitle>
+        <series href="db/journals/lncs.html">Lecture Notes in Computer Science</series>
+        <volume>4340</volume>
+        <publisher>Springer</publisher>
         <year>2007</year>
-        <publisher>Aka Akademische Verlagsgesellschaft Aka GmbH, Berlin</publisher>
-        <series href="db/series/disdbis/index.html">DISDBIS</series>
+        <isbn>978-3-540-69261-4</isbn>
+        <url>http://dx.doi.org/10.1007/978-3-540-69262-1</url>
+    </book>
+    <book mdate="2008-01-29" key="books/mitp/SaakeSH2008">
+        <author>Gunter Saake</author>
+        <author>Kai-Uwe Sattler</author>
+        <author>Andreas Heuer</author>
+        <title>Datenbanken: Konzepte und Sprachen, 3. Auflage</title>
+        <publisher>mitp-Verlag, Redline GmbH</publisher>
+        <year>2008</year>
+        <isbn>978-3-8266-1664-8</isbn>
+        <url>http://www.biberbuch.de</url>
     </book>
     <incollection mdate="2008-01-03" key="books/ws/BMW07-papers/GuptaJK07">
         <author>Ankur Gupta</author>
@@ -98,5 +111,17 @@
         <publisher>ACM</publisher>
         <year>2007</year>
         <url>db/conf/ACMace/ace2007.html</url>
+    </proceedings>
+    <proceedings mdate="2008-01-04" key="conf/adg/2006">
+        <editor>Francisco Botana</editor>
+        <editor>Tomás Recio</editor>
+        <title>Automated Deduction in Geometry, 6th International Workshop, ADG 2006, Pontevedra, Spain, August 31-September 2, 2006. Revised Papers</title>
+        <series href="db/journals/lncs.html">Lecture Notes in Computer Science</series>
+        <volume>4869</volume>
+        <publisher>Springer</publisher>
+        <year>2007</year>
+        <isbn>978-3-540-77355-9</isbn>
+        <booktitle>Automated Deduction in Geometry</booktitle>
+        <url>db/conf/adg/adg2006.html</url>
     </proceedings>
 </dblp>

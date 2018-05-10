@@ -74,6 +74,8 @@
       \item \verb|replace(..., ' ','_')| : replace white spaces by underscore characters\footnote{ ... : reference to the previous point.}.
       \item \verb|removeSpecialChar(...)| : remove special characters.
     \end{enumerate}
+    Note that we cannot use the previous function to get last name (and then remove it) because the previous function convert some character (with function \verb|removeSpecialChar|).
+    
     Finally, we obtain the following instruction~:
     \begin{itemize}
       \item \begin{lstlisting}[language=XML]

@@ -137,12 +137,12 @@
     \end{itemize}
 
   \subsection{Publications table}
-  Each page must contains two tables : publication table and co-authors table (next section). The publication table contains multiple informations described by following sub-sections. Due to the fact that we will probably iterate on different elements, we have decided to save the current author value in a specific \verb|author| variable.
+  Each page must contains two tables : publication table and co-authors table (next section). The publication table contains multiple informations described by following sub-sections. Due to the fact that we will probably iterate on different elements, we have decided to save the current author/editor value in a specific \verb|author| variable.
     \subsubsection{Obtaining publications}
       For each person, we must retrieve all of its publications. This is realised using the \verb|publications| variable which contains all of the articles associated to the current \verb|author| variable~:
  \begin{itemize}
 	\item \begin{lstlisting}[language=XML]
-<xsl:variable name="publications" select="$root//*[./author=$author]" />\end{lstlisting}
+<xsl:variable name="publications" select="$root//*[./author=$author or ./editor=$author]" />\end{lstlisting}
       \end{itemize}
       
     \subsubsection{Sort of publications}

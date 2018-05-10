@@ -56,10 +56,10 @@
     \end{itemize}
 
   \subsection{Last Name} 
-    This second function is used to extract the last name from a given author or editor string. We extract and format last names using below functions~:
+    This second function is used to extract the last name from a given author or editor string. To do this, we use the functions below~:
     \begin{enumerate}
       \item \verb|tokenize($input,' ')[last()]| : we split the input (using white spaces) and get the last element.
-      \item \verb|removeSpecialChar(tokenize($input,' ')[last()])| : use the previous function to replace special characters in last names.
+      \item \verb|removeSpecialChar(tokenize($input,' ')[last()])| : use the previous function to replace special characters in last name.
     \end{enumerate}
     Finally, we obtain the following instruction~:
     \begin{itemize}

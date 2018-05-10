@@ -144,6 +144,7 @@
 	\item \begin{lstlisting}[language=XML]
 <xsl:variable name="publications" select="$root//*[./author=$author or ./editor=$author]" />\end{lstlisting}
       \end{itemize}
+      This variable will be used to make a loop but also in the ``co-author'' table (see point \ref{sec:coauthor}).
       
     \subsubsection{Sort of publications}
       All the publications must be sorted in the descending order. This means that we will start with the oldest publication and finish with the newest one. This is realised using the \verb|sort| xslt command coupled with the \verb|descending| argument using the \verb|year| tag of the current publication~:
@@ -167,7 +168,7 @@
       Second part of the \verb|or| condition is used to test if the current node is the first item. In that case, we do not need to apply the comparison and can directly add the specific row.
       
     \subsubsection{Personal redirection}
-    We must transform, for each author/editor, the name of the person into a link. This link is used to redirect to the personal author/editor page. The main difficulty is to avoid the transformation of the current author name. This is realised using below instructions~:
+      We must transform, for each author/editor, the name of the person into a link. This link is used to redirect to the personal author/editor page. The main difficulty is to avoid the transformation of the current author name. This is realised using below instructions~:
       \begin{itemize}
 	\item \begin{lstlisting}[language=XML]
 <xsl:if test="not(.=$author)" >
@@ -181,7 +182,8 @@
       \end{itemize}
 
   \subsection{Co-author table}
-  As indicated in the previous section, each page must contain two tables : publications table (previous section) and co-authors table. The co-authors table must contain all persons with whom P has jointly published. For this table, we have decided to use nested iterations. This is due to the fact that we must retrieve each co-author and then reach each article jointly published for each of the co-authors.
+    \label{sec:coauthor}
+    As indicated in the previous section, each page must contain two tables : publications table (previous section) and co-authors table. The co-authors table must contain all persons with whom P has jointly published. For this table, we have decided to use nested iterations. This is due to the fact that we must retrieve each co-author and then reach each article jointly published for each of the co-authors.
   
     \subsubsection{Co-authors iteration}
       The First iteration is used to find each person present on one of the current person publication. This is realised as below :

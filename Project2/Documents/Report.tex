@@ -71,7 +71,7 @@
     This third function is used to extract first name from a given input string. Formally, first name is corresponding to all the input string minus the last name (see previous section). This element can be composed by multiple words (separated by withe spaces) and having special characters. Extracting first name was more complicated and has been implemented as below.
     \begin{enumerate}
       \item \verb|substring-before($input, tokenize($input,' ')[last()])| : get first name.
-      \item \verb|replace(..., ' ','_')| : replace white spaces by underscore characters\footnote{ ... : reference to the previous point.}.
+      \item \verb|replace(..., ' ','_')| : replace white spaces by underscore characters\footnote{ ``...'' : reference to the previous point.}.
       \item \verb|removeSpecialChar(...)| : remove special characters.
     \end{enumerate}
     Note that we cannot use the previous function to get last name (and then remove it) because the previous function convert some character (with function \verb|removeSpecialChar|).

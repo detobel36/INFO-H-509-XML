@@ -96,14 +96,16 @@
 
                                 <td>
                                     <xsl:for-each select="author|editor">
-                                        <xsl:if test="not(.=$author)" >
-                                            <a href="../{func:nameToPath(.)}.html">
+                                        <xsl:choose>
+                                            <xsl:when test="not(.=$author)">
+                                                <a href="../{func:nameToPath(.)}.html">
+                                                    <xsl:value-of select="." />
+                                                </a>
+                                            </xsl:when>
+                                            <xsl:otherwise>
                                                 <xsl:value-of select="." />
-                                            </a>
-                                        </xsl:if>
-                                        <xsl:if test=".=$author" >
-                                            <xsl:value-of select="." />
-                                        </xsl:if>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
 
                                         <xsl:choose>
                                             <xsl:when test="position()=last()"> : </xsl:when>

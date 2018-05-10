@@ -167,17 +167,48 @@
       \end{itemize}
       Second part of the \verb|or| condition is used to test if the current node is the first item. In that case, we do not need to apply the comparison and can directly add the specific row.
       
+    \subsubsection{Link to the online version}
+      The tag \verb|ee| contain a link to the online version of the current document.  In the case where this tag exists, we need to display a clicked image like this:
+      \begin{itemize}
+	\item \begin{lstlisting}[language=XML]
+<xsl:choose>
+  <xsl:when test="ee">
+    <td valign="top">
+      <a href="{./ee}">
+	<img alt="Electronic Edition" title="Electronic Edition"
+	    src="http://www.informatik.uni-trier.de/~ley/db/ee.gif"
+	    border="0" height="16" width="16"/>
+      </a>
+    </td>
+  </xsl:when>
+  <xsl:otherwise>
+    <td />
+  </xsl:otherwise>
+</xsl:choose>\end{lstlisting}
+      \end{itemize}
+      
     \subsubsection{Personal redirection}
       We must transform, for each author/editor, the name of the person into a link. This link is used to redirect to the personal author/editor page. The main difficulty is to avoid the transformation of the current author name. This is realised using below instructions~:
       \begin{itemize}
 	\item \begin{lstlisting}[language=XML]
-<xsl:if test="not(.=$author)" >
+<xsl:choose>
+  <xsl:when test="not(.=$author)">
     <a href="../{func:nameToPath(.)}.html">
-        <xsl:value-of select="." />
+      <xsl:value-of select="." />
     </a>
-</xsl:if>
-<xsl:if test=".=$author" >
+  </xsl:when>
+  <xsl:otherwise>
     <xsl:value-of select="." />
+  </xsl:otherwise>
+</xsl:choose>\end{lstlisting}
+      \end{itemize}
+      
+    \subsubsection{Document information}
+      We display all information about a document in the same order as the one the dblp webiste.  Thus for a lot of tag we just test if they exist and display like this:
+      \begin{itemize}
+	\item \begin{lstlisting}[language=XML]
+<xsl:if test="publisher" >
+  <xsl:value-of select="publisher" />&#160;
 </xsl:if>\end{lstlisting}
       \end{itemize}
 

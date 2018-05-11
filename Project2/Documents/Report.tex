@@ -237,7 +237,7 @@
     This second iteration (nested iteration) is used to reach each publications which are jointly published. Firstly, we use the \verb|publications| variable to check if the current co-author is present as in the current publication~: 
       \begin{itemize}
 	\item \begin{lstlisting}[language=XML]
-<xsl:if test="$coAuthor=./author" >\end{lstlisting}
+<xsl:if test="($coAuthor=./author) or ($coAuthor=./editor)" >\end{lstlisting}
       \end{itemize}
       If he is present, we can add the publication (linked to the previous table) :
       \begin{itemize}

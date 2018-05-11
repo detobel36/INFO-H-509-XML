@@ -217,10 +217,15 @@
     As indicated in the previous section, each page must contain two tables : publications table (previous section) and co-authors table. The co-authors table must contain all persons with whom P has jointly published. For this table, we have decided to use nested iterations. This is due to the fact that we must retrieve each co-author and then reach each article jointly published for each of the co-authors.
   
     \subsubsection{Co-authors iteration}
-      The First iteration is used to find each person present on one of the current person publication. This is realised as below :
+      The first iteration is used to find each person present on one of the current person publication. This is realised by defining two variables (containing all authors and all editors respectively) as below :
       \begin{itemize}
 	\item \begin{lstlisting}[language=XML]
-<xsl:for-each select="$root//*[./author=$author]/author[not(.=$author)]">\end{lstlisting}
+<xsl:variable name="otherAuthor" 
+  select="$root//*[./author=$author or ./editor=$author]/author[not(.=$author)]" />
+<xsl:variable name="otherEditor" 
+  select="$root//*[./editor=$author or ./editor=$author]/editor[not(.=$author)]" />
+  
+<xsl:for-each select="$otherEditor | $otherAuthor">\end{lstlisting}
       \end{itemize}
       As the co-authors table is sorted by last names, we use (as following) the \verb|sort| tag with the \verb|lastName| function :
       \begin{itemize}

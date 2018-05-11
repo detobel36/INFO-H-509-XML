@@ -159,8 +159,8 @@
                         <h2> Co-author index </h2>
                         <p>
                             <table border="1"> 
-                                <xsl:variable name="otherAuthor" select="$root//*[./author=$author]/author[not(.=$author)]" />
-                                <xsl:variable name="otherEditor" select="$root//*[./editor=$author]/editor[not(.=$author)]" />
+                                <xsl:variable name="otherAuthor" select="$root//*[./author=$author or ./editor=$author]/author[not(.=$author)]" />
+                                <xsl:variable name="otherEditor" select="$root//*[./editor=$author or ./editor=$author]/editor[not(.=$author)]" />
                                 <xsl:for-each select="$otherEditor | $otherAuthor">
                                 <xsl:sort select="func:lastName(.)"/>
                                 

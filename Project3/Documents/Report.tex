@@ -107,7 +107,7 @@ return <title>{data($inproceeding/title)}</title>\end{verbatim}
   For the last program, we were assigned to compute (for each pair of authors $x$ and $y$, $x \neq y$) the distance between $x$ and $y$. First, we will explain how functions has been used to implement complex operations. After that, we will describes how we have built the final \verb|<distance>| bloc. 
   
   \subsection{First function : \texttt{getListAuthorDistance}}
-  The most important function that we have implemented is \verb|getListAuthorDistance|. It allows to return a list of co-authors that are at a distance comprises in $[1,d]$ from the current author. The function starts by checking if the distance given in parameter is greater then zero. If it is the case, then the function will be called iteratively to get co-authors at a distance 1, 2, ..., $d$. In the other case, the function return the author without any other values. Formally, the function has been written as below~:
+  The most important function that we have implemented is \verb|getListAuthorDistance|. It allows to return a list of co-authors that are at a distance comprises in $[1,d]$ from the current author. The function starts by checking if the distance given in parameter is greater then zero. If it is the case, then the function will be called iteratively to get co-authors at a distance $d$, $d-1$, ... 2, 1. In the other case, the function return the author without any other values. Formally, the function has been written as below~:
     \begin{itemize}
       \item \begin{verbatim}
 for $newCoAuteur in distinct-values($allContext[author=$intermediateAuteur]/author)
@@ -117,10 +117,20 @@ where not($intermediateAuteur = $newCoAuteur)
     \end{itemize}
     
   \subsection{Other functions}
-    To be able to get every distances for every authors, we had to implement two other functions. First, we have implemented \verb|authorInASpecificDistance|. It allows to get every authors that are at a specific distance from the current author. This function will return a set that contains authors that are only accessible with a distance $d$.  Finally, \verb|loopDistance| has been implemented to check if the result set of \verb|authorInASpecificDistance| is empty or not. If this set is empty, it means that every distances has been reached and that we can stop the iteration.
+    To be able to get every distances for every authors, we had to implement two other functions. First, we have implemented \verb|authorInASpecificDistance|. It allows to get every authors that are at a specific distance from the current author. Thus all author in a distance $d$ except all author accessible in a distance $d-1$. Concretely, we can write it like this:
+    \begin{itemize}
+      \item \begin{verbatim}
+let $previousCheck := distinct-values(
+                custom:getListAuthorDistance($allContext, ($distance - 1), $author))
+let $currentCheck := distinct-values(
+                custom:getListAuthorDistance($allContext, $distance, $author))
+for $coAuteur in $currentCheck[not(.=$previousCheck)]\end{verbatim}
+    \end{itemize}
+    This function will return XML formated data.\\
+    Finally, \verb|loopDistance| has been implemented to check if the result set of \verb|authorInASpecificDistance| is empty or not. If this set is empty, it means that every distances has been reached and that we can stop the iteration.
   
   \subsection{Final instruction}
-  The last operation was to create the \verb|<distances> ... </distances>| bloc. This bloc will contains a set of \verb|<distance>| tags that are created using the \verb|authorInASpecificDistance| function. After that, these tags are added to the final set using the \verb|loopDistance| function. Finally, let's remark that for each author of the dblp database, we will have a call to the recursive function. The final bloc is obtained as below~:
+  The last operation was to create the \verb|<distances> ... </distances>| bloc. This bloc will contains a set of \verb|<distance>| tags that are created using the \verb|authorInASpecificDistance| function. After that, these tags are added to the final set using the \verb|loopDistance| function. Finally, let's remark that for each author of the DBLP database, we will have a call to the recursive function. The final bloc is obtained as below~:
     \begin{itemize}
       \item \begin{verbatim}
 <distances>

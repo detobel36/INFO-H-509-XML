@@ -152,6 +152,11 @@
 	\item \begin{lstlisting}[language=XML]
 <xsl:sort select="year" order="descending"/>\end{lstlisting}
       \end{itemize}
+      Documents published the same year must then be sorted by title:
+      \begin{itemize}
+	\item \begin{lstlisting}[language=XML]
+<xsl:sort select="title"/>\end{lstlisting}
+      \end{itemize}
       Each row (which corresponds to a publication) in the table must have an index. As we are printing all the publications in the reverse sequence, we must also obtain indexes in the reverse sequence. Once again, this is realised using a variable~:
       \begin{itemize}
 	\item \begin{lstlisting}[language=XML]

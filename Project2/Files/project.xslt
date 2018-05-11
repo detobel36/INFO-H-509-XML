@@ -65,6 +65,7 @@
                         <table border="1">
                         <xsl:for-each select="$publications">
                         <xsl:sort select="year" order="descending"/>
+                        <xsl:sort select="title"/>
                             <xsl:variable name="indexPub" select="last()-position()+1" />
                             
                             <xsl:if test="not(preceding-sibling::*[1]/year=./year) or position()=1">

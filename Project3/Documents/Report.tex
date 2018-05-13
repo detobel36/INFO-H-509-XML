@@ -117,7 +117,7 @@ where not($intermediateAuteur = $newCoAuteur)
     \end{itemize}
     
   \subsection{Other functions}
-    To be able to get every distances for every authors, we had to implement two other functions. First, we have implemented \verb|authorInASpecificDistance|. It allows to get every authors that are at a specific distance from the current author. Thus all author in a distance $d$ except all author accessible in a distance $d-1$. Concretely, we can write it like this:
+    To be able to get every distances for every authors, we had to implement two other functions. First, we have implemented \verb|authorInASpecificDistance|. It allows to get every authors that are at a specific distance from the current author. Formally, it returns every authors that can be reached using a distance $d$ (no more, no less). The function returns XML data information and has been written as below~:
     \begin{itemize}
       \item \begin{verbatim}
 let $previousCheck := distinct-values(
@@ -126,7 +126,6 @@ let $currentCheck := distinct-values(
                 custom:getListAuthorDistance($allContext, $distance, $author))
 for $coAuteur in $currentCheck[not(.=$previousCheck)]\end{verbatim}
     \end{itemize}
-    This function will return XML formated data.\\
     Finally, \verb|loopDistance| has been implemented to check if the result set of \verb|authorInASpecificDistance| is empty or not. If this set is empty, it means that every distances has been reached and that we can stop the iteration.
   
   \subsection{Final instruction}

@@ -56,7 +56,7 @@
     \end{itemize}
 
   \subsection{Last Name} 
-    This second function is used to extract the last name from a given author or editor string. To do this, we use the functions below~:
+    This second function is used to extract the last name from a given author or editor string. To do this, we use below functions~:
     \begin{enumerate}
       \item \verb|tokenize($input,' ')[last()]| : we split the input (using white spaces) and get the last element.
       \item \verb|removeSpecialChar(tokenize($input,' ')[last()])| : use the previous function to replace special characters in last name.
@@ -74,9 +74,7 @@
       \item \verb|replace(..., ' ','_')| : replace white spaces by underscore characters\footnote{ ``...'' : reference to the previous point.}.
       \item \verb|removeSpecialChar(...)| : remove special characters.
     \end{enumerate}
-    Note that we cannot use the previous function to get last name (and then remove it) because the previous function convert some character (with function \verb|removeSpecialChar|).
-    
-    Finally, we obtain the following instruction~:
+    Let's remark that previous functions cannot be used to retrieve last name value and to remove it from the input value. This is due to the fact that previous functions modify some characters using the \verb|removeSpecialChar| function. Finally, we obtain the following instruction~:
     \begin{itemize}
       \item \begin{lstlisting}[language=XML]
 <xsl:value-of select="func:removeSpecialChar(
@@ -147,12 +145,12 @@
       This variable will be used to make a loop but also in the ``co-author'' table (see point \ref{sec:coauthor}).
       
     \subsubsection{Sort of publications}
-      All the publications must be sorted in the descending order. This means that we will start with the oldest publication and finish with the newest one. This is realised using the \verb|sort| xslt command coupled with the \verb|descending| argument using the \verb|year| tag of the current publication~:
+      Every publications must be sorted in descending order. This implies that we will start with the oldest publication and finish with the newest one. To realise it, we have used the \verb|sort| xslt command coupled with the \verb|descending| argument using the \verb|year| tag of the current publication~:
       \begin{itemize}
 	\item \begin{lstlisting}[language=XML]
 <xsl:sort select="year" order="descending"/>\end{lstlisting}
       \end{itemize}
-      Documents published the same year must then be sorted by title:
+      Then, we have sorted every documents having the same year of publication using the title (Alphabetical order)~:
       \begin{itemize}
 	\item \begin{lstlisting}[language=XML]
 <xsl:sort select="title"/>\end{lstlisting}

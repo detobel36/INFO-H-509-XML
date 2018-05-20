@@ -1,6 +1,6 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema" 
-    targetNamespace="./bookshop.xsd"
-    xmlns:b="./bookshop.xsd">
+    targetNamespace="http://example.com/bookshop.xsd"
+    xmlns:b="http://example.com/bookshop.xsd">
 
     <!-- Define simple types -->
     <simpleType name="ISBNT">

@@ -96,7 +96,7 @@
                                 </xsl:choose>
 
                                 <td>
-                                    <xsl:for-each select="author|editor">
+                                    <xsl:for-each select="distinct-values(author|editor)">
                                         <xsl:choose>
                                             <xsl:when test="not(.=$author)">
                                                 <a href="../{func:nameToPath(.)}.html">
@@ -162,7 +162,7 @@
                             <table border="1"> 
                                 <xsl:variable name="otherAuthor" select="$root//*[./author=$author or ./editor=$author]/author[not(.=$author)]" />
                                 <xsl:variable name="otherEditor" select="$root//*[./editor=$author or ./editor=$author]/editor[not(.=$author)]" />
-                                <xsl:for-each select="$otherEditor | $otherAuthor">
+                                <xsl:for-each select="distinct-values($otherEditor | $otherAuthor)">
                                 <xsl:sort select="func:lastName(.)"/>
                                 
                                     <xsl:variable name="coAuthor" select="." />

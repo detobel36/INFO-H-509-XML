@@ -56,14 +56,14 @@ for $author in //author
     The author name and the number of co-authors are respectively obtained using \verb|data| and \verb|count| functions (defined by XQuery). Below instructions are formal definitions of \verb|name| and \verb|coauthors| tags~:
     \begin{itemize}
       \item \verb|<name>{data($author)}</name>|
-      \item \verb|<coauthors number="{count(//*[author=$author]/author)-1}"> ... </coauthors>|
+      \item \verb|<coauthors number="{count(distinct-values(//*[author=$author]/author))-1}"> ... </coauthors>|
     \end{itemize}
     
     \subsubsection{Co-authors informations}
       For each co-author, we must obtain his name and the number of joint publications. Both informations will be contained inside \verb|<coauthor> ... </coauthor>| tags (itself contained in the \verb|coauthors| bloc). Each of the \verb|coauthor| blocs are created by iterating on co-authors as below~:
       \begin{itemize}
 	\item \begin{verbatim}
-for $coauthor in //*[author=$author]/author[not(.=$author)]
+for $coauthor in distinct-values(//*[author=$author]/author[not(.=$author)])
     return <coauthor>
     ....
     </coauthor>\end{verbatim}
@@ -107,7 +107,7 @@ return <title>{data($inproceeding/title)}</title>\end{verbatim}
   For the last program, we were assigned to compute (for each pair of authors $x$ and $y$, $x \neq y$) the distance between $x$ and $y$. First, we will explain how functions has been used to implement complex operations. After that, we will describes how we have built the final \verb|<distance>| bloc. 
   
   \subsection{First function : \texttt{getListAuthorDistance}}
-  The most important function that we have implemented is \verb|getListAuthorDistance|. It allows to return a list of co-authors that are at a distance comprises in $[1,d]$ from the current author. The function starts by checking if the distance given in parameter is greater then zero. If it is the case, then the function will be called iteratively to get co-authors at a distance $d$, $d-1$, ... 2, 1. In the other case, the function return the author without any other values. Formally, the function has been written as below~:
+  The most important function that we have implemented is \verb|getListAuthorDistance|. It allows to return a list of co-authors that are at a distance comprises in $[1,d]$ from the current author. The function starts by checking if the distance given in parameter is greater then zero. If it is the case, then the function will be called iteratively to get co-authors at a distance $d$, $d-1$, ... 2, 1. In the other case, the function return the author without any other values. Formally, this loop has been written as below~:
     \begin{itemize}
       \item \begin{verbatim}
 for $newCoAuteur in distinct-values($allContext[author=$intermediateAuteur]/author)

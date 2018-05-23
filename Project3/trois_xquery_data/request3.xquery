@@ -1,23 +1,39 @@
 declare namespace custom = "http://example.com";
+declare option saxon:output "indent=yes";
 
-declare function custom:generateTag($author as xs:string, $coAuthor as xs:string, $distance as xs:integer)
+declare function custom:getListAuthorDistance($allContext, $distance as xs:integer, $intermediateAuteur as xs:string)
 {
-    let $test := 1
-    return <distance author1="{$coAuthor}" author2="{$author}" distance="{$distance}" />
+    if($distance > 0) then (
+        for $newCoAuteur in distinct-values($allContext[author=$intermediateAuteur]/author)
+        where not($intermediateAuteur = $newCoAuteur)
+            return ($newCoAuteur, custom:getListAuthorDistance($allContext, ($distance - 1), $newCoAuteur))
+    )
+    else (
+        $intermediateAuteur
+    )
 };
 
-declare function custom:getTree($author as xs:string, $intervalAuthor as xs:string, $distance as xs:integer, $allContext)
+declare function custom:authorInASpecificDistance($author as xs:string, $allContext, $distance as xs:integer)
 {
-    let $newDistance := $distance + 1
-    for $coAuthor in distinct-values($allContext[author=$intervalAuthor]/author)
-    where $coAuthor != $author and $coAuthor != $intervalAuthor
-        return (custom:getTree($author, $coAuthor, $newDistance, $allContext except $allContext[author=$intervalAuthor]),
-                custom:generateTag($author, $coAuthor, $newDistance))
+    let $previousCheck := distinct-values(custom:getListAuthorDistance($allContext, ($distance - 1), $author))
+    let $currentCheck := distinct-values(custom:getListAuthorDistance($allContext, $distance, $author))
+    for $coAuteur in $currentCheck[not(.=$previousCheck)]
+    where not($coAuteur = $author)
+        return <distance author1="{$author}" author2="{$coAuteur}" distance="{$distance}" />
+};
+
+
+declare function custom:loopDistance($author as xs:string, $allContext, $distance as xs:integer)
+{
+    if(not(empty(custom:authorInASpecificDistance($author, $allContext, $distance)))) then (
+        (custom:loopDistance($author, $allContext, ($distance + 1)),
+        custom:authorInASpecificDistance($author, $allContext, $distance))
+    ) else()
 };
 
 <distances>
 {
     for $author in distinct-values(//author)
-        return custom:getTree($author, $author, 0, //*)
+        return custom:loopDistance($author, //*, 1)
 }
 </distances>

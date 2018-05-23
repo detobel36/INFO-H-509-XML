@@ -39,7 +39,7 @@
 \maketitle
 
 \section{Introduction}
-  This document aims to detail each choices and hypothesis we made during our implementation. As a reminder, we were assigned to implement three different XQuery programs. Each of those query use a part of the BDLP database (DBLP-excerpt). The structure of this report will be divided into three parts (one per program).
+  This document aims to detail each choices and hypothesis we made during our implementation. As a reminder, we were assigned to implement three different XQuery programs. Each of those query use a part of the DBLP database (DBLP-excerpt). The structure of this report will be divided into three parts (one per program).
 
 \section{First XQuery program}
   For the first program, we were assigned (for each author) to return the number of co-authors and the number of joint publications with each of them. To realise this, we start by iterate on each author as below~: 
@@ -56,14 +56,14 @@ for $author in //author
     The author name and the number of co-authors are respectively obtained using \verb|data| and \verb|count| functions (defined by XQuery). Below instructions are formal definitions of \verb|name| and \verb|coauthors| tags~:
     \begin{itemize}
       \item \verb|<name>{data($author)}</name>|
-      \item \verb|<coauthors number="{count(//*[author=$author]/author)-1}"> ... </coauthors>|
+      \item \verb|<coauthors number="{count(distinct-values(//*[author=$author]/author))-1}"> ... </coauthors>|
     \end{itemize}
     
     \subsubsection{Co-authors informations}
       For each co-author, we must obtain his name and the number of joint publications. Both informations will be contained inside \verb|<coauthor> ... </coauthor>| tags (itself contained in the \verb|coauthors| bloc). Each of the \verb|coauthor| blocs are created by iterating on co-authors as below~:
       \begin{itemize}
 	\item \begin{verbatim}
-for $coauthor in //*[author=$author]/author[not(.=$author)]
+for $coauthor in distinct-values(//*[author=$author]/author[not(.=$author)])
     return <coauthor>
     ....
     </coauthor>\end{verbatim}
@@ -83,20 +83,19 @@ for $coauthor in //*[author=$author]/author[not(.=$author)]
 
 
 \section{Second XQuery program}
-For the second request, we were assigned to give (for each proceedings) its title and titles of articles appearing in it. Each \verb|proceeding| blocs are created by the use of an iteration~:
+  For the second request, we were assigned to give (for each proceedings) its title and titles of articles appearing in it. Each \verb|proceeding| blocs are created by the use of an iteration~:
   \begin{itemize}
-  \item \begin{verbatim}
+    \item \begin{verbatim}
 for $proceeding in //proceedings
     return <proceedings>
     ....
-    </proceedings>
-  \end{verbatim}
+    </proceedings>\end{verbatim}
   \end{itemize}
-For each of these blocs, we must retrieve the title (\verb|proc_title|) and a list of articles (\verb|title|). This is achieved using the value of the \verb|key| attribute (inside \verb|proceedings| tags) and the value contained inside \verb|crossref| tags. Regarding to the title, we obtain the below instruction~:
+  For each of these blocs, we must retrieve the title (\verb|proc_title|) and a list of articles (\verb|title|). This is achieved using the value of the \verb|key| attribute (inside \verb|proceedings| tags) and the value contained inside \verb|crossref| tags. Regarding to the title, we obtain the below instruction~:
   \begin{itemize}
     \item \verb|<proc_title>{data($proceeding/title)}</proc_title>|
   \end{itemize}
-Finally, we can create the list of titles using the \verb|key| value~:  
+  Finally, we can create the list of titles using the \verb|key| value~:  
   \begin{itemize}
     \item \begin{verbatim}
 for $inproceeding in //inproceedings[crossref=data($proceeding/@key)]
@@ -105,46 +104,39 @@ return <title>{data($inproceeding/title)}</title>\end{verbatim}
   
 
 \section{Third XQuery program}
-For the last program, we were assigned to compute (for each pair of authors $x$ and $y$, $x \neq y$) the distance between $x$ and $y$. Before explaining the final request, we will describe how we use functions to implement complex operations. As there exist two complex operations, we have decided to implement two different functions : \verb|generateTag| and \verb|getTree|.
-
-\subsection{First function : \texttt{generateTag}}
-This first function is simply used to reach a well formatted XML tag. This means that the function takes an \verb|$author|, a \verb|$coauthor| and a \verb|$distance| as input and return the below XML tag~:
-\begin{itemize}
-\item \verb|<distance author1="{$coAuthor}" author2="{$author}" distance="{$distance}" />|
-\end{itemize}
-\subsection{Second function : \texttt{getTree}}
-Previous function only treat about output format. This means that we must, at this point, compute the distance value between two authors. This computation is realised by the \verb|getTree| function which takes as input an \verb|$author|, an \verb|intervalAuthor|, a \verb|distance| and an \verb|allContext| (context variable). We have been decided to implement this function using recursive calls~:
-\begin{itemize}
-\item The definition of the current distance (incremental value) :
-\begin{itemize}
-\item \verb|let $newDistance := $distance + 1|
-\end{itemize}
-\item An iteration on all co-authors. \verb|allContext| is a constant variable defined in the final request which is used to keep (in memory) whole author nodes~:
-\begin{itemize}
-\item \verb|for $coAuthor in distinct-values($allContext[author=$intervalAuthor]/author)|
-\end{itemize}
-\item On the previous iteration, we only want \verb|coauthor| values which are, at the same time, different from  \verb|author| and \verb|intervalAuthor| values. This is checked using the below instruction~:
-\begin{itemize}
-\item \verb|where $coAuthor != $author and $coAuthor != $intervalAuthor|
-\end{itemize}
-\item Finally, inside this iteration we call two functions. The first one is the recursive call to \verb|getTree| and the second one is the inclusion of the current result into the final set using \verb|generateTree|~: 
-\begin{itemize}
-\item \begin{verbatim}
-return (custom:getTree($author, $coAuthor, $newDistance, $allContext except 
-                        $allContext[author=$intervalAuthor]),
-        custom:generateTag($author, $coAuthor, $newDistance))
-\end{verbatim}
-\end{itemize}
-\end{itemize}
-\subsection{Final instruction}
-Finally, we must create the \verb|<distance> .... </distance>| bloc which contain each of the \verb|<distance>| tags. Those tags are created using the first function and added to the final set using the second one. First call to of the recursive function is realised for each different authors in the dblp database. This means that we use the following code inside the \verb|<distance> .... </distance>| bloc~:
-\begin{itemize}
-\item \begin{verbatim}
-for $author in distinct-values(//author)
-    return custom:getTree($author, $author, 0, //*)
-\end{verbatim}
-\end{itemize}
-Which is used to initialise each of the \verb|getTree| parameters. Remarks also that distance is set to 0 due to the fact that we start by using the same author and co-author (not added to the final set).
-
+  For the last program, we were assigned to compute (for each pair of authors $x$ and $y$, $x \neq y$) the distance between $x$ and $y$. First, we will explain how functions has been used to implement complex operations. After that, we will describes how we have built the final \verb|<distance>| bloc. 
+  
+  \subsection{First function : \texttt{getListAuthorDistance}}
+  The most important function that we have implemented is \verb|getListAuthorDistance|. It allows to return a list of co-authors that are at a distance comprises in $[1,d]$ from the current author. The function starts by checking if the distance given in parameter is greater then zero. If it is the case, then the function will be called iteratively to get co-authors at a distance $d$, $d-1$, ... 2, 1. In the other case, the function return the author without any other values. Formally, this loop has been written as below~:
+    \begin{itemize}
+      \item \begin{verbatim}
+for $newCoAuteur in distinct-values($allContext[author=$intermediateAuteur]/author)
+where not($intermediateAuteur = $newCoAuteur)
+  return ($newCoAuteur, 
+      custom:getListAuthorDistance($allContext, ($distance - 1), $newCoAuteur))\end{verbatim}
+    \end{itemize}
+    
+  \subsection{Other functions}
+    To be able to get every distances for every authors, we had to implement two other functions. First, we have implemented \verb|authorInASpecificDistance|. It allows to get every authors that are at a specific distance from the current author. Formally, it returns every authors that can be reached using a distance $d$ (no more, no less). The function returns XML data information and has been written as below~:
+    \begin{itemize}
+      \item \begin{verbatim}
+let $previousCheck := distinct-values(
+                custom:getListAuthorDistance($allContext, ($distance - 1), $author))
+let $currentCheck := distinct-values(
+                custom:getListAuthorDistance($allContext, $distance, $author))
+for $coAuteur in $currentCheck[not(.=$previousCheck)]\end{verbatim}
+    \end{itemize}
+    Finally, \verb|loopDistance| has been implemented to check if the result set of \verb|authorInASpecificDistance| is empty or not. If this set is empty, it means that every distances has been reached and that we can stop the iteration.
+  
+  \subsection{Final instruction}
+  The last operation was to create the \verb|<distances> ... </distances>| bloc. This bloc will contains a set of \verb|<distance>| tags that are created using the \verb|authorInASpecificDistance| function. After that, these tags are added to the final set using the \verb|loopDistance| function. Finally, let's remark that for each author of the DBLP database, we will have a call to the recursive function. The final bloc is obtained as below~:
+    \begin{itemize}
+      \item \begin{verbatim}
+<distances>
+{
+    for $author in distinct-values(//author)
+        return custom:loopDistance($author, //*, 1)
+}
+</distances>\end{verbatim}
+    \end{itemize}
 \end{document}
-

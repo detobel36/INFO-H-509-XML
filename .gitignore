@@ -17,3 +17,11 @@ XSDValidation.jar
 
 # Project 2
 Project2/deux_xslt_data/
+
+# Project 3
+Project3/trois_xquery_data/test_output1.xml
+Project3/trois_xquery_data/test_output2.xml
+Project3/trois_xquery_data/test_output3.xml
+Project3/trois_xquery_data/output1.xml
+Project3/trois_xquery_data/output3.xml
+Project3/trois_xquery_data/output2.xml

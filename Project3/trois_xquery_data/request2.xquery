@@ -8,4 +8,3 @@ for $proceeding in //proceedings
                     return <title>{data($inproceeding/title)}</title>
                 }
             </proceedings>
-            

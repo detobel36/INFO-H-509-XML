@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE dblp SYSTEM "dblp.dtd">
 <dblp>
-    <book mdate="2007-06-01" key="books/infix/Makoui2007">
-        <author>Mazeyar E. Makoui</author>
-        <title>Anfrageoptimierung in objektrelationalen Datenbanken durch kostenbedingte Termersetzungen</title>
-        <volume>100</volume>
-        <isbn>978-3-89838-500-8</isbn>
+    <book mdate="2007-08-24" key="books/sp/ProdanF2007">
+        <author>Radu Prodan</author>
+        <author>Thomas Fahringer</author>
+        <title>Grid Computing, Experiment Management, Tool Integration, and Scientific Workflows</title>
+        <booktitle>Grid Computing</booktitle>
+        <series href="db/journals/lncs.html">Lecture Notes in Computer Science</series>
+        <volume>4340</volume>
+        <publisher>Springer</publisher>
         <year>2007</year>
-        <publisher>Aka Akademische Verlagsgesellschaft Aka GmbH, Berlin</publisher>
-        <series href="db/series/disdbis/index.html">DISDBIS</series>
+        <isbn>978-3-540-69261-4</isbn>
+        <url>http://dx.doi.org/10.1007/978-3-540-69262-1</url>
+    </book>
+    <book mdate="2008-01-29" key="books/mitp/SaakeSH2008">
+        <author>Gunter Saake</author>
+        <author>Kai-Uwe Sattler</author>
+        <author>Andreas Heuer</author>
+        <title>Datenbanken: Konzepte und Sprachen, 3. Auflage</title>
+        <publisher>mitp-Verlag, Redline GmbH</publisher>
+        <year>2008</year>
+        <isbn>978-3-8266-1664-8</isbn>
+        <url>http://www.biberbuch.de</url>
     </book>
     <incollection mdate="2008-01-03" key="books/ws/BMW07-papers/GuptaJK07">
         <author>Ankur Gupta</author>
@@ -60,6 +73,19 @@
         <ee>http://dx.doi.org/10.1093/imamci/dnl014</ee>
         <url>db/journals/imamci/imamci24.html#Martinez-GuerraGLC07</url>
     </article>
+    <article mdate="2008-02-03" key="journals/ijsysc/MukherjeeSM07">
+        <author>S. Mukherjee</author>
+        <author>Satakshi</author>
+        <author>R. C. Mittal</author>
+        <title>Linear time invariant system order reduction using multipoint step response matching.</title>
+        <pages>211-217</pages>
+        <year>2007</year>
+        <volume>38</volume>
+        <journal>Int. J. Systems Science</journal>
+        <number>3</number>
+        <ee>http://dx.doi.org/10.1080/00207720601114071</ee>
+        <url>db/journals/ijsysc/ijsysc38.html#MukherjeeSM07</url>
+    </article>
     <mastersthesis mdate="2007-04-24" key="ms/Klaas2007">
         <author>Vanessa C. Klaas</author>
         <title>Who's Who in the World Wide Web: Approaches to Name Disambiguation</title>
@@ -73,4 +99,29 @@
         <year>2007</year>
         <school>Univ. Trier, FB 4, Informatik</school>
     </phdthesis>
+    <proceedings mdate="2007-06-25" key="conf/ACMace/2007">
+        <editor>Masa Inakage</editor>
+        <editor>Newton Lee</editor>
+        <editor>Manfred Tscheligi</editor>
+        <editor>Regina Bernhaupt</editor>
+        <editor>Stéphane Natkin</editor>
+        <title>Proceedings of the International Conference on Advances in Computer Entertainment Technology, ACE 2007, Salzburg, Austria, June 13-15, 2007</title>
+        <isbn>978-1-59593-640-0</isbn>
+        <booktitle>Advances in Computer Entertainment Technology</booktitle>
+        <publisher>ACM</publisher>
+        <year>2007</year>
+        <url>db/conf/ACMace/ace2007.html</url>
+    </proceedings>
+    <proceedings mdate="2008-01-04" key="conf/adg/2006">
+        <editor>Francisco Botana</editor>
+        <editor>Tomás Recio</editor>
+        <title>Automated Deduction in Geometry, 6th International Workshop, ADG 2006, Pontevedra, Spain, August 31-September 2, 2006. Revised Papers</title>
+        <series href="db/journals/lncs.html">Lecture Notes in Computer Science</series>
+        <volume>4869</volume>
+        <publisher>Springer</publisher>
+        <year>2007</year>
+        <isbn>978-3-540-77355-9</isbn>
+        <booktitle>Automated Deduction in Geometry</booktitle>
+        <url>db/conf/adg/adg2006.html</url>
+    </proceedings>
 </dblp>

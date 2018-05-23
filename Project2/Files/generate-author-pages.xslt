@@ -12,24 +12,26 @@
             <xsl:value-of select="func:firstLetter($input)"/>
             <xsl:value-of select="'/'"/>
             <xsl:value-of select="func:lastName($input)"/>
-            <xsl:value-of select="':'"/>
-            <xsl:value-of select="func:firstName($input)"/>
+            <xsl:if test="count(tokenize($input,' ')) > 1">
+                <xsl:value-of select="'.'"/>
+                <xsl:value-of select="func:firstName($input)"/>
+            </xsl:if>
         </xsl:value-of>
     </xsl:function>
 
     <xsl:function name="func:firstLetter" as="xs:string">
         <xsl:param name="input" as="xs:string"/>
-        <xsl:value-of select="func:removeSpecialChar(lower-case(substring(substring-after($input, ' '), 0, 2)))"/>
+        <xsl:value-of select="lower-case(substring(func:lastName($input), 0, 2))" />
     </xsl:function>
 
     <xsl:function name="func:firstName" as="xs:string">
         <xsl:param name="input" as="xs:string"/>
-        <xsl:value-of select="func:removeSpecialChar(replace(substring-before($input, ' '), ' ' ,'_'))"/>
+        <xsl:value-of select="func:removeSpecialChar(replace(substring-before($input, tokenize($input,' ')[last()]), ' ' ,'_'))"/>
     </xsl:function>
 
     <xsl:function name="func:lastName" as="xs:string">
         <xsl:param name="input" as="xs:string"/>
-        <xsl:value-of select="func:removeSpecialChar(replace(substring-after($input, ' '), ' ' ,'_'))"/>
+        <xsl:value-of select="func:removeSpecialChar(tokenize($input,' ')[last()])"/>
     </xsl:function>
 
     <xsl:function name="func:removeSpecialChar" as="xs:string">
@@ -53,7 +55,7 @@
                     <!-- For each page, generate a body -->
                     <body>
                         <xsl:variable name="author" select="." />
-                        <xsl:variable name="publications" select="$root//*[./author=$author]" />
+                        <xsl:variable name="publications" select="$root//*[./author=$author or ./editor=$author]" />
 
                         <!-- Title section -->
                         <h1> <xsl:value-of select="."/> </h1>
@@ -63,6 +65,7 @@
                         <table border="1">
                         <xsl:for-each select="$publications">
                         <xsl:sort select="year" order="descending"/>
+                        <xsl:sort select="title"/>
                             <xsl:variable name="indexPub" select="last()-position()+1" />
                             
                             <xsl:if test="not(preceding-sibling::*[1]/year=./year) or position()=1">
@@ -76,33 +79,74 @@
                                     </a>
                                 </td>
 
-                                <td valign="top">
-                                    <a href="http://www.informatik.uni-trier.de/~ley/{./url}">
-                                        <img alt="Electronic Edition" title="Electronic Edition"
-                                            src="http://www.informatik.uni-trier.de/~ley/db/ee.gif"
-                                            border="0" height="16" width="16"/>
-                                    </a>
-                                </td>
+                                <!-- Link to the online version if "ee" exists -->
+                                <xsl:choose>
+                                    <xsl:when test="ee">
+                                        <td valign="top">
+                                            <a href="{./ee}">
+                                                <img alt="Electronic Edition" title="Electronic Edition"
+                                                    src="http://www.informatik.uni-trier.de/~ley/db/ee.gif"
+                                                    border="0" height="16" width="16"/>
+                                            </a>
+                                        </td>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <td />
+                                    </xsl:otherwise>
+                                </xsl:choose>
 
                                 <td>
-                                    <xsl:for-each select="author">
-                                        <!-- TODO check user have a page -->
-                                        <xsl:if test="not(.=$author)" >
-                                            <a href="../{func:nameToPath(.)}.html">
+                                    <xsl:for-each select="distinct-values(author|editor)">
+                                        <xsl:choose>
+                                            <xsl:when test="not(.=$author)">
+                                                <a href="../{func:nameToPath(.)}.html">
+                                                    <xsl:value-of select="." />
+                                                </a>
+                                            </xsl:when>
+                                            <xsl:otherwise>
                                                 <xsl:value-of select="." />
-                                            </a>
-                                        </xsl:if>
-                                        <xsl:if test=".=$author" >
-                                            <xsl:value-of select="." />
-                                        </xsl:if>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
 
                                         <xsl:choose>
                                             <xsl:when test="position()=last()"> : </xsl:when>
                                             <xsl:otherwise>, </xsl:otherwise>
                                         </xsl:choose>
                                     </xsl:for-each>
-                                    <xsl:value-of select="title" /> :
-                                    <xsl:value-of select="pages" />
+                                    <xsl:value-of select="title" />&#160;
+                                    <xsl:if test="booktitle and name()=('incollection', 'inproceedings')" >
+                                        <xsl:value-of select="booktitle" />&#160;
+                                    </xsl:if>
+                                    <xsl:if test="journal" >
+                                        <xsl:value-of select="journal" />&#160;
+                                        <xsl:if test="volume" >
+                                            <xsl:value-of select="volume" />
+                                        </xsl:if>
+                                        <xsl:if test="number" >
+                                            (<xsl:value-of select="number" />)
+                                        </xsl:if>
+                                    </xsl:if>
+                                    <xsl:if test="series" >
+                                        <xsl:value-of select="series" />&#160;
+                                        <xsl:if test="volume" >
+                                            <xsl:value-of select="volume" />,
+                                        </xsl:if>
+                                    </xsl:if>
+                                    
+                                    <xsl:if test="publisher" >
+                                        <xsl:value-of select="publisher" />&#160;
+                                    </xsl:if>
+                                    <xsl:if test="school" >
+                                        <xsl:value-of select="school" />&#160;
+                                    </xsl:if>
+                                    <xsl:if test="year" >
+                                        <xsl:value-of select="year" />
+                                    </xsl:if>
+                                    <xsl:if test="pages" >
+                                        : <xsl:value-of select="pages" />
+                                    </xsl:if>
+                                    <xsl:if test="isbn" >, ISBN <xsl:value-of select="isbn" />
+                                    </xsl:if>
                                 </td>
 
                             </tr>
@@ -116,19 +160,21 @@
                         <h2> Co-author index </h2>
                         <p>
                             <table border="1"> 
-                                <xsl:for-each select="$root//*[./author=$author]/author[not(.=$author)]">
+                                <xsl:variable name="otherAuthor" select="$root//*[./author=$author or ./editor=$author]/author[not(.=$author)]" />
+                                <xsl:variable name="otherEditor" select="$root//*[./editor=$author or ./editor=$author]/editor[not(.=$author)]" />
+                                <xsl:for-each select="distinct-values($otherEditor | $otherAuthor)">
                                 <xsl:sort select="func:lastName(.)"/>
                                 
                                     <xsl:variable name="coAuthor" select="." />
                                     <tr>
                                         <td align="right">
                                             <!-- link to co-author page if present-->
-                                            <a href="../{func:nameToPath(.)}.html"><xsl:value-of select="." /></a>,
+                                            <a href="../{func:nameToPath(.)}.html"><xsl:value-of select="." /></a>
                                         </td>
                                         <!-- link to a co-authored publications in this page -->
                                         <td align="left"> 
                                             <xsl:for-each select="$publications">
-                                                <xsl:if test="$coAuthor=./author" >
+                                                <xsl:if test="($coAuthor=./author) or ($coAuthor=./editor)" >
                                                     <xsl:variable name="linkPublication" select="last()-position()+1" />
                                                     [<a href="#p{$linkPublication}">
                                                         <xsl:value-of select="$linkPublication" />
